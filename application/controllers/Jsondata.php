@@ -84,6 +84,45 @@ class Jsondata extends CI_Controller {
 				$post = (object)$this->input->post();
 				$param =  $post->param;
 				
+				$result = $this->Model_data->getdata($param);
+				// foreach ($result as $key => $value) {
+				// 	if(!file_exists(base_url().$value->img)){
+				// 		$result[$key]->img = base_url().'assets/img/users/default.jpg';
+				// 	}
+					
+				// }
+					if($result){
+						$response = [
+							'status'   => 'sukses',
+							'code'     => '1',
+							'data' 		 => $result
+						];
+					}else{
+						$response = [
+						    'status'   => 'gagal',
+						    'code'     => '0',
+						    'data'     => 'tidak ada data',
+						];
+					}
+
+				header('Content-Type: application/json');
+				echo json_encode($response);
+				exit;
+			}
+		catch (Exception $e)
+		{
+			die($e->getMessage());
+		}
+	}
+
+	public function getdatausers()
+	{
+		try
+		{
+				
+				$post = (object)$this->input->post();
+				$param =  $post->param;
+				
 				$result = $this->Model_sys->getdatausers($param);
 				foreach ($result as $key => $value) {
 					if(!file_exists(base_url().$value->img)){

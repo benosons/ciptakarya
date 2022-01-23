@@ -1,7 +1,22 @@
-$( document ).ready(function() {
+$(function () {
 
   console.log('You are running jQuery version: ' + $.fn.jquery);
+  $('#summernote').summernote({
+    height: 200,   //set editable area's height
+    codemirror: { // codemirror options
+      theme: 'monokai'
+    }
+  });
   $('.select2').select2();
+  $('.select2bs4').select2({
+    theme: 'bootstrap4'
+  })
+
+  //Date picker
+  $('#reservationdate').datetimepicker({
+    format: 'L'
+});
+
   var st = true;
   window.img = '';
   $("input[data-bootstrap-switch]").each(function(){
@@ -12,17 +27,22 @@ $( document ).ready(function() {
       }
     });
   });
-  $('.bootstrap-switch-handle-on').html('Aktif');
+
+  $('#listberita').DataTable();
+  $('#modal-default').on('show.bs.modal', function(){
+  })
+
+  $('.bootstrap-switch-handle-on').html('Ya');
   $('.bootstrap-switch-handle-off').html('Tidak');
 
-  $('#users > a').attr('class','nav-link active');
+  $('#berita > a').attr('class','nav-link active');
 
-  $('#add-users').on('click', function(){
+  $('#add-berita').on('click', function(){
     $('#modal-default').modal({
       show: true
     });
     $('#id').val('');
-    $('.modal-title').html('Tambah User');
+    $('.modal-title').html('Tambah Berita');
     $('#username').attr('disabled', false);
     $('#password').attr('disabled', false);
     $("[name='user-input']").val('');
@@ -48,7 +68,7 @@ $( document ).ready(function() {
   $('#username').keyup(function(){$(this).attr('class', 'form-control')});
   $('#password').keyup(function(){$(this).attr('class', 'form-control')});
 
-  loaddatauser();
+  loaddata();
 
   $( "#btn-view-pass" ).mousedown(function(e) {
       $('#password').prop('type', 'text');
@@ -97,19 +117,19 @@ function loadkota(){
       });
     };
 
-    function loaddatauser(){
+    function loaddata(){
 
         $.ajax({
             type: 'post',
             dataType: 'json',
-            url: 'getdatausers',
+            url: 'getdata',
             data : {
-                    param      : 'muser',
+                    param      : 'berita',
              },
             success: function(result){
               
               if(result.code == 1){
-                    var dt = $('#listuser').DataTable({
+                    var dt = $('#listberita').DataTable({
                       destroy: true,
                       paging: true,
                       lengthChange: false,
@@ -217,7 +237,7 @@ function loadkota(){
 
                         }
                     });
-                  }
+                }
 
             }
         });

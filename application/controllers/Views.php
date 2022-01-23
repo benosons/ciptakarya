@@ -75,6 +75,21 @@ class Views extends CI_Controller {
 			redirect("logout");
 		}
 	}
+
+	public function berita()
+	{
+		if ( $this->logged)
+		{
+			if( $this->role == '10' || $this->role == '20' || $this->role == '30'){
+				$this->content['script'] = $this->data['base_url'].'assets/js/action/admin/menu/berita.js';
+				$this->twig->display('admin/menu/berita.html', $this->content);
+			}else{
+				redirect("/");
+			}
+		}else{
+			redirect("logout");
+		}
+	}
 	
 	public function listusers()
 	{
