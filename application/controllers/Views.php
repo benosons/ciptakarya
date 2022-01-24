@@ -90,6 +90,66 @@ class Views extends CI_Controller {
 			redirect("logout");
 		}
 	}
+
+	public function poster()
+	{
+		if ( $this->logged)
+		{
+			if( $this->role == '10' || $this->role == '20' || $this->role == '30'){
+				$this->content['script'] = $this->data['base_url'].'assets/js/action/admin/menu/poster.js';
+				$this->twig->display('admin/menu/poster.html', $this->content);
+			}else{
+				redirect("/");
+			}
+		}else{
+			redirect("logout");
+		}
+	}
+
+	public function foto()
+	{
+		if ( $this->logged)
+		{
+			if( $this->role == '10' || $this->role == '20' || $this->role == '30'){
+				$this->content['script'] = $this->data['base_url'].'assets/js/action/admin/menu/foto.js';
+				$this->twig->display('admin/menu/foto.html', $this->content);
+			}else{
+				redirect("/");
+			}
+		}else{
+			redirect("logout");
+		}
+	}
+
+	public function video()
+	{
+		if ( $this->logged)
+		{
+			if( $this->role == '10' || $this->role == '20' || $this->role == '30'){
+				$this->content['script'] = $this->data['base_url'].'assets/js/action/admin/menu/video.js';
+				$this->twig->display('admin/menu/video.html', $this->content);
+			}else{
+				redirect("/");
+			}
+		}else{
+			redirect("logout");
+		}
+	}
+
+	public function profile()
+	{
+		if ( $this->logged)
+		{
+			if( $this->role == '10' || $this->role == '20' || $this->role == '30'){
+				$this->content['script'] = $this->data['base_url'].'assets/js/action/admin/menu/profile.js';
+				$this->twig->display('admin/menu/profile.html', $this->content);
+			}else{
+				redirect("/");
+			}
+		}else{
+			redirect("logout");
+		}
+	}
 	
 	public function listusers()
 	{
