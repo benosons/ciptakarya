@@ -60,8 +60,11 @@ $route['users'] = 'views/listusers';
 
 $route['^(logout)(/:any)?$'] = "auth/$0";
 $route['^(register)(/:any)?$'] = "auth/$0";
+$route['^(cekusername)(/:any)?$'] = "auth/$0";
 
 $route['getdata'] = 'jsondata/getdata';
 $route['getdatausers'] = 'jsondata/getdatausers';
 
+$route['^(saveUser)(/:any)?$'] = 'sys/$0';
+$route['^(updateUser)(/:any)?$'] = 'sys/$0';
 $route['^(deleteuser)(/:any)?$'] = 'sys/$0';

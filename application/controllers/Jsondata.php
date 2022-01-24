@@ -125,7 +125,7 @@ class Jsondata extends CI_Controller {
 				
 				$result = $this->Model_sys->getdatausers($param);
 				foreach ($result as $key => $value) {
-					if(!file_exists(base_url().$value->img)){
+					if(!file_exists($value->img)){
 						$result[$key]->img = base_url().'assets/img/users/default.jpg';
 					}
 					

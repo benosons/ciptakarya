@@ -108,21 +108,49 @@
           </div>
 
         
-        <div class="row">
-          
-          <div class="col-md-6">
-            <div class="form-group">
-              <label>Upload Gambar</label>
-              <div class="text-center">
-                  <img id="blah" class="img-fluid" src="assets/img/no-image.png" alt="picture">
-                  <canvas hidden id="myCanvas"/>
-              </div>
-              <div class="custom-file" style="margin-bottom: 10px;margin-top: 10px;">
-                <input type="file" class="custom-file-input" id="foto-user" name="user-input">
-                <label class="custom-file-label" for="foto-user">Pilih foto</label>
+          <div class="row">
+            <div class="col-md-12">
+              <div class="card card-light card-outline">
+                <div class="card-header">
+                  <label class="">Upload Gambar</label>
+                  <div class="card-tools">
+                    <a onclick="addgambar()" class="btn btn-tool">
+                      <i class="fas fa-plus"></i>
+                    </a>
+                  </div>
+                </div>
+                <div class="card-body">
+                  <div class="row" id="gambar-container">
+
+                    <div class="col-md-4">
+                      <div class="card card-light card-outline">
+                        <div class="card-tools">
+                          <a href="#" class="btn btn-tool">
+                            <i class="fas fa-timess"></i>
+                          </a>
+                        </div>
+                        <div class="card-body">
+                          <div class="form-group">
+                            <label></label>
+                            <div class="text-center">
+                                <img id="blah_1" name="images" class="img-fluid" src="assets/img/no-image.png" alt="picture">
+                                <canvas hidden id="myCanvas_1"/>
+                            </div>
+                            <div class="custom-file" style="margin-bottom: 10px;margin-top: 10px;">
+                              <input type="file" class="custom-file-input" id="image_1" name="image_input">
+                              <label class="custom-file-label" for="image_1">Pilih foto</label>
+                            </div>
+                          <input id="caption_1" name="caption" type="text" class="form-control" placeholder="Caption">
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                  </div>
               </div>
             </div>
           </div>
+
           <div class="col-md-12">
             
           </div>
@@ -130,7 +158,7 @@
 
         <div class="row">
 
-          <div class="col-md-8">
+          <div class="col-md-12">
             <div class="form-group">
               <label>Bagian</label>
               <select class="form-control select2bs4" style="width: 100%;">
@@ -144,7 +172,7 @@
               </select>
             </div>
           </div>
-          <div class="col-md-8">
+          <div class="col-md-12">
             <div class="form-group">
               <label>Date:</label>
                 <div class="input-group date" id="reservationdate" data-target-input="nearest">
@@ -155,7 +183,7 @@
                 </div>
           </div>
 
-          <div class="col-md-4">
+          <div class="col-md-12">
             <label>Publikasi</label>
             <div class="form-group">
               <input id="stat" type="checkbox" name="user-input" checked data-bootstrap-switch data-off-color="danger" data-on-color="success" data-on-label="Ready" data-off-label="Not Ready">

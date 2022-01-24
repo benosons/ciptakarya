@@ -15,7 +15,7 @@ $(function () {
   //Date picker
   $('#reservationdate').datetimepicker({
     format: 'L'
-});
+  });
 
   var st = true;
   window.img = '';
@@ -29,6 +29,7 @@ $(function () {
   });
 
   $('#listberita').DataTable();
+  
   $('#modal-default').on('show.bs.modal', function(){
   })
 
@@ -42,13 +43,13 @@ $(function () {
       show: true
     });
     $('#id').val('');
-    $('.modal-title').html('Tambah Berita');
+    $('.modal-title').html('<i class="fas fa-newspaper"></i> Tambah Berita');
     $('#username').attr('disabled', false);
     $('#password').attr('disabled', false);
     $("[name='user-input']").val('');
     // $("#kota-kab").select2('data', {}).trigger('change');
     $('#kota-kab').val(0).trigger('change');
-    $('#blah').attr('src', 'assets/img/users/default.jpg');
+    $('#blah').attr('src', 'assets/img/no-image.png');
     $('label[for="foto-user"]').text('Pilih Foto');
   });
 
@@ -80,7 +81,7 @@ $(function () {
       $('#btn-view-pass > i').attr('class','far fa-eye');
   });
 
-  $("#foto-user").change(function() {
+  $("[name='image_input']").on('change',function() {
     readURL(this);
   });
 
@@ -360,9 +361,9 @@ function deleteData(id)
 function readURL(input) {
   if (input.files && input.files[0]) {
     var reader = new FileReader();
-
+    var blah = input.id.replace("image", "blah");
     reader.onload = function(e) {
-      $('#blah').attr('src', e.target.result);
+      $('#'+blah).attr('src', e.target.result);
       window.img = e.target.result;
     }
     reader.readAsDataURL(input.files[0]); // convert to base64 string
@@ -410,3 +411,38 @@ function cekusername(uname){
         }
       });
     };
+
+
+    function addgambar(){
+      var count = $("#gambar-container").children().length + 1;
+
+      var elemen = `<div class="col-md-4">
+      <div class="card card-light card-outline">
+        <div class="card-tools">
+          <a onclick="$(this).parent().parent().parent().remove()" class="btn btn-tool">
+            <i class="fas fa-times"></i>
+          </a>
+        </div>
+        <div class="card-body">
+          <div class="form-group">
+            <label></label>
+            <div class="text-center">
+                <img id="blah_`+count+`" name="images" class="img-fluid" src="assets/img/no-image.png" alt="picture">
+                <canvas hidden id="myCanvas_`+count+`"/>
+            </div>
+            <div class="custom-file" style="margin-bottom: 10px;margin-top: 10px;">
+              <input type="file" class="custom-file-input" id="image_`+count+`" name="image_input" onChange="pilihgambar(this)">
+              <label class="custom-file-label" for="image_`+count+`">Pilih foto</label>
+            </div>
+          <input id="caption_`+count+`" name="caption" type="text" class="form-control" placeholder="Caption">
+          </div>
+        </div>
+      </div>
+    </div>`;
+    $("#gambar-container").append(elemen);
+      
+    }
+
+    function pilihgambar(ini){
+      readURL(ini);
+    }

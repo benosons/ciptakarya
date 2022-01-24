@@ -2,8 +2,8 @@
 class Model_sys extends CI_Model {
 
     var $table = 'muser';
-    var $column = array('username','kategori','kotaKab'); //set column field database for datatable searchable just firstname , lastname , address are searchable
-    var $column_search = array('username','kategori','kotaKab');
+    var $column = array('username','kategori'); //set column field database for datatable searchable just firstname , lastname , address are searchable
+    var $column_search = array('username','kategori');
     var $order = array('id' => 'desc'); // default order
 
     function __construct(){
@@ -78,13 +78,6 @@ class Model_sys extends CI_Model {
         return $this->db->count_all_results();
     }
 
-    public function kotaKab()
-    {
-        $query = $this->db->query("select * from kabupaten_kota order by nama asc")->result();
-        return $query;
-    }
-
-
     public function save($params = NULL)
     {
         $valid = false;
@@ -92,14 +85,13 @@ class Model_sys extends CI_Model {
         $this->db->set("name", $params->name);
         $this->db->set("username", $params->username);
         $this->db->set("password", md5($params->password));
-        $this->db->set("kotaKab", $params->kotaKab);
         $this->db->set("kategori", 'admin');
         $this->db->set("created_by", $this->session->userdata('username'));
         $this->db->set("created_at", date("Y-m-d H:i:s"));
         $this->db->set("role", $params->role);
         $this->db->set("islogin", 0);
         $this->db->set("status", $params->status);
-        $this->db->set("foto", $params->foto);
+        $this->db->set("img", $params->foto);
         $valid = $this->db->insert('muser');
 
         return $valid;
@@ -111,7 +103,6 @@ class Model_sys extends CI_Model {
         $valid = true;
         $this->db->set("username", $params->username_regis);
         $this->db->set("password", md5($params->password_regis));
-        $this->db->set("kotaKab", $params->kota_kab_regis);
         $this->db->set("kategori", 'user');
         $this->db->set("created_by", '');
         $this->db->set("created_at", date("Y-m-d H:i:s"));
@@ -139,13 +130,12 @@ class Model_sys extends CI_Model {
         // }
         $this->db->set("username", $params->username);
         $this->db->set("name", $params->name);
-        $this->db->set("kotaKab", $params->kotaKab);
         $this->db->set("updated_by", $this->session->userdata('username'));
         $this->db->set("updated_at", date("Y-m-d H:i:s"));
         $this->db->set("role", $params->role);
         $this->db->set("status", $params->status);
         if($params->foto){
-          $this->db->set("foto", $params->foto);
+          $this->db->set("img", $params->foto);
         }
         $this->db->where('id', $params->id);
         $valid = $this->db->update('muser');
@@ -159,16 +149,6 @@ class Model_sys extends CI_Model {
         // $idx = $this->db->escape_str($id);
         $this->db->where('id', $id->id);
         $this->db->delete('muser');
-    }
-
-    public function loadkota($param)
-    {
-        $nama = $this->session->userdata('id');
-        $kategori = $this->session->userdata('kategori');
-        $id = $this->db->escape_str($nama);
-        $query = $this->db->query("select * from kabupaten_kota order by id desc")->result();
-
-        return $query;
     }
 
     public function hitungAll()
@@ -257,7 +237,7 @@ class Model_sys extends CI_Model {
         $this->db->set("created_by", $this->session->userdata('username'));
         $this->db->set("created_date", date("Y-m-d H:i:s"));
         $this->db->set("status", $params->status);
-        $this->db->set("foto", $params->foto);
+        $this->db->set("img", $params->foto);
         $valid = $this->db->insert('banner');
 
         return $valid;
@@ -275,7 +255,7 @@ class Model_sys extends CI_Model {
         $this->db->set("status", $params->status);
         if($params->foto){
 
-          $this->db->set("foto", $params->foto);
+          $this->db->set("img", $params->foto);
         }
         $this->db->where('id', $params->id);
         $valid = $this->db->update('banner');
@@ -297,7 +277,6 @@ class Model_sys extends CI_Model {
 
         $this->db->set("username", $params->username);
         $this->db->set("name", $params->name);
-        $this->db->set("kotaKab", $params->kotaKab);
         $this->db->set("updated_by", $this->session->userdata('username'));
         $this->db->set("updated_at", date("Y-m-d H:i:s"));
         $this->db->set("no_telp", $params->no_telp);

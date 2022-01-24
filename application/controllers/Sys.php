@@ -137,7 +137,7 @@ class Sys extends CI_Controller {
 		// remove the part that we don't need from the provided image and decode it
 		$data = base64_decode(preg_replace('#^data:image/\w+;base64,#i', '', $params->img));
 
-		$filepath = "assets/dokumen/gambar/user/".$params->username.".png"; // or image.jpg
+		$filepath = "assets/img/users/".$params->username.".png"; // or image.jpg
 		chmod($filepath,0777);
 		file_put_contents($filepath,$data);
 		$params->foto = $filepath;
@@ -154,7 +154,7 @@ class Sys extends CI_Controller {
 		// remove the part that we don't need from the provided image and decode it
 		if($params->img){
 			$data = base64_decode(preg_replace('#^data:image/\w+;base64,#i', '', $params->img));
-			$filepath = "assets/dokumen/gambar/user/".$params->username.".png"; // or image.jpg
+			$filepath = "assets/img/users/".$params->username.".png"; // or image.jpg
 			chmod($filepath,0777);
 			file_put_contents($filepath,$data);
 			$params->foto = $filepath;
