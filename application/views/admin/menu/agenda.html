@@ -1,0 +1,262 @@
+{% extends "admin/layout.html" %} {% block content %}
+
+<section class="content-header">
+  <div class="container-fluid">
+    <div class="row mb-2">
+      <div class="col-sm-6">
+        <h1><i class="nav-icon fas fa-newspaper"></i> Berita </h1>
+      </div>
+      <div class="col-sm-6">
+        <ol class="breadcrumb float-sm-right">
+          <li class="breadcrumb-item"><a href="#">Berita</a></li>
+          <li class="breadcrumb-item active">List Berita</li>
+        </ol>
+      </div>
+    </div>
+  </div><!-- /.container-fluid -->
+</section>
+
+<!-- Main content -->
+<section class="content">
+
+  <!-- Default box -->
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-12">
+        <div class="card card-navy card-outline">
+          <div class="card-header">
+            <h3 class="card-title"></h3>
+
+            <div class="card-tools">
+              <div class="input-group input-group-sm">
+                  <div class="btn btn-info" id="add-berita">
+                    <i class="fas fa-plus"></i><span> Tambah Berita</span>
+                  </div>
+              </div>
+            </div>
+          </div>
+          <div class="card-body">
+            <input id="param" value="User" hidden>
+            <table class="table table-bordered table-hover" id="listberita">
+                <thead>
+                    <tr>
+                        <th>
+                            No
+                        </th>
+                        <th>
+                            Gambar
+                        </th>
+                        <th>
+                            Judul
+                        </th>
+                        <th>
+                            Info
+                        </th>
+                        <th>
+                            Dit
+                        </th>
+                        <th>
+                            action
+                        </th>
+                    </tr>
+                </thead>
+            </table>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<div class="modal fade" id="modal-default">
+  <div class="modal-dialog modal-lg card card-danger card-outline">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Detail</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <input id="id" hidden>
+          <div class="row">
+            <div class="col-md-12">
+              <div class="form-group">
+                <label>Judul Berita</label>
+                <input id="" name="berita-input" type="text" class="form-control" placeholder="Judul Berita ...">
+              </div>
+            </div>
+            <div class="col-md-12">
+              <div class="form-group">
+                <label>Intro Berita</label>
+                <textarea id="" name="berita-input" type="text" class="form-control" placeholder="..."></textarea>
+              </div>
+            </div>
+            <div class="col-md-12">
+              <div class="form-group">
+                <label>Tag</label>
+                <input id="" name="berita-input" type="text" class="form-control" placeholder="...">
+              </div>
+            </div>
+            <div class="col-md-12">
+              <div class="form-group">
+                <label>Isi</label>
+                <textarea id="summernote">
+                  
+                </textarea>
+              </div>
+            </div>
+          </div>
+
+        
+          <div class="row">
+            <div class="col-md-12">
+              <div class="card card-light card-outline">
+                <div class="card-header">
+                  <label class="">Upload Gambar</label>
+                  <div class="card-tools">
+                    <a onclick="addgambar()" class="btn btn-tool">
+                      <i class="fas fa-plus"></i>
+                    </a>
+                  </div>
+                </div>
+                <div class="card-body">
+                  <div class="row" id="gambar-container">
+
+                    <div class="col-md-4">
+                      <div class="card card-light card-outline">
+                        <div class="card-tools">
+                          <a href="#" class="btn btn-tool">
+                            <i class="fas fa-timess"></i>
+                          </a>
+                        </div>
+                        <div class="card-body">
+                          <div class="form-group">
+                            <label></label>
+                            <div class="text-center">
+                                <img id="blah_1" name="images" class="img-fluid" src="assets/img/no-image.png" alt="picture">
+                                <canvas hidden id="myCanvas_1"/>
+                            </div>
+                            <div class="custom-file" style="margin-bottom: 10px;margin-top: 10px;">
+                              <input type="file" class="custom-file-input" id="image_1" name="image_input">
+                              <label class="custom-file-label" for="image_1">Pilih foto</label>
+                            </div>
+                          <input id="caption_1" name="caption" type="text" class="form-control" placeholder="Caption">
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                  </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-12">
+            
+          </div>
+        </div>
+
+        <div class="row">
+
+          <div class="col-md-12">
+            <div class="form-group">
+              <label>Bagian</label>
+              <select class="form-control select2bs4" style="width: 100%;">
+                <option selected="selected">Alabama</option>
+                <option>Alaska</option>
+                <option>California</option>
+                <option>Delaware</option>
+                <option>Tennessee</option>
+                <option>Texas</option>
+                <option>Washington</option>
+              </select>
+            </div>
+          </div>
+          <div class="col-md-12">
+            <div class="form-group">
+              <label>Date:</label>
+                <div class="input-group date" id="reservationdate" data-target-input="nearest">
+                    <input type="text" class="form-control datetimepicker-input" data-target="#reservationdate"/>
+                    <div class="input-group-append" data-target="#reservationdate" data-toggle="datetimepicker">
+                        <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                    </div>
+                </div>
+          </div>
+
+          <div class="col-md-12">
+            <label>Publikasi</label>
+            <div class="form-group">
+              <input id="stat" type="checkbox" name="user-input" checked data-bootstrap-switch data-off-color="danger" data-on-color="success" data-on-label="Ready" data-off-label="Not Ready">
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+      <div class="modal-footer">
+        <!-- <button type="button" class="btn btn-primary">Tutup</button> -->
+        <button id="save-user" type="button" class="btn btn-success" ><i class="fas fa-check"> </i> Simpan</button>
+      </div>
+    </div>
+    <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+</div>
+
+<!-- modal detail user -->
+<div class="modal fade" id="modal-detail">
+  <div class="modal-dialog modal-sm card card-danger card-outline">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Detail</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+          <div class="card-body box-profile">
+            <div class="text-center">
+              <img id="detail-foto" class="profile-user-img img-fluid img-circle" src="assets/img/users/default.jpg" alt="User profile picture">
+            </div>
+
+            <h3 class="profile-username text-center" id="detail-name">Nina Mcintire</h3>
+
+            <p class="text-muted text-center" id="detail-username">Software Engineer</p>
+
+            <ul class="list-group list-group-unbordered mb-3">
+              <li class="list-group-item">
+                <b>Status</b> <a class="float-right" id="detail-status">543</a>
+              </li>
+              <li class="list-group-item">
+                <b>Jenis User</b> <a class="float-right" id="detail-role">13,287</a>
+              </li>
+            </ul>
+
+            <!-- <a href="#" class="btn btn-primary btn-block"><b>Follow</b></a> -->
+          </div>
+          <!-- /.card-body -->
+      </div>
+      <div class="modal-footer">
+        <!-- <button type="button" class="btn btn-primary">Tutup</button> -->
+        <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fas fa-times"> </i> Tutup</button>
+      </div>
+    </div>
+    <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+</div>
+<!-- /.card -->
+
+</section>
+
+<!-- /.content -->
+
+
+{% endblock %}
+{% block js %}
+<script>
+$(function () {
+  bsCustomFileInput.init();
+});
+</script>
+{% endblock %}

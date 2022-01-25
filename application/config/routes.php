@@ -57,7 +57,7 @@ $route['^(login)(/:any)?$'] = "views/$0";
 $route['^(dashboard)(/:any)?$'] = "views/$0";
 $route['^(berita)(/:any)?$'] = "views/$0";
 $route['^(poster|foto|video)(/:any)?$'] = "views/$0";
-$route['^(profile)(/:any)?$'] = "views/$0";
+$route['^(profile|infobalai|kontak|banner|runningtext|bukuprofile|infografis|agenda|produklaporan)(/:any)?$'] = "views/$0";
 $route['users'] = 'views/listusers';
 
 $route['^(logout)(/:any)?$'] = "auth/$0";

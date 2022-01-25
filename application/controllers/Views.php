@@ -150,6 +150,127 @@ class Views extends CI_Controller {
 			redirect("logout");
 		}
 	}
+
+	public function infobalai()
+	{
+		if ( $this->logged)
+		{
+			if( $this->role == '10' || $this->role == '20' || $this->role == '30'){
+				$this->content['script'] = $this->data['base_url'].'assets/js/action/admin/menu/infobalai.js';
+				$this->twig->display('admin/menu/infobalai.html', $this->content);
+			}else{
+				redirect("/");
+			}
+		}else{
+			redirect("logout");
+		}
+	}
+
+	public function kontak()
+	{
+		if ( $this->logged)
+		{
+			if( $this->role == '10' || $this->role == '20' || $this->role == '30'){
+				$this->content['script'] = $this->data['base_url'].'assets/js/action/admin/menu/kontak.js';
+				$this->twig->display('admin/menu/kontak.html', $this->content);
+			}else{
+				redirect("/");
+			}
+		}else{
+			redirect("logout");
+		}
+	}
+
+	public function banner()
+	{
+		if ( $this->logged)
+		{
+			if( $this->role == '10' || $this->role == '20' || $this->role == '30'){
+				$this->content['script'] = $this->data['base_url'].'assets/js/action/admin/menu/banner.js';
+				$this->twig->display('admin/menu/banner.html', $this->content);
+			}else{
+				redirect("/");
+			}
+		}else{
+			redirect("logout");
+		}
+	}
+
+	public function runningtext()
+	{
+		if ( $this->logged)
+		{
+			if( $this->role == '10' || $this->role == '20' || $this->role == '30'){
+				$this->content['script'] = $this->data['base_url'].'assets/js/action/admin/menu/runningtext.js';
+				$this->twig->display('admin/menu/runningtext.html', $this->content);
+			}else{
+				redirect("/");
+			}
+		}else{
+			redirect("logout");
+		}
+	}
+
+	public function bukuprofile()
+	{
+		if ( $this->logged)
+		{
+			if( $this->role == '10' || $this->role == '20' || $this->role == '30'){
+				$this->content['script'] = $this->data['base_url'].'assets/js/action/admin/menu/bukuprofile.js';
+				$this->twig->display('admin/menu/bukuprofile.html', $this->content);
+			}else{
+				redirect("/");
+			}
+		}else{
+			redirect("logout");
+		}
+	}
+
+	public function infografis()
+	{
+		if ( $this->logged)
+		{
+			if( $this->role == '10' || $this->role == '20' || $this->role == '30'){
+				$this->content['script'] = $this->data['base_url'].'assets/js/action/admin/menu/infografis.js';
+				$this->twig->display('admin/menu/infografis.html', $this->content);
+			}else{
+				redirect("/");
+			}
+		}else{
+			redirect("logout");
+		}
+	}
+	
+
+	public function agenda()
+	{
+		if ( $this->logged)
+		{
+			if( $this->role == '10' || $this->role == '20' || $this->role == '30'){
+				$this->content['script'] = $this->data['base_url'].'assets/js/action/admin/menu/agenda.js';
+				$this->twig->display('admin/menu/agenda.html', $this->content);
+			}else{
+				redirect("/");
+			}
+		}else{
+			redirect("logout");
+		}
+	}
+
+	public function produklaporan()
+	{
+		if ( $this->logged)
+		{
+			if( $this->role == '10' || $this->role == '20' || $this->role == '30'){
+				$this->content['script'] = $this->data['base_url'].'assets/js/action/admin/menu/produklaporan.js';
+				$this->twig->display('admin/menu/produklaporan.html', $this->content);
+			}else{
+				redirect("/");
+			}
+		}else{
+			redirect("logout");
+		}
+	}
 	
 	public function listusers()
 	{

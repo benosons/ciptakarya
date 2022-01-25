@@ -1,7 +1,7 @@
 $(function () {
 
   console.log('You are running jQuery version: ' + $.fn.jquery);
-  $('.summernote').summernote({
+  $('#summernote').summernote({
     height: 200,   //set editable area's height
     codemirror: { // codemirror options
       theme: 'monokai'
@@ -38,8 +38,8 @@ $(function () {
 
   $('#info > a').attr('class','nav-link active');
   $('#info').attr('class','nav-item menu-is-opening menu-open');
-  $('#infobalai > a').attr('class','nav-link active');
-  $('#infobalai > a > i').addClass('text-info');
+  $('#banner > a').attr('class','nav-link active');
+  $('#banner > a > i').addClass('text-info');
 
   $('#add-foto').on('click', function(){
     $('#modal-default').modal({

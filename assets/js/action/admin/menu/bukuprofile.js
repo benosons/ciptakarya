@@ -1,7 +1,7 @@
 $(function () {
 
   console.log('You are running jQuery version: ' + $.fn.jquery);
-  $('.summernote').summernote({
+  $('#summernote').summernote({
     height: 200,   //set editable area's height
     codemirror: { // codemirror options
       theme: 'monokai'
@@ -28,7 +28,7 @@ $(function () {
     });
   });
 
-  $('#listfoto').DataTable();
+  $('#listberita').DataTable();
   
   $('#modal-default').on('show.bs.modal', function(){
   })
@@ -38,15 +38,15 @@ $(function () {
 
   $('#info > a').attr('class','nav-link active');
   $('#info').attr('class','nav-item menu-is-opening menu-open');
-  $('#infobalai > a').attr('class','nav-link active');
-  $('#infobalai > a > i').addClass('text-info');
+  $('#bukuprofile > a').attr('class','nav-link active');
+  $('#bukuprofile > a > i').addClass('text-info');
 
-  $('#add-foto').on('click', function(){
+  $('#add-berita').on('click', function(){
     $('#modal-default').modal({
       show: true
     });
     $('#id').val('');
-    $('.modal-title').html('<i class="fas fa-photo-video"></i> Tambah Foto');
+    $('.modal-title').html('<i class="fas fa-newspaper"></i> Tambah Berita');
     $('#username').attr('disabled', false);
     $('#password').attr('disabled', false);
     $("[name='user-input']").val('');
