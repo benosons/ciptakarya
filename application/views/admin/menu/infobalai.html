@@ -1,0 +1,116 @@
+{% extends "admin/layout.html" %} {% block content %}
+
+<section class="content-header">
+  <div class="container-fluid">
+    <div class="row mb-2">
+      <div class="col-sm-6">
+        <h1><i class="nav-icon fas fa-info-circle"></i> Profile </h1>
+      </div>
+      <div class="col-sm-6">
+        <ol class="breadcrumb float-sm-right">
+          <li class="breadcrumb-item"><a href="#">Info</a></li>
+          <li class="breadcrumb-item active">Profile</li>
+        </ol>
+      </div>
+    </div>
+  </div><!-- /.container-fluid -->
+</section>
+
+<!-- Main content -->
+<section class="content">
+
+  <!-- Default box -->
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-12">
+        <div class="card card-navy card-outline">
+          <div class="card-body">
+            <input id="param" value="" hidden>
+            <div class="row">
+              <div class="col-sm-12">
+                <div class="form-group">
+                  <label>Tugas dan Fungsi</label>
+                  <textarea class="summernote">
+                    
+                  </textarea>
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-sm-12">
+                <div class="form-group">
+                  <label>Visi</label>
+                  <textarea class="summernote">
+                  </textarea>
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-sm-12">
+                <div class="form-group">
+                  <label>Profile</label>
+                  <textarea class="summernote">
+                  </textarea>
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-sm-12">
+                <div class="form-group">
+                  <label>Alamat Balai</label>
+                  <textarea id="" name="berita-input" type="text" class="form-control" placeholder="..."></textarea>
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-sm-6">
+                <div class="card card-light card-outline">
+                  <div class="card-header">
+                    <label class="">Bagan Organisasi</label>
+                  </div>
+                  <div class="card-body">
+                    <div class="form-group">
+                      <label></label>
+                      <div class="text-center">
+                          <img id="blah_1" name="images" class="img-fluid" src="assets/img/no-image.png" alt="picture">
+                          <canvas hidden id="myCanvas_1"/>
+                      </div>
+                      <div class="custom-file" style="margin-bottom: 10px;margin-top: 10px;">
+                        <input type="file" class="custom-file-input" id="image_1" name="image_input">
+                        <label class="custom-file-label" for="image_1">Pilih foto</label>
+                      </div>
+                    </div>
+                </div>
+                </div>
+              </div>
+
+              <div class="col-sm-6">
+                <label>Publikasi</label>
+                <div class="form-group">
+                  <input id="stat" type="checkbox" name="user-input" checked data-bootstrap-switch data-off-color="danger" data-on-color="success" data-on-label="Ready" data-off-label="Not Ready">
+                </div>
+              </div>
+            </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+</section>
+
+<!-- /.content -->
+
+
+{% endblock %}
+{% block js %}
+<script>
+$(function () {
+  bsCustomFileInput.init();
+});
+</script>
+{% endblock %}
