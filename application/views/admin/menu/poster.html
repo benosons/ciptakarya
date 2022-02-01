@@ -1,5 +1,9 @@
 {% extends "admin/layout.html" %} {% block content %}
-
+<style>
+  .custom-file-label::after {
+    width: 100%;
+  }
+</style>
 <section class="content-header">
   <div class="container-fluid">
     <div class="row mb-2">
@@ -80,34 +84,35 @@
             <div class="col-md-12">
               <div class="form-group">
                 <label>Judul</label>
-                <input id="" name="berita-input" type="text" class="form-control" placeholder="Judul Berita ...">
+                <input id="judul" name="poster-input" type="text" class="form-control" placeholder="Judul Poster ...">
               </div>
             </div>
             <div class="col-md-12">
               <div class="form-group">
                 <label>Bulan</label>
-                <select class="form-control select2bs4" style="width: 100%;">
-                  <option selected="selected">Alabama</option>
-                  <option>Alaska</option>
-                  <option>California</option>
-                  <option>Delaware</option>
-                  <option>Tennessee</option>
-                  <option>Texas</option>
-                  <option>Washington</option>
+                <select class="form-control select2bs4" id="bulan" style="width: 100%;">
+                  <option value="0">-Pilih-</option>
+                  <option value="1">Januari</option>
+                  <option value="2">Februari</option>
+                  <option value="3">Maret</option>
+                  <option value="4">April</option>
+                  <option value="5">Mei</option>
+                  <option value="6">Juni</option>
+                  <option value="7">Juli</option>
+                  <option value="8">Agustus</option>
+                  <option value="9">September</option>
+                  <option value="10">Oktober</option>
+                  <option value="11">November</option>
+                  <option value="12">Desember</option>
                 </select>
               </div>
             </div>
             <div class="col-md-12">
               <div class="form-group">
                 <label>Tahun</label>
-                <select class="form-control select2bs4" style="width: 100%;">
-                  <option selected="selected">Alabama</option>
-                  <option>Alaska</option>
-                  <option>California</option>
-                  <option>Delaware</option>
-                  <option>Tennessee</option>
-                  <option>Texas</option>
-                  <option>Washington</option>
+                <select class="form-control select2bs4" style="width: 100%;" id="tahun">
+                  <option value="0">-Pilih-</option>
+                  <option>2022</option>
                 </select>
               </div>
             </div>
@@ -138,11 +143,11 @@
                           <div class="form-group">
                             <label></label>
                             <div class="text-center">
-                                <img id="blah_1" name="images" class="img-fluid" src="assets/img/no-image.png" alt="picture">
+                                <img id="blah_1" name="images_poster" class="img-fluid" src="assets/img/no-image.png" alt="picture">
                                 <canvas hidden id="myCanvas_1"/>
                             </div>
                             <div class="custom-file" style="margin-bottom: 10px;margin-top: 10px;">
-                              <input type="file" class="custom-file-input" id="image_1" name="image_input">
+                              <input type="file" class="custom-file-input" id="image_1" name="image_input" style="display: none;">
                               <label class="custom-file-label" for="image_1">Pilih foto</label>
                             </div>
                           <input id="caption_1" name="caption" type="text" class="form-control" placeholder="Caption">
@@ -171,7 +176,7 @@
       </div>
       <div class="modal-footer">
         <!-- <button type="button" class="btn btn-primary">Tutup</button> -->
-        <button id="save-user" type="button" class="btn btn-success" ><i class="fas fa-check"> </i> Simpan</button>
+        <button id="save-poster" type="button" class="btn btn-success" ><i class="fas fa-check"> </i> Simpan</button>
       </div>
     </div>
     <!-- /.modal-content -->

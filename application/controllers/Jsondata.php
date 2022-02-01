@@ -83,14 +83,19 @@ class Jsondata extends CI_Controller {
 				
 				$post = (object)$this->input->post();
 				$param =  $post->param;
+				$type =  $post->type;
 				
 				$result = $this->Model_data->getdata($param);
-				// foreach ($result as $key => $value) {
-				// 	if(!file_exists(base_url().$value->img)){
-				// 		$result[$key]->img = base_url().'assets/img/users/default.jpg';
-				// 	}
+				foreach ($result as $key => $value) {
+					$files = $this->Model_data->getfile($value->id, $type);
+					if(!empty($files)){
+						$result[$key]->files = $files;
+					}
+					// if(!file_exists(base_url().$value->img)){
+					// 	$result[$key]->img = base_url().'assets/img/users/default.jpg';
+					// }
 					
-				// }
+				}
 					if($result){
 						$response = [
 							'status'   => 'sukses',
@@ -379,6 +384,148 @@ class Jsondata extends CI_Controller {
 			header('Content-Type: application/json');
 			echo json_encode(array("status" => FALSE));
 		}
+
+	}
+
+	public function savedataposter(){
+		try
+		{
+
+			$params = (object)$this->input->post();
+			$id = $params->id;
+
+			$params->create_by	 = $this->session->userdata('id');
+			$params->update_by	 = $this->session->userdata('id');
+			$params->create_date = date("Y-m-d H:i:s");
+			$params->update_date = date("Y-m-d H:i:s");
+			
+			$id = $this->Model_data->createdata('data_poster', $params);
+			
+			if($id){
+				if(!empty($_FILES)){
+					$files = $_FILES['files'];
+					$count = count($_FILES['files']['name']);
+					$public		= FCPATH.'public';
+					$tipe		= './assets/upload/galeri/poster';
+					$date 		= date('Y/m/d');
+				
+					for ($i=0; $i < $count; $i++) { 
+
+						$name = $files['name'][$i];
+						$file = $files['tmp_name'][$i];
+						$type = $files['type'][$i];
+						$size = $files['size'][$i];
+						$size = $files['size'][$i];
+						$caption = $params->caption[$i];
+
+						$path = $tipe.'/'.$date;
+						if (!is_dir($path)) {
+							mkdir($path, 0777, TRUE);
+						}
+						move_uploaded_file($file, $path.'/'.$name);
+
+						$data_file = [
+								'id_parent' => $id,
+								'type' => 'poster',
+								'path' => $path,
+								'size' => $size,
+								'extension' => $type,
+								'filename' => $name,
+								'caption' => $caption,
+								'create_date' => date("Y-m-d H:i:s"),
+								'update_date' => date("Y-m-d H:i:s")
+							];
+							$this->Model_data->createdata('data_file', $data_file);
+						}
+				}
+			}
+
+			$response = [
+				'status'   => 'sukses',
+				'code'     => '0',
+				'data' 	   => 'terkirim'
+		];
+		header('Content-Type: application/json');
+		echo json_encode($response);
+		exit;
+
+		}
+		catch (\Exception $e)
+		{
+			die($e->getMessage());
+		}
+		
+
+	}
+
+	public function savedatafoto(){
+		try
+		{
+
+			$params = (object)$this->input->post();
+			$id = $params->id;
+
+			$params->create_by	 = $this->session->userdata('id');
+			$params->update_by	 = $this->session->userdata('id');
+			$params->create_date = date("Y-m-d H:i:s");
+			$params->update_date = date("Y-m-d H:i:s");
+			
+			$id = $this->Model_data->createdata('data_foto', $params);
+			
+			if($id){
+				if(!empty($_FILES)){
+					$files = $_FILES['files'];
+					$count = count($_FILES['files']['name']);
+					$public		= FCPATH.'public';
+					$tipe		= './assets/upload/galeri/foto';
+					$date 		= date('Y/m/d');
+				
+					for ($i=0; $i < $count; $i++) { 
+
+						$name = $files['name'][$i];
+						$file = $files['tmp_name'][$i];
+						$type = $files['type'][$i];
+						$size = $files['size'][$i];
+						$size = $files['size'][$i];
+						$caption = $params->caption[$i];
+
+						$path = $tipe.'/'.$date;
+						if (!is_dir($path)) {
+							mkdir($path, 0777, TRUE);
+						}
+						move_uploaded_file($file, $path.'/'.$name);
+
+						$data_file = [
+								'id_parent' => $id,
+								'type' => 'foto',
+								'path' => $path,
+								'size' => $size,
+								'extension' => $type,
+								'filename' => $name,
+								'caption' => $caption,
+								'create_date' => date("Y-m-d H:i:s"),
+								'update_date' => date("Y-m-d H:i:s")
+							];
+							$this->Model_data->createdata('data_file', $data_file);
+						}
+				}
+			}
+
+			$response = [
+				'status'   => 'sukses',
+				'code'     => '0',
+				'data' 	   => 'terkirim'
+		];
+		header('Content-Type: application/json');
+		echo json_encode($response);
+		exit;
+
+		}
+		catch (\Exception $e)
+		{
+			die($e->getMessage());
+		}
+		
 
 	}
 
