@@ -165,7 +165,7 @@
 
 .jsgrid-button:hover {
     opacity: .5;
-    transition: opacity 200ms linear;
+    transition: height 200ms linear;
 }
 
 .jsgrid .jsgrid-button {

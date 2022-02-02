@@ -22,6 +22,7 @@ class Views extends CI_Controller {
 	public function __construct()
 	{
 		parent::__construct();
+		$this->output->disable_cache();
 		$this->load->model('Model_auth');
 		$this->logs = $this->session->all_userdata();
 		$this->logged = $this->session->userdata('userLogged');
