@@ -66,7 +66,7 @@ $route['^(cekusername)(/:any)?$'] = "auth/$0";
 
 $route['getdata'] = 'jsondata/getdata';
 $route['getdatausers'] = 'jsondata/getdatausers';
-$route['^(savedataposter|savedatafoto)(/:any)?$'] = "jsondata/$0";
+$route['^(savedataberita|savedataprofile|savedataposter|savedatafoto)(/:any)?$'] = "jsondata/$0";
 
 $route['^(saveUser)(/:any)?$'] = 'sys/$0';
 $route['^(updateUser)(/:any)?$'] = 'sys/$0';

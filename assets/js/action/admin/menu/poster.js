@@ -161,17 +161,16 @@ $(function () {
                                         $rowData += `
                                         <div class="btn-group">
                                         <button type="button" class="btn btn-info">Action</button>
-                                        <button type="button" class="btn btn-info dropdown-toggle dropdown-icon" data-toggle="dropdown" aria-expanded="true">
+                                        <button type="button" class="btn btn-info dropdown-toggle dropdown-icon" data-toggle="dropdown">
                                           <span class="sr-only">Toggle Dropdown</span>
                                         </button>
-                                        <div class="dropdown-menu" role="menu" x-placement="top-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(68px, -165px, 0px);">
+                                        <div class="dropdown-menu" role="menu">
                                           <a class="dropdown-item" href="#"><i class="far fa-edit"></i> Edit</a>
                                           <a class="dropdown-item" href="#"><i class="far fa-trash-alt"></i> Hapus</a>
                                           <div class="dropdown-divider"></div>
                                           <a class="dropdown-item" href="#"><i class="fas fa-sign-out-alt"></i> Tidak Tayang</a>
                                         </div>
-                                      </div>
-                                                    `;
+                                      </div>`;
 
                                     return $rowData;
                                 },
@@ -274,7 +273,7 @@ $(function () {
               // loaddatauser();
             }
           });
-        };
+    };
 
 function edituser(id, username, password, status, role, name, foto){
   $('#add-users').trigger('click');

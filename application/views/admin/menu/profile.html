@@ -26,11 +26,12 @@
         <div class="card card-navy card-outline">
           <div class="card-body">
             <input id="param" value="" hidden>
+            <input id="idnya" value="" hidden>
             <div class="row">
               <div class="col-sm-12">
                 <div class="form-group">
                   <label>Tugas dan Fungsi</label>
-                  <textarea class="summernote">
+                  <textarea class="summernote" id="tusi">
                     
                   </textarea>
                 </div>
@@ -41,7 +42,7 @@
               <div class="col-sm-12">
                 <div class="form-group">
                   <label>Visi</label>
-                  <textarea class="summernote">
+                  <textarea class="summernote" id="visi">
                   </textarea>
                 </div>
               </div>
@@ -51,7 +52,7 @@
               <div class="col-sm-12">
                 <div class="form-group">
                   <label>Profile</label>
-                  <textarea class="summernote">
+                  <textarea class="summernote" id="profilenya">
                   </textarea>
                 </div>
               </div>
@@ -61,7 +62,7 @@
               <div class="col-sm-12">
                 <div class="form-group">
                   <label>Alamat Balai</label>
-                  <textarea id="" name="berita-input" type="text" class="form-control" placeholder="..."></textarea>
+                  <textarea id="alamat" name="profile-input" type="text" class="form-control" placeholder="..."></textarea>
                 </div>
               </div>
             </div>
@@ -93,6 +94,13 @@
                 <div class="form-group">
                   <input id="stat" type="checkbox" name="user-input" checked data-bootstrap-switch data-off-color="danger" data-on-color="success" data-on-label="Ready" data-off-label="Not Ready">
                 </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-sm-12 ">
+                <div class="pull-right" style="float: right;">
+                <button id="save-profile" type="button" class="btn btn-success " ><i class="fas fa-check"> </i> Simpan</button>
+              </div>
               </div>
             </div>
       </div>

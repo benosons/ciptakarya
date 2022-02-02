@@ -28,7 +28,6 @@ $(function () {
     });
   });
 
-  $('#listfoto').DataTable();
   
   $('#modal-default').on('show.bs.modal', function(){
   })
@@ -41,211 +40,107 @@ $(function () {
   $('#profile > a').attr('class','nav-link active');
   $('#profile > a > i').addClass('text-info');
 
-  $('#add-foto').on('click', function(){
-    $('#modal-default').modal({
-      show: true
-    });
-    $('#id').val('');
-    $('.modal-title').html('<i class="fas fa-photo-video"></i> Tambah Foto');
-    $('#username').attr('disabled', false);
-    $('#password').attr('disabled', false);
-    $("[name='user-input']").val('');
-    // $("#kota-kab").select2('data', {}).trigger('change');
-    $('#kota-kab').val(0).trigger('change');
-    $('#blah').attr('src', 'assets/img/no-image.png');
-    $('label[for="foto-user"]').text('Pilih Foto');
+  $('#save-profile').on('click', function(){
+    
+    savedata(st);
   });
-
-  $('#save-user').on('click', function(){
-    if(!$('#name').val()){
-      $('#name').attr('class', 'form-control is-invalid');
-    }else if(!$('#username').val()){
-      $('#username').attr('class', 'form-control is-invalid');
-    }else if(!$('#password').val()){
-      $('#password').attr('class', 'form-control is-invalid');
-    }else{
-      saveUser(st);
-    }
-  });
-
-  $('#name').keyup(function(){$(this).attr('class', 'form-control')});
-  $('#username').keyup(function(){$(this).attr('class', 'form-control')});
-  $('#password').keyup(function(){$(this).attr('class', 'form-control')});
 
   loaddata();
-
-  $( "#btn-view-pass" ).mousedown(function(e) {
-      $('#password').prop('type', 'text');
-      $('#btn-view-pass > i').attr('class','far fa-eye-slash');
-  });
-
-  $( "#btn-view-pass" ).mouseup(function(e) {
-      $('#password').prop('type', 'password');
-      $('#btn-view-pass > i').attr('class','far fa-eye');
-  });
 
   $("[name='image_input']").on('change',function() {
     readURL(this);
   });
 
-  $('#username').keyup(function(){
-    $('#username').attr('class', 'form-control');
-    $('#warning').attr('style', 'color: #f9b2b2;display:none;');
-    $('#lbl-unm').attr('style', 'display:block;');
-
-    $('#save-user').attr('disabled', false);
-
-    if($(this).val().length >= 4){
-      cekusername($(this).val());
-    }
-  });
-
 });
 
-function loadkota(){
+function savedata(st){
+  var img = window.img;
+  var id = $('#id').val();
+  var tusi = $('#tusi').val();
+  var visi = $('#visi').val();
+  var profile = $('#profilenya').val();
+  var alamat = $('#alamat').val();
+
+  var formData = new FormData();
+  formData.append('id', id);
+  formData.append('tusi', tusi);
+  formData.append('visi', visi);
+  formData.append('profile', profile);
+  formData.append('alamat', alamat);
+
+  var iscapt = [];
+  for (let index = 0; index < $("[name='image_input']").length; index++) {
+    var src = $("[name='image_input']")[index].files[0];    
+    formData.append('files[]', src);
+  }
+  
+  var stat;
+    switch (st) {
+      case false:
+          stat = '0';
+        break;
+      default:
+          stat = '1'
+    }
+
+    if(id){
+      var baseurl = 'updateUser';
+      var msg = 'Update User';
+
+    }else{
+      var baseurl = 'savedataprofile';
+      var msg = 'Tambah Profile';
+    }
+
     $.ajax({
-        type: 'post',
-        dataType: 'json',
-        url: 'loadkota',
-        data : {
-                param      : '',
-         },
+      type: 'post',
+      url: baseurl,
+      dataType: 'json',
+      cache: false,
+      contentType: false,
+      processData: false,
+      data: formData,
+      async:false,
         success: function(result){
-          $('#kota-kab').empty();
-          var option ='<option value="0">-Pilih-</option>';
-          for (var i = 0; i < result.length; i++) {
-            option += '<option value="'+result[i].id+'">'+result[i].nama+'</option>';
-          }
-          $('#kota-kab').append(option);
+          Swal.fire({
+            title: 'Sukses!',
+            text: msg,
+            icon: 'success',
+            showConfirmButton: false,
+            timer: 1500
+          });
+
+          $('#modal-default').modal('hide');
+          // loaddatauser();
         }
       });
-    };
+};
 
-    function loaddata(){
+function loaddata(){
 
-        $.ajax({
-            type: 'post',
-            dataType: 'json',
-            url: 'getdata',
-            data : {
-                    param      : 'berita',
-             },
-            success: function(result){
-              
-              if(result.code == 1){
-                    var dt = $('#listberita').DataTable({
-                      destroy: true,
-                      paging: true,
-                      lengthChange: false,
-                      searching: true,
-                      ordering: true,
-                      info: true,
-                      autoWidth: false,
-                      responsive: false,
-                      pageLength: 10,
-                      aaData: result.data,
-                        aoColumns: [
-                            { 'mDataProp': 'id'},
-                            { 'mDataProp': 'img'},
-                            { 'mDataProp': 'username'},
-                            { 'mDataProp': 'role_desc'},
-                            { 'mDataProp': 'status'},
-                            { 'mDataProp': 'islogin'},
-                            { 'mDataProp': 'id'},
-                            // { 'mDataProp': 'role'},
-                        ],
-                        order: [[0, 'ASC']],
-                        aoColumnDefs:[
-                          // {
-                          //   targets: [7],
-                          //   visible: false
-                          // },
-                            {
-                                mRender: function (data, type, row){
-                                    var $rowData = '';
-                                        $rowData += `
-                                                  <div class="row">
-                                                    <div class="col-md-4">
-                                                      <button onclick="modaldetail('`+row.id+`','`+row.username+`','`+row.role_desc+`','`+row.status+`','`+row.name+`','`+row.img+`')" type="button" class="btn btn-block btn-success btn-xs"><i class="far fa-eye"></i></button>
-                                                    </div>
-                                                    <div class="col-md-4">
-                                                      <button onclick="edituser('`+row.id+`','`+row.username+`','`+row.password+`','`+row.status+`','`+row.role+`','`+row.name+`','`+row.img+`')" type="button" class="btn btn-block btn-warning btn-xs"><i class="far fa-edit"></i></button>
-                                                    </div>
-                                                    <div class="col-md-4">
-                                                      <button onclick="deleteData(`+row.id+`)" type="button" class="btn btn-block btn-danger btn-xs"><i class="fas fa-trash-alt"></i></button>
-                                                    </div>
-                                                  </div>
-                                                    `;
+  $.ajax({
+      type: 'post',
+      dataType: 'json',
+      url: 'getdata',
+      data : {
+              param       : 'data_profile',
+              type        : 'profile',
+       },
+      success: function(result){
+        
+        if(result.code == 1){
+          $('#idnya').val(result['data'][0].id);
+          $('#tusi').summernote("code",result['data'][0].tusi);
+          $('#visi').summernote("code",result['data'][0].visi);
+          $('#profilenya').summernote("code",result['data'][0].profile);
+          $('#alamat').val(result['data'][0].alamat);
+          var file = result['data'][0].files[0];
+          $('#blah_1').attr('src',file.path+'/'+file.filename);
+          }
 
-                                    return $rowData;
-                                },
-                                aTargets: [6]
-                            },
-                            {
-                                mRender: function (data, type, row){
-                                  var $rowData = '';
-                                  if(row.islogin == 1){
-                                        $rowData +=`<span class="badge badge-success right">Online</span>`;
-                                      }else{
-                                        $rowData +=`<span class="badge badge-default right">Offline</span>`;
-                                      }
-
-                                    return $rowData;
-                                },
-                                aTargets: [5]
-                            },
-                            {
-                                mRender: function (data, type, row){
-                                  var $rowData = '';
-                                  if(row.status == 1){
-                                        $rowData +=`<span class="badge badge-primary right">Aktif</span>`;
-                                      }else{
-                                        $rowData +=`<span class="badge badge-warning right">Non Aktif</span>`;
-                                      }
-
-                                    return $rowData;
-                                },
-                                aTargets: [4]
-                            },
-                            {
-                                mRender: function (data, type, row){
-                                  var $rowData = '<img src="'+row.img+'" style="width: 35px;"></img>';
-                                    return $rowData;
-                                },
-                                aTargets: [1]
-                            }
-                        ],
-
-                        fnRowCallback: function(nRow, aData, iDisplayIndex, iDisplayIndexFull){
-                            var index = iDisplayIndexFull + 1;
-                            $('td:eq(0)', nRow).html(' '+index);
-                            return  ;
-                        },
-
-                        fnInitComplete: function () {
-                            var that = this;
-                            var td ;
-                            var tr ;
-
-                            this.$('td').click( function () {
-                                td = this;
-                            });
-                            this.$('tr').click( function () {
-                                tr = this;
-                            });
-
-
-                            $('#listproj_filter input').bind('keyup', function (e) {
-                                return this.value;
-                            });
-
-                        }
-                    });
-                }
-
-            }
-        });
-    }
+      }
+  });
+}
 
     function saveUser(st){
       var img = window.img;

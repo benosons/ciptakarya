@@ -1,12 +1,13 @@
 $(function () {
 
   console.log('You are running jQuery version: ' + $.fn.jquery);
-  $('#summernote').summernote({
+  $('[name="summernote"]').summernote({
     height: 200,   //set editable area's height
     codemirror: { // codemirror options
       theme: 'monokai'
     }
   });
+
   $('.select2').select2();
   $('.select2bs4').select2({
     theme: 'bootstrap4'
@@ -44,208 +45,212 @@ $(function () {
     });
     $('#id').val('');
     $('.modal-title').html('<i class="fas fa-newspaper"></i> Tambah Berita');
-    $('#username').attr('disabled', false);
-    $('#password').attr('disabled', false);
-    $("[name='user-input']").val('');
-    // $("#kota-kab").select2('data', {}).trigger('change');
-    $('#kota-kab').val(0).trigger('change');
     $('#blah').attr('src', 'assets/img/no-image.png');
-    $('label[for="foto-user"]').text('Pilih Foto');
   });
 
-  $('#save-user').on('click', function(){
-    if(!$('#name').val()){
-      $('#name').attr('class', 'form-control is-invalid');
-    }else if(!$('#username').val()){
-      $('#username').attr('class', 'form-control is-invalid');
-    }else if(!$('#password').val()){
-      $('#password').attr('class', 'form-control is-invalid');
-    }else{
-      saveUser(st);
-    }
+  $('#save-berita').on('click', function(){
+    
+    savedata(st);
   });
-
-  $('#name').keyup(function(){$(this).attr('class', 'form-control')});
-  $('#username').keyup(function(){$(this).attr('class', 'form-control')});
-  $('#password').keyup(function(){$(this).attr('class', 'form-control')});
 
   loaddata();
-
-  $( "#btn-view-pass" ).mousedown(function(e) {
-      $('#password').prop('type', 'text');
-      $('#btn-view-pass > i').attr('class','far fa-eye-slash');
-  });
-
-  $( "#btn-view-pass" ).mouseup(function(e) {
-      $('#password').prop('type', 'password');
-      $('#btn-view-pass > i').attr('class','far fa-eye');
-  });
 
   $("[name='image_input']").on('change',function() {
     readURL(this);
   });
 
-  $('#username').keyup(function(){
-    $('#username').attr('class', 'form-control');
-    $('#warning').attr('style', 'color: #f9b2b2;display:none;');
-    $('#lbl-unm').attr('style', 'display:block;');
-
-    $('#save-user').attr('disabled', false);
-
-    if($(this).val().length >= 4){
-      cekusername($(this).val());
-    }
-  });
-
 });
 
-function loadkota(){
-    $.ajax({
-        type: 'post',
-        dataType: 'json',
-        url: 'loadkota',
-        data : {
-                param      : '',
-         },
-        success: function(result){
-          $('#kota-kab').empty();
-          var option ='<option value="0">-Pilih-</option>';
-          for (var i = 0; i < result.length; i++) {
-            option += '<option value="'+result[i].id+'">'+result[i].nama+'</option>';
+function loaddata(){
+
+  $.ajax({
+      type: 'post',
+      dataType: 'json',
+      url: 'getdata',
+      data : {
+              param       : 'data_berita',
+              type        : 'berita',
+       },
+      success: function(result){
+        
+        if(result.code == 1){
+              var dt = $('#listberita').DataTable({
+                destroy: true,
+                paging: true,
+                lengthChange: false,
+                searching: true,
+                ordering: true,
+                info: true,
+                autoWidth: false,
+                responsive: false,
+                pageLength: 10,
+                aaData: result.data,
+                  aoColumns: [
+                      { 'mDataProp': 'id'},
+                      { 'mDataProp': 'id'},
+                      { 'mDataProp': 'judul'},
+                      { 'mDataProp': 'bulan'},
+                      { 'mDataProp': 'bagian'},
+                      { 'mDataProp': 'id'},
+                  ],
+                  order: [[0, 'ASC']],
+                  aoColumnDefs:[
+                      {
+                          mRender: function (data, type, row){
+                              var $rowData = '';
+                              for( var key in row.files ) {
+                                $rowData += `
+                                  <div class="card">
+                                    <img id="" name="" class="img-fluid" src="`+row.files[key].path+'/'+row.files[key].filename+`" alt="">
+                                  </div>
+                                  `;
+                              }
+                              
+                              return $rowData;
+                          },
+                          aTargets: [1]
+                      },
+                      {
+                          mRender: function (data, type, row){
+                            var mydate = new Date(row.date);
+                            var date = ("0" + mydate.getDate()).slice(-2);
+                            var month = ("0" + (mydate.getMonth() + 1)).slice(-2);
+                            var year = mydate.getFullYear();
+                            var str = date+'/'+month+'/'+year;
+
+                            var $rowData = '';
+                                  $rowData += `<div class="card">
+                                  <div class="card-body">
+                                  
+                                    <div class="d-flex justify-content-between">
+                                      <p class="text-primary text-sm">
+                                        <i class="far fa-calendar-alt"></i>
+                                      </p>
+                                      <p class="d-flex flex-column">
+                                        <span class="text-muted"> `+str+`</span>
+                                      </p>
+                                    </div>
+                                    <!-- /.d-flex ->
+                                    <div class="d-flex justify-content-between">
+                                      <p class="text-inf text-sm">
+                                        <i class="far fa-calendar-alt"></i>
+                                      </p>
+                                      <p class="d-flex flex-column">
+                                        <span class="text-muted">Tahun </span>
+                                      </p>
+                                    </div>
+                                    <!- /.d-flex -->
+                                    <div class="d-flex justify-content-between">
+                                      <p class="text-success text-sm">
+                                        <i class="fas fa-sign-in-alt"></i>
+                                      </p>
+                                      <p class="d-flex flex-column ">
+                                        <span class="text-muted">Tayang</span>
+                                      </p>
+                                    </div>
+                                    <!-- /.d-flex -->
+                                  </div>
+                                </div>`;
+
+                              return $rowData;
+                          },
+                          aTargets: [3]
+                      },
+                      {
+                          mRender: function (data, type, row){
+                              var bag = ['0','SETDITJEN','TIDUR','BPB','PKP','PPLP','PSPAM','PSP-POP'];
+                              var $rowData = '';
+                                  $rowData += bag[row.bagian];
+
+                              return $rowData;
+                          },
+                          aTargets: [4]
+                      },
+                      {
+                          mRender: function (data, type, row){
+                              var $rowData = '';
+                                  $rowData += `
+                                  <div class="btn-group">
+                                  <button type="button" class="btn btn-info">Action</button>
+                                  <button type="button" class="btn btn-info dropdown-toggle dropdown-icon" data-toggle="dropdown">
+                                    <span class="sr-only">Toggle Dropdown</span>
+                                  </button>
+                                  <div class="dropdown-menu" role="menu">
+                                    <a class="dropdown-item" href="#"><i class="far fa-edit"></i> Edit</a>
+                                    <a class="dropdown-item" href="#"><i class="far fa-trash-alt"></i> Hapus</a>
+                                    <div class="dropdown-divider"></div>
+                                    <a class="dropdown-item" href="#"><i class="fas fa-sign-out-alt"></i> Tidak Tayang</a>
+                                  </div>
+                                </div>`;
+
+                              return $rowData;
+                          },
+                          aTargets: [5]
+                      }
+                  ],
+
+                  fnRowCallback: function(nRow, aData, iDisplayIndex, iDisplayIndexFull){
+                      var index = iDisplayIndexFull + 1;
+                      $('td:eq(0)', nRow).html(' '+index);
+                      return  ;
+                  },
+
+                  fnInitComplete: function () {
+                      var that = this;
+                      var td ;
+                      var tr ;
+
+                      this.$('td').click( function () {
+                          td = this;
+                      });
+                      this.$('tr').click( function () {
+                          tr = this;
+                      });
+
+
+                      $('#listproj_filter input').bind('keyup', function (e) {
+                          return this.value;
+                      });
+
+                  }
+              });
           }
-          $('#kota-kab').append(option);
-        }
-      });
-    };
 
-    function loaddata(){
+      }
+  });
+}
 
-        $.ajax({
-            type: 'post',
-            dataType: 'json',
-            url: 'getdata',
-            data : {
-                    param      : 'berita',
-             },
-            success: function(result){
-              
-              if(result.code == 1){
-                    var dt = $('#listberita').DataTable({
-                      destroy: true,
-                      paging: true,
-                      lengthChange: false,
-                      searching: true,
-                      ordering: true,
-                      info: true,
-                      autoWidth: false,
-                      responsive: false,
-                      pageLength: 10,
-                      aaData: result.data,
-                        aoColumns: [
-                            { 'mDataProp': 'id'},
-                            { 'mDataProp': 'img'},
-                            { 'mDataProp': 'username'},
-                            { 'mDataProp': 'role_desc'},
-                            { 'mDataProp': 'status'},
-                            { 'mDataProp': 'islogin'},
-                            { 'mDataProp': 'id'},
-                            // { 'mDataProp': 'role'},
-                        ],
-                        order: [[0, 'ASC']],
-                        aoColumnDefs:[
-                          // {
-                          //   targets: [7],
-                          //   visible: false
-                          // },
-                            {
-                                mRender: function (data, type, row){
-                                    var $rowData = '';
-                                        $rowData += `
-                                                  <div class="row">
-                                                    <div class="col-md-4">
-                                                      <button onclick="modaldetail('`+row.id+`','`+row.username+`','`+row.role_desc+`','`+row.status+`','`+row.name+`','`+row.img+`')" type="button" class="btn btn-block btn-success btn-xs"><i class="far fa-eye"></i></button>
-                                                    </div>
-                                                    <div class="col-md-4">
-                                                      <button onclick="edituser('`+row.id+`','`+row.username+`','`+row.password+`','`+row.status+`','`+row.role+`','`+row.name+`','`+row.img+`')" type="button" class="btn btn-block btn-warning btn-xs"><i class="far fa-edit"></i></button>
-                                                    </div>
-                                                    <div class="col-md-4">
-                                                      <button onclick="deleteData(`+row.id+`)" type="button" class="btn btn-block btn-danger btn-xs"><i class="fas fa-trash-alt"></i></button>
-                                                    </div>
-                                                  </div>
-                                                    `;
-
-                                    return $rowData;
-                                },
-                                aTargets: [6]
-                            },
-                            {
-                                mRender: function (data, type, row){
-                                  var $rowData = '';
-                                  if(row.islogin == 1){
-                                        $rowData +=`<span class="badge badge-success right">Online</span>`;
-                                      }else{
-                                        $rowData +=`<span class="badge badge-default right">Offline</span>`;
-                                      }
-
-                                    return $rowData;
-                                },
-                                aTargets: [5]
-                            },
-                            {
-                                mRender: function (data, type, row){
-                                  var $rowData = '';
-                                  if(row.status == 1){
-                                        $rowData +=`<span class="badge badge-primary right">Aktif</span>`;
-                                      }else{
-                                        $rowData +=`<span class="badge badge-warning right">Non Aktif</span>`;
-                                      }
-
-                                    return $rowData;
-                                },
-                                aTargets: [4]
-                            },
-                            {
-                                mRender: function (data, type, row){
-                                  var $rowData = '<img src="'+row.img+'" style="width: 35px;"></img>';
-                                    return $rowData;
-                                },
-                                aTargets: [1]
-                            }
-                        ],
-
-                        fnRowCallback: function(nRow, aData, iDisplayIndex, iDisplayIndexFull){
-                            var index = iDisplayIndexFull + 1;
-                            $('td:eq(0)', nRow).html(' '+index);
-                            return  ;
-                        },
-
-                        fnInitComplete: function () {
-                            var that = this;
-                            var td ;
-                            var tr ;
-
-                            this.$('td').click( function () {
-                                td = this;
-                            });
-                            this.$('tr').click( function () {
-                                tr = this;
-                            });
-
-
-                            $('#listproj_filter input').bind('keyup', function (e) {
-                                return this.value;
-                            });
-
-                        }
-                    });
-                }
-
-            }
-        });
-    }
-
-    function saveUser(st){
+    function savedata(st){
       var img = window.img;
+      var id = $('#id').val();
+
+      var judul = $('#judul').val();
+      var intro = $('#intro').val();
+      var tag = $('#tag').val();
+      var isi = $('#isi').val();
+      var bagian = $('#bagian').val();
+      var date = $('#reservationdate').val();
+      var stat = $('#stat').val();
+
+      var formData = new FormData();
+      formData.append('id', id);
+      formData.append('judul', judul);
+      formData.append('intro', intro);
+      formData.append('tag', tag);
+      formData.append('isi', isi);
+      formData.append('bagian', bagian);
+      formData.append('date', date);
+      formData.append('stat', stat);
+
+      var iscapt = [];
+      for (let index = 0; index < $("[name='image_input']").length; index++) {
+        var src = $("[name='image_input']")[index].files[0];
+        var cap = $("[name='caption']")[index].value;
+        
+        formData.append('files[]', src);
+        formData.append('caption[]', cap);
+      }
+      
       var stat;
         switch (st) {
           case false:
@@ -255,29 +260,24 @@ function loadkota(){
               stat = '1'
         }
 
-        if($('#id').val()){
+        if(id){
           var baseurl = 'updateUser';
           var msg = 'Update User';
 
         }else{
-          var baseurl = 'saveUser';
-          var msg = 'Tambah User';
+          var baseurl = 'savedataberita';
+          var msg = 'Tambah Berita';
         }
 
         $.ajax({
-            type: 'post',
-            dataType: 'json',
-            url: baseurl,
-            data : {
-                    id            : $('#id').val(),
-                    name          : $('#name').val(),
-                    username      : $('#username').val(),
-                    password      : $('#password').val(),
-                    status        : stat,
-                    kotaKab       : $("#kota-kab option:selected").val(),
-                    role          : $("input[name='role']:checked").val(),
-                    img           : img,
-             },
+          type: 'post',
+          url: baseurl,
+          dataType: 'json',
+          cache: false,
+          contentType: false,
+          processData: false,
+          data: formData,
+          async:false,
             success: function(result){
               Swal.fire({
                 title: 'Sukses!',
@@ -288,10 +288,10 @@ function loadkota(){
               });
 
               $('#modal-default').modal('hide');
-              loaddatauser();
+              // loaddatauser();
             }
           });
-        };
+    };
 
 function edituser(id, username, password, status, role, name, foto){
   $('#add-users').trigger('click');
@@ -390,27 +390,6 @@ function modaldetail(id,username,role,status,name,foto){
     $('#detail-status').html(stt);
     $('#detail-role').text(role);
 }
-
-function cekusername(uname){
-    $.ajax({
-        type: 'post',
-        dataType: 'json',
-        url: 'cekusername',
-        data : {
-                username      : uname,
-         },
-        success: function(result){
-            console.log(result);
-            if(result){
-              $('#username').attr('class', 'form-control is-invalid');
-              $('#warning').attr('style', 'color: #f9b2b2;display:block;');
-              $('#lbl-unm').attr('style', 'display:none;');
-              $('#save-user').attr('disabled', true);
-
-            }
-        }
-      });
-    };
 
 
     function addgambar(){

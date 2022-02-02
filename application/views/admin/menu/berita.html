@@ -1,5 +1,9 @@
 {% extends "admin/layout.html" %} {% block content %}
-
+<style>
+  .custom-file-label::after {
+    width: 100%;
+  }
+</style>
 <section class="content-header">
   <div class="container-fluid">
     <div class="row mb-2">
@@ -82,25 +86,25 @@
             <div class="col-md-12">
               <div class="form-group">
                 <label>Judul Berita</label>
-                <input id="" name="berita-input" type="text" class="form-control" placeholder="Judul Berita ...">
+                <input id="judul" name="berita-input" type="text" class="form-control" placeholder="Judul Berita ...">
               </div>
             </div>
             <div class="col-md-12">
               <div class="form-group">
                 <label>Intro Berita</label>
-                <textarea id="" name="berita-input" type="text" class="form-control" placeholder="..."></textarea>
+                <textarea id="intro" name="berita-input" type="text" class="form-control" placeholder="..."></textarea>
               </div>
             </div>
             <div class="col-md-12">
               <div class="form-group">
                 <label>Tag</label>
-                <input id="" name="berita-input" type="text" class="form-control" placeholder="...">
+                <input id="tag" name="berita-input" type="text" class="form-control" placeholder="...">
               </div>
             </div>
             <div class="col-md-12">
               <div class="form-group">
                 <label>Isi</label>
-                <textarea id="summernote">
+                <textarea name="summernote" id="isi">
                   
                 </textarea>
               </div>
@@ -137,7 +141,7 @@
                                 <canvas hidden id="myCanvas_1"/>
                             </div>
                             <div class="custom-file" style="margin-bottom: 10px;margin-top: 10px;">
-                              <input type="file" class="custom-file-input" id="image_1" name="image_input">
+                              <input type="file" class="custom-file-input" id="image_1" name="image_input" style="display: none;">
                               <label class="custom-file-label" for="image_1">Pilih foto</label>
                             </div>
                           <input id="caption_1" name="caption" type="text" class="form-control" placeholder="Caption">
@@ -161,14 +165,16 @@
           <div class="col-md-12">
             <div class="form-group">
               <label>Bagian</label>
-              <select class="form-control select2bs4" style="width: 100%;">
-                <option selected="selected">Alabama</option>
-                <option>Alaska</option>
-                <option>California</option>
-                <option>Delaware</option>
-                <option>Tennessee</option>
-                <option>Texas</option>
-                <option>Washington</option>
+              <select id="bagian" class="form-control select2bs4" style="width: 100%;">
+                <option value="0">-Pilih-</option>
+                <option value="1">SETDITJEN</option>
+                <option value="2">TIDUR</option>
+                <option value="3">BPB</option>
+                <option value="4">PKP</option>
+                <option value="5">PPLP</option>
+                <option value="6">PSPAM</option>
+                <option value="7">PSP-POP</option>
+
               </select>
             </div>
           </div>
@@ -195,7 +201,7 @@
       </div>
       <div class="modal-footer">
         <!-- <button type="button" class="btn btn-primary">Tutup</button> -->
-        <button id="save-user" type="button" class="btn btn-success" ><i class="fas fa-check"> </i> Simpan</button>
+        <button id="save-berita" type="button" class="btn btn-success" ><i class="fas fa-check"> </i> Simpan</button>
       </div>
     </div>
     <!-- /.modal-content -->

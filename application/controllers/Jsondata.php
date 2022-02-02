@@ -387,6 +387,148 @@ class Jsondata extends CI_Controller {
 
 	}
 
+	public function savedataberita(){
+		try
+		{
+
+			$params = (object)$this->input->post();
+			$id = $params->id;
+
+			$params->create_by	 = $this->session->userdata('id');
+			$params->update_by	 = $this->session->userdata('id');
+			$params->create_date = date("Y-m-d H:i:s");
+			$params->update_date = date("Y-m-d H:i:s");
+			
+			$id = $this->Model_data->createdata('data_berita', $params);
+			
+			if($id){
+				if(!empty($_FILES)){
+					$files = $_FILES['files'];
+					$count = count($_FILES['files']['name']);
+					$public		= FCPATH.'public';
+					$tipe		= './assets/upload/berita';
+					$date 		= date('Y/m/d');
+				
+					for ($i=0; $i < $count; $i++) { 
+
+						$name = $files['name'][$i];
+						$file = $files['tmp_name'][$i];
+						$type = $files['type'][$i];
+						$size = $files['size'][$i];
+						$size = $files['size'][$i];
+						$caption = $params->caption[$i];
+
+						$path = $tipe.'/'.$date;
+						if (!is_dir($path)) {
+							mkdir($path, 0777, TRUE);
+						}
+						move_uploaded_file($file, $path.'/'.$name);
+
+						$data_file = [
+								'id_parent' => $id,
+								'type' => 'berita',
+								'path' => $path,
+								'size' => $size,
+								'extension' => $type,
+								'filename' => $name,
+								'caption' => $caption,
+								'create_date' => date("Y-m-d H:i:s"),
+								'update_date' => date("Y-m-d H:i:s")
+							];
+							$this->Model_data->createdata('data_file', $data_file);
+						}
+				}
+			}
+
+			$response = [
+				'status'   => 'sukses',
+				'code'     => '0',
+				'data' 	   => 'terkirim'
+		];
+		header('Content-Type: application/json');
+		echo json_encode($response);
+		exit;
+
+		}
+		catch (\Exception $e)
+		{
+			die($e->getMessage());
+		}
+		
+
+	}
+
+	public function savedataprofile(){
+		try
+		{
+
+			$params = (object)$this->input->post();
+			$id = $params->id;
+
+			$params->create_by	 = $this->session->userdata('id');
+			$params->update_by	 = $this->session->userdata('id');
+			$params->create_date = date("Y-m-d H:i:s");
+			$params->update_date = date("Y-m-d H:i:s");
+			
+			$id = $this->Model_data->createdata('data_profile', $params);
+			
+			if($id){
+				if(!empty($_FILES)){
+					$files = $_FILES['files'];
+					$count = count($_FILES['files']['name']);
+					$public		= FCPATH.'public';
+					$tipe		= './assets/upload/profile';
+					$date 		= date('Y/m/d');
+				
+					for ($i=0; $i < $count; $i++) { 
+
+						$name = $files['name'][$i];
+						$file = $files['tmp_name'][$i];
+						$type = $files['type'][$i];
+						$size = $files['size'][$i];
+						$size = $files['size'][$i];
+						$caption = $params->caption[$i];
+
+						$path = $tipe.'/'.$date;
+						if (!is_dir($path)) {
+							mkdir($path, 0777, TRUE);
+						}
+						move_uploaded_file($file, $path.'/'.$name);
+
+						$data_file = [
+								'id_parent' => $id,
+								'type' => 'profile',
+								'path' => $path,
+								'size' => $size,
+								'extension' => $type,
+								'filename' => $name,
+								'caption' => $caption,
+								'create_date' => date("Y-m-d H:i:s"),
+								'update_date' => date("Y-m-d H:i:s")
+							];
+							$this->Model_data->createdata('data_file', $data_file);
+						}
+				}
+			}
+
+			$response = [
+				'status'   => 'sukses',
+				'code'     => '0',
+				'data' 	   => 'terkirim'
+		];
+		header('Content-Type: application/json');
+		echo json_encode($response);
+		exit;
+
+		}
+		catch (\Exception $e)
+		{
+			die($e->getMessage());
+		}
+		
+
+	}
+
 	public function savedataposter(){
 		try
 		{
