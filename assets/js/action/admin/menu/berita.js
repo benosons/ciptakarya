@@ -97,14 +97,26 @@ function loaddata(){
                   aoColumnDefs:[
                       {
                           mRender: function (data, type, row){
-                              var $rowData = '';
+                              var $rowData = '<div class="row">';
+                              var col = 12;
+                              
+                              if (row.files.length == 2) {
+                                col = 6;
+                              }else if (row.files.length > 2){
+                                col = 4;
+                              }
+                              
                               for( var key in row.files ) {
                                 $rowData += `
+                                <div class="col-sm-`+col+`">
                                   <div class="card">
                                     <img id="" name="" class="img-fluid" src="`+row.files[key].path+'/'+row.files[key].filename+`" alt="">
                                   </div>
+                                </div>
                                   `;
                               }
+
+                              $rowData += '</div>';
                               
                               return $rowData;
                           },

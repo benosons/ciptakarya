@@ -104,7 +104,7 @@ $(function () {
                                     var $rowData = '';
                                     for( var key in row.files ) {
                                       $rowData += `
-                                        <div class="card">
+                                        <div class="card" style="width:50%">
                                           <img id="" name="" class="img-fluid" src="`+row.files[key].path+'/'+row.files[key].filename+`" alt="">
                                         </div>
                                         `;
@@ -227,10 +227,8 @@ $(function () {
       var iscapt = [];
       for (let index = 0; index < $("[name='image_input']").length; index++) {
         var src = $("[name='image_input']")[index].files[0];
-        var cap = $("[name='caption']")[index].value;
         
         formData.append('files[]', src);
-        formData.append('caption[]', cap);
       }
       
       var stat;
@@ -395,7 +393,6 @@ function modaldetail(id,username,role,status,name,foto){
               <input type="file" class="custom-file-input" id="image_`+count+`" name="image_input" onChange="pilihgambar(this)">
               <label class="custom-file-label" for="image_`+count+`">Pilih foto</label>
             </div>
-          <input id="caption_`+count+`" name="caption" type="text" class="form-control" placeholder="Caption">
           </div>
         </div>
       </div>

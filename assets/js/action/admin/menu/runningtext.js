@@ -13,9 +13,7 @@ $(function () {
   })
 
   //Date picker
-  $('#reservationdate').datetimepicker({
-    format: 'L'
-  });
+  $('#reservation').daterangepicker()
 
   var st = true;
   window.img = '';
@@ -46,26 +44,14 @@ $(function () {
       show: true
     });
     $('#id').val('');
-    $('.modal-title').html('<i class="fas fa-photo-video"></i> Tambah Foto');
-    $('#username').attr('disabled', false);
-    $('#password').attr('disabled', false);
-    $("[name='user-input']").val('');
-    // $("#kota-kab").select2('data', {}).trigger('change');
-    $('#kota-kab').val(0).trigger('change');
-    $('#blah').attr('src', 'assets/img/no-image.png');
-    $('label[for="foto-user"]').text('Pilih Foto');
+    $('.modal-title').html('<i class="fas fa-info-circle"></i> Tambah Running Text');
+
   });
 
-  $('#save-user').on('click', function(){
-    if(!$('#name').val()){
-      $('#name').attr('class', 'form-control is-invalid');
-    }else if(!$('#username').val()){
-      $('#username').attr('class', 'form-control is-invalid');
-    }else if(!$('#password').val()){
-      $('#password').attr('class', 'form-control is-invalid');
-    }else{
-      saveUser(st);
-    }
+  $('#save-text').on('click', function(){
+    
+      savetext(st);
+
   });
 
   $('#name').keyup(function(){$(this).attr('class', 'form-control')});
@@ -128,12 +114,12 @@ function loadkota(){
             dataType: 'json',
             url: 'getdata',
             data : {
-                    param      : 'berita',
+                    param      : 'data_text',
              },
             success: function(result){
               
               if(result.code == 1){
-                    var dt = $('#listberita').DataTable({
+                    var dt = $('#listtext').DataTable({
                       destroy: true,
                       paging: true,
                       lengthChange: false,
@@ -146,74 +132,93 @@ function loadkota(){
                       aaData: result.data,
                         aoColumns: [
                             { 'mDataProp': 'id'},
-                            { 'mDataProp': 'img'},
-                            { 'mDataProp': 'username'},
-                            { 'mDataProp': 'role_desc'},
-                            { 'mDataProp': 'status'},
-                            { 'mDataProp': 'islogin'},
+                            { 'mDataProp': 'judul'},
+                            { 'mDataProp': 'isi'},
+                            { 'mDataProp': 'isi', 'width':'15%'},
                             { 'mDataProp': 'id'},
                             // { 'mDataProp': 'role'},
                         ],
                         order: [[0, 'ASC']],
                         aoColumnDefs:[
-                          // {
-                          //   targets: [7],
-                          //   visible: false
-                          // },
-                            {
-                                mRender: function (data, type, row){
-                                    var $rowData = '';
-                                        $rowData += `
-                                                  <div class="row">
-                                                    <div class="col-md-4">
-                                                      <button onclick="modaldetail('`+row.id+`','`+row.username+`','`+row.role_desc+`','`+row.status+`','`+row.name+`','`+row.img+`')" type="button" class="btn btn-block btn-success btn-xs"><i class="far fa-eye"></i></button>
-                                                    </div>
-                                                    <div class="col-md-4">
-                                                      <button onclick="edituser('`+row.id+`','`+row.username+`','`+row.password+`','`+row.status+`','`+row.role+`','`+row.name+`','`+row.img+`')" type="button" class="btn btn-block btn-warning btn-xs"><i class="far fa-edit"></i></button>
-                                                    </div>
-                                                    <div class="col-md-4">
-                                                      <button onclick="deleteData(`+row.id+`)" type="button" class="btn btn-block btn-danger btn-xs"><i class="fas fa-trash-alt"></i></button>
-                                                    </div>
-                                                  </div>
-                                                    `;
+                          {
+                            mRender: function (data, type, row){
 
-                                    return $rowData;
-                                },
-                                aTargets: [6]
-                            },
-                            {
-                                mRender: function (data, type, row){
-                                  var $rowData = '';
-                                  if(row.islogin == 1){
-                                        $rowData +=`<span class="badge badge-success right">Online</span>`;
-                                      }else{
-                                        $rowData +=`<span class="badge badge-default right">Offline</span>`;
-                                      }
+                              var split_date = row.date.split(" - ");
+                              
+                              var mydate_1 = new Date(split_date[0]);
+                              var mydate_2 = new Date(split_date[1]);
 
-                                    return $rowData;
-                                },
-                                aTargets: [5]
-                            },
-                            {
-                                mRender: function (data, type, row){
-                                  var $rowData = '';
-                                  if(row.status == 1){
-                                        $rowData +=`<span class="badge badge-primary right">Aktif</span>`;
-                                      }else{
-                                        $rowData +=`<span class="badge badge-warning right">Non Aktif</span>`;
-                                      }
+                              var date_1 = ("0" + mydate_1.getDate()).slice(-2);
+                              var month_1 = ("0" + (mydate_1.getMonth() + 1)).slice(-2);
+                              var year_1 = mydate_1.getFullYear();
+                              var str_1 = date_1+'/'+month_1+'/'+year_1;
 
-                                    return $rowData;
-                                },
-                                aTargets: [4]
+                              var date_2 = ("0" + mydate_2.getDate()).slice(-2);
+                              var month_2 = ("0" + (mydate_2.getMonth() + 1)).slice(-2);
+                              var year_2 = mydate_2.getFullYear();
+                              var str_2 = date_2+'/'+month_2+'/'+year_2;
+  
+                              var $rowData = '';
+                                    $rowData += `<div class="card">
+                                    <div class="card-body">
+                                    
+                                      
+                                      <div class="d-flex justify-content-between">
+                                        <p class="text-primary text-sm">
+                                          <i class="far fa-calendar-alt"></i>
+                                        </p>
+                                        <p class="d-flex flex-column">
+                                          <span class="text-muted"> `+str_1+`</span> -- <span class="text-muted"> `+str_2+`</span>
+                                        </p>
+                                      </div>
+                                      <!-- /.d-flex ->
+                                      <div class="d-flex justify-content-between">
+                                        <p class="text-inf text-sm">
+                                          <i class="far fa-calendar-alt"></i>
+                                        </p>
+                                        <p class="d-flex flex-column">
+                                          <span class="text-muted">Tahun </span>
+                                        </p>
+                                      </div>
+                                      <!- /.d-flex -->
+                                      <div class="d-flex justify-content-between">
+                                        <p class="text-success text-sm">
+                                          <i class="fas fa-sign-in-alt"></i>
+                                        </p>
+                                        <p class="d-flex flex-column ">
+                                          <span class="text-muted">Tayang</span>
+                                        </p>
+                                      </div>
+                                      <!-- /.d-flex -->
+                                    </div>
+                                  </div>`;
+  
+                                return $rowData;
                             },
-                            {
-                                mRender: function (data, type, row){
-                                  var $rowData = '<img src="'+row.img+'" style="width: 35px;"></img>';
-                                    return $rowData;
-                                },
-                                aTargets: [1]
-                            }
+                            aTargets: [3]
+                        },
+                        {
+                          mRender: function (data, type, row){
+                              var $rowData = '';
+                                  $rowData += `
+                                  <div class="btn-group">
+                                  <button type="button" class="btn btn-info">Action</button>
+                                  <button type="button" class="btn btn-info dropdown-toggle dropdown-icon" data-toggle="dropdown">
+                                    <span class="sr-only">Toggle Dropdown</span>
+                                  </button>
+                                  <div class="dropdown-menu" role="menu">
+                                    <a class="dropdown-item" href="#"><i class="far fa-edit"></i> Edit</a>
+                                    <a class="dropdown-item" href="#"><i class="far fa-trash-alt"></i> Hapus</a>
+                                    <div class="dropdown-divider"></div>
+                                    <a class="dropdown-item" href="#"><i class="fas fa-sign-out-alt"></i> Tidak Tayang</a>
+                                  </div>
+                                </div>`;
+
+                              return $rowData;
+                          },
+                          aTargets: [4]
+                      }
+                            
                         ],
 
                         fnRowCallback: function(nRow, aData, iDisplayIndex, iDisplayIndexFull){
@@ -247,9 +252,15 @@ function loadkota(){
         });
     }
 
-    function saveUser(st){
-      var img = window.img;
+    function savetext(st){
       var stat;
+
+      var id = $('#id').val();
+      var judul = $('#judul').val();
+
+      var isi = $('#isi').val();
+      var reservation = $('#reservation').val();
+
         switch (st) {
           case false:
               stat = '0';
@@ -263,24 +274,27 @@ function loadkota(){
           var msg = 'Update User';
 
         }else{
-          var baseurl = 'saveUser';
-          var msg = 'Tambah User';
+          var baseurl = 'saveglobal';
+          var msg = 'Tambah Running Text';
         }
+        alert();
+
+        var formData = new FormData();
+        formData.append('id', id);
+        formData.append('judul', judul);
+        formData.append('isi', isi);
+        formData.append('date', reservation);
+        formData.append('table', 'data_text');
 
         $.ajax({
-            type: 'post',
-            dataType: 'json',
-            url: baseurl,
-            data : {
-                    id            : $('#id').val(),
-                    name          : $('#name').val(),
-                    username      : $('#username').val(),
-                    password      : $('#password').val(),
-                    status        : stat,
-                    kotaKab       : $("#kota-kab option:selected").val(),
-                    role          : $("input[name='role']:checked").val(),
-                    img           : img,
-             },
+          type: 'post',
+          url: baseurl,
+          dataType: 'json',
+          cache: false,
+          contentType: false,
+          processData: false,
+          data: formData,
+          async:false,
             success: function(result){
               Swal.fire({
                 title: 'Sukses!',
