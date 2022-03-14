@@ -94,6 +94,10 @@ class Jsondata extends CI_Controller {
 					// if(!file_exists(base_url().$value->img)){
 					// 	$result[$key]->img = base_url().'assets/img/users/default.jpg';
 					// }
+					if(isset($value->create_by)){
+						$user = $this->Model_data->getwhere("*", "muser", "id = '$value->create_by'");
+						$result[$key]->username = $user[0]->name;
+					}
 					
 				}
 					if($result){
@@ -186,6 +190,67 @@ class Jsondata extends CI_Controller {
 		echo json_encode(array("status" => TRUE));
 	}
 
+	public function deleteberita()
+	{
+
+		$params = (object)$this->input->post();
+		
+		$this->Model_data->deleteberita($params);
+		$this->Model_data->deletefile($params);
+		unlink($params->path);
+		header('Content-Type: application/json');
+		echo json_encode(array("status" => TRUE));
+	}
+
+	public function updatedataberita()
+	{
+
+		$params = (object)$this->input->post();
+		$params->update_by	 = $this->session->userdata('id');
+		$params->update_date = date("Y-m-d H:i:s");
+		$data = $this->Model_data->updatedataberita($params);
+
+		if(!empty($_FILES)){
+			$files = $_FILES['files'];
+			$count = count($_FILES['files']['name']);
+			$public		= FCPATH.'public';
+			$tipe		= './assets/upload/berita';
+			$date 		= date('Y/m/d');
+		
+			for ($i=0; $i < $count; $i++) { 
+
+				$name = $files['name'][$i];
+				$file = $files['tmp_name'][$i];
+				$type = $files['type'][$i];
+				$size = $files['size'][$i];
+				
+				$path = $tipe.'/'.$date;
+				if (!is_dir($path)) {
+					mkdir($path, 0777, TRUE);
+				}
+
+				
+				move_uploaded_file($file, $path.'/'.$name);
+
+				$data_file = [
+						'id' => $params->idfile,
+						'type' => 'berita',
+						'path' => $path,
+						'size' => $size,
+						'extension' => $type,
+						'filename' => $name,
+						'create_date' => date("Y-m-d H:i:s"),
+						'update_date' => date("Y-m-d H:i:s")
+					];
+					$this->Model_data->updatefile($data_file);
+				}
+		}
+
+		header('Content-Type: application/json');
+		echo json_encode(array("status" => TRUE));
+
+	}
+
 	public function hitungAll(){
 
 		$update = $this->Model_sys->hitungAll();
@@ -224,6 +289,18 @@ class Jsondata extends CI_Controller {
 		}else{
 			redirect("dashboard");
 		}
+
+	}
+
+	public function updateberita()
+	{
+
+		$params = (object)$this->input->post();
+		$params->update_by	 = $this->session->userdata('id');
+		$params->update_date = date("Y-m-d H:i:s");
+		$data = $this->Model_data->updateberita($params);
+		header('Content-Type: application/json');
+		echo json_encode(array("status" => TRUE));
 
 	}
 

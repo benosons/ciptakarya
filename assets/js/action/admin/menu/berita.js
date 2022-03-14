@@ -44,8 +44,15 @@ $(function () {
       show: true
     });
     $('#id').val('');
+    $('#judul').val('');
+    $('#intro').val('');
+    $('#tag').val('');
+    $('#isi').summernote('reset');
+    $('#bagian').val('0').change();
+    $('#date').val('');
     $('.modal-title').html('<i class="fas fa-newspaper"></i> Tambah Berita');
-    $('#blah').attr('src', 'assets/img/no-image.png');
+    $('#blah_1').attr('src', 'assets/img/no-image.png');
+    $('#caption_1').val('');
   });
 
   $('#save-berita').on('click', function(){
@@ -123,51 +130,55 @@ function loaddata(){
                           aTargets: [1]
                       },
                       {
-                          mRender: function (data, type, row){
-                            var mydate = new Date(row.date);
-                            var date = ("0" + mydate.getDate()).slice(-2);
-                            var month = ("0" + (mydate.getMonth() + 1)).slice(-2);
-                            var year = mydate.getFullYear();
-                            var str = date+'/'+month+'/'+year;
+                        mRender: function (data, type, row){
+                          var mydate = new Date(row.create_date);
+                          var date = ("0" + mydate.getDate()).slice(-2);
+                          var month = ("0" + (mydate.getMonth() + 1)).slice(-2);
+                          var year = mydate.getFullYear();
+                          var str = date+'/'+month+'/'+year;
 
-                            var $rowData = '';
-                                  $rowData += `<div class="card">
-                                  <div class="card-body">
-                                  
-                                    <div class="d-flex justify-content-between">
-                                      <p class="text-primary text-sm">
-                                        <i class="far fa-calendar-alt"></i>
-                                      </p>
-                                      <p class="d-flex flex-column">
-                                        <span class="text-muted"> `+str+`</span>
-                                      </p>
-                                    </div>
-                                    <!-- /.d-flex ->
-                                    <div class="d-flex justify-content-between">
-                                      <p class="text-inf text-sm">
-                                        <i class="far fa-calendar-alt"></i>
-                                      </p>
-                                      <p class="d-flex flex-column">
-                                        <span class="text-muted">Tahun </span>
-                                      </p>
-                                    </div>
-                                    <!- /.d-flex -->
-                                    <div class="d-flex justify-content-between">
-                                      <p class="text-success text-sm">
-                                        <i class="fas fa-sign-in-alt"></i>
-                                      </p>
-                                      <p class="d-flex flex-column ">
-                                        <span class="text-muted">Tayang</span>
-                                      </p>
-                                    </div>
-                                    <!-- /.d-flex -->
+                          var stat = row.stat;
+                          if(stat == 1){
+                            var st = 'Publish'
+                            var tex = 'text-success';
+                          }else{
+                            var st = 'No Publish'
+                            var tex = 'text-danger';
+                          }
+                          var $rowData = '';
+                                $rowData += `<div class="card">
+                                <div class="card-body">
+                                  <div class="d-flex justify-content-between">
+                                    <p class="text-success text-sm">
+                                      <i class="far fa-user"></i>
+                                    </p>
+                                    <p class="d-flex flex-column">
+                                      <span class="text-muted"> `+row.username+`</span>
+                                    </p>
                                   </div>
-                                </div>`;
+                                  <div class="d-flex justify-content-between">
+                                    <p class="text-primary text-sm">
+                                      <i class="far fa-calendar-alt"></i>
+                                    </p>
+                                    <p class="d-flex flex-column">
+                                      <span class="text-muted"> `+str+`</span>
+                                    </p>
+                                  </div>
+                                  <div class="d-flex justify-content-between">
+                                    <p class="`+tex+` text-sm">
+                                      <i class="fas fa-sign-in-alt"></i>
+                                    </p>
+                                    <p class="d-flex flex-column ">
+                                      <span class="text-muted">`+st+`</span>
+                                    </p>
+                                  </div>
+                                </div>
+                              </div>`;
 
-                              return $rowData;
-                          },
-                          aTargets: [3]
-                      },
+                            return $rowData;
+                        },
+                        aTargets: [3]
+                    },
                       {
                           mRender: function (data, type, row){
                               var bag = ['0','SETDITJEN','TIDUR','BPB','PKP','PPLP','PSPAM','PSP-POP'];
@@ -180,6 +191,23 @@ function loaddata(){
                       },
                       {
                           mRender: function (data, type, row){
+                            var id_file = row.files[0].id;
+                            var path = row.files[0].path+'/'+row.files[0].filename;
+                            
+                              var stat = row.stat;
+                              var file = ''
+                              for( var key in row.files ) {
+                                file = row.files[key].path+'/'+row.files[key].filename;
+                                idfile = row.files[key].id;
+                                caption = row.files[key].caption;
+                              }
+                              
+                              if(stat == 1){
+                                var st = `<a class="dropdown-item" href="#" onclick="updatepublish(`+row.id+`,0)"><i class="fas fa-sign-out-alt"></i> No Publish</a>`
+                              }else{
+                                var st = `<a class="dropdown-item" href="#" onclick="updatepublish(`+row.id+`,1)"><i class="fas fa-sign-out-alt"></i> Publish</a>`;
+                              }
+
                               var $rowData = '';
                                   $rowData += `
                                   <div class="btn-group">
@@ -188,10 +216,11 @@ function loaddata(){
                                     <span class="sr-only">Toggle Dropdown</span>
                                   </button>
                                   <div class="dropdown-menu" role="menu">
-                                    <a class="dropdown-item" href="#"><i class="far fa-edit"></i> Edit</a>
-                                    <a class="dropdown-item" href="#"><i class="far fa-trash-alt"></i> Hapus</a>
+                                    <a class="dropdown-item" href="#" onclick="editdong('`+row.id+`','`+row.judul+`','`+row.tag+`','`+row.isi+`','`+file+`','`+idfile+`','`+row.intro+`','`+row.bagian+`','`+row.date+`','`+caption+`')"><i class="far fa-edit"></i> Edit</a>
+                                    <a class="dropdown-item" href="#" onclick="deleteData(`+row.id+`, `+id_file+`, '`+path+`')
+                                    "><i class="far fa-trash-alt"></i> Hapus</a>
                                     <div class="dropdown-divider"></div>
-                                    <a class="dropdown-item" href="#"><i class="fas fa-sign-out-alt"></i> Tidak Tayang</a>
+                                    `+st+`
                                   </div>
                                 </div>`;
 
@@ -241,7 +270,7 @@ function loaddata(){
       var tag = $('#tag').val();
       var isi = $('#isi').val();
       var bagian = $('#bagian').val();
-      var date = $('#reservationdate').val();
+      var date = $('#date').val();
       var stat = $('#stat').val();
 
       var formData = new FormData();
@@ -256,11 +285,13 @@ function loaddata(){
 
       var iscapt = [];
       for (let index = 0; index < $("[name='image_input']").length; index++) {
+        
         var src = $("[name='image_input']")[index].files[0];
         var cap = $("[name='caption']")[index].value;
         
         formData.append('files[]', src);
         formData.append('caption[]', cap);
+        formData.append('idfile', $('#idfile').val());
       }
       
       var stat;
@@ -273,8 +304,8 @@ function loaddata(){
         }
 
         if(id){
-          var baseurl = 'updateUser';
-          var msg = 'Update User';
+          var baseurl = 'updatedataberita';
+          var msg = 'Update Berita';
 
         }else{
           var baseurl = 'savedataberita';
@@ -300,7 +331,7 @@ function loaddata(){
               });
 
               $('#modal-default').modal('hide');
-              // loaddatauser();
+              loaddata();
             }
           });
     };
@@ -326,7 +357,7 @@ function edituser(id, username, password, status, role, name, foto){
   }
 }
 
-function deleteData(id)
+function deleteData(id, id_file, path)
 {
   const swalWithBootstrapButtons = Swal.mixin({
     customClass: {
@@ -337,7 +368,7 @@ function deleteData(id)
   });
 
   swalWithBootstrapButtons.fire({
-    title: 'Anda Yakin, hapus user ini?',
+    title: 'Anda yakin, hapus berita ini?',
     text: "",
     icon: 'warning',
     showCancelButton: true,
@@ -349,20 +380,22 @@ function deleteData(id)
     $.ajax({
       type: 'post',
       dataType: 'json',
-      url: 'deleteuser',
+      url: 'deleteberita',
       data : {
               id    : id,
+              id_file    : id_file,
+              path    : path,
             },
       success: function(data)
       {
         Swal.fire({
           title: 'Sukses!',
-          text: 'Hapus User',
+          text: 'Hapus Berita',
           icon: 'success',
           showConfirmButton: false,
           timer: 1500
         });
-        loaddatauser();
+        loaddata();
       }
     });
   }
@@ -436,4 +469,49 @@ function modaldetail(id,username,role,status,name,foto){
 
     function pilihgambar(ini){
       readURL(ini);
+    }
+
+    function editdong(id, judul, tag, isi, path, idfile, intro, bagian, date, caption){
+      $('#add-berita').trigger('click');
+      $('.modal-title').html('<i class="fas fa-newspaper"></i> Edit Berita');
+      $('#id').val(id);
+      $('#idfile').val(idfile);
+      $('#judul').val(judul);
+      $('#intro').val(intro);
+      $("#tag").val(tag);
+      $("#bagian").val(bagian).change();
+      $("#date").val(date);
+      $('#isi').summernote('code', isi);
+      $('#blah_1').attr('src', path);
+      $('#caption_1').val(caption);
+    
+    }
+
+    function updatepublish(id,stat){
+      var formData = new FormData();
+      formData.append('id', id);
+      formData.append('stat', stat);
+      
+      $.ajax({
+        type: 'post',
+        url: 'updateberita',
+        dataType: 'json',
+        cache: false,
+        contentType: false,
+        processData: false,
+        data: formData,
+        async:false,
+          success: function(result){
+            Swal.fire({
+              title: 'Sukses!',
+              text: 'Berita telah di publish',
+              icon: 'success',
+              showConfirmButton: false,
+              timer: 1500
+            });
+
+            $('#modal-default').modal('hide');
+            loaddata();
+          }
+        });
     }

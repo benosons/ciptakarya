@@ -29,4 +29,75 @@ class Model_data extends CI_Model {
         return $insert_id;
     }
 
+    public function deleteberita($id)
+    {
+        // $idx = $this->db->escape_str($id);
+        $this->db->where('id', $id->id);
+        $this->db->delete('data_berita');
+    }
+
+    public function deletefile($id)
+    {
+        // $idx = $this->db->escape_str($id);
+        $this->db->where('id', $id->id_file);
+        $this->db->delete('data_file');
+    }
+
+    public function updatedataberita($params = NULL)
+    {
+        $valid = true;
+       
+        $this->db->set('judul', $params->judul);
+        $this->db->set('intro', $params->intro);
+        $this->db->set('bagian', $params->bagian);
+        $this->db->set('date', $params->date);
+        $this->db->set('tag', $params->tag);
+        $this->db->set('isi', $params->isi);
+        $this->db->set('stat', $params->stat);
+        $this->db->set('update_by', $params->update_by);
+        $this->db->set('update_date', $params->update_date);
+        $this->db->where('id', $params->id);
+        $this->db->update('data_berita');
+        
+        return $valid;
+
+    }
+
+    public function updatefile($params = NULL)
+    {
+        $valid = true;
+        
+        $this->db->set('type', $params['type']);
+        $this->db->set('path', $params['path']);
+        $this->db->set('size', $params['size']);
+        $this->db->set('extension', $params['extension']);
+        $this->db->set('filename', $params['filename']);
+        $this->db->set('update_date', $params['update_date']);
+        $this->db->where('id', $params['id']);
+        $this->db->update('data_file');
+        
+        return $valid;
+
+    }
+
+    public function updateberita($params = NULL)
+    {
+        $valid = true;
+       
+        $this->db->set('stat', $params->stat);
+        $this->db->set('update_by', $params->update_by);
+        $this->db->set('update_date', $params->update_date);
+        $this->db->where('id', $params->id);
+        $this->db->update('data_berita');
+        
+        return $valid;
+
+    }
+
+    public function getwhere($field, $from, $where)
+    {
+        $query = $this->db->query("select $field from $from where $where order by id asc")->result();
+        return $query;
+    }
+
 }

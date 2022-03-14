@@ -71,7 +71,7 @@
 </div>
 </div>
 
-<div class="modal fade" id="modal-default">
+<div class="modal fade" id="modal-default" data-backdrop="static">
   <div class="modal-dialog modal-lg card card-danger card-outline">
     <div class="modal-content">
       <div class="modal-header">
@@ -82,6 +82,7 @@
       </div>
       <div class="modal-body">
         <input id="id" hidden>
+        <input id="idfile" hidden>
           <div class="row">
             <div class="col-md-12">
               <div class="form-group">
@@ -117,7 +118,7 @@
               <div class="card card-light card-outline">
                 <div class="card-header">
                   <label class="">Upload Gambar</label>
-                  <div class="card-tools">
+                  <div class="card-tools" hidden>
                     <a onclick="addgambar()" class="btn btn-tool">
                       <i class="fas fa-plus"></i>
                     </a>
@@ -182,7 +183,7 @@
             <div class="form-group">
               <label>Date:</label>
                 <div class="input-group date" id="reservationdate" data-target-input="nearest">
-                    <input type="text" class="form-control datetimepicker-input" data-target="#reservationdate"/>
+                    <input type="text" id="date" class="form-control datetimepicker-input" data-target="#reservationdate"/>
                     <div class="input-group-append" data-target="#reservationdate" data-toggle="datetimepicker">
                         <div class="input-group-text"><i class="fa fa-calendar"></i></div>
                     </div>
@@ -200,8 +201,8 @@
 
       </div>
       <div class="modal-footer">
-        <!-- <button type="button" class="btn btn-primary">Tutup</button> -->
-        <button id="save-berita" type="button" class="btn btn-success" ><i class="fas fa-check"> </i> Simpan</button>
+        <button type="button" class="btn btn-danger btn-sm" data-dismiss="modal"><i class="fas fa-times"> </i> Tutup</button>
+        <button id="save-berita" type="button" class="btn btn-success btn-sm" ><i class="fas fa-check"> </i> Simpan</button>
       </div>
     </div>
     <!-- /.modal-content -->
