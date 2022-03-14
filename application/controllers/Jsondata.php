@@ -202,6 +202,18 @@ class Jsondata extends CI_Controller {
 		echo json_encode(array("status" => TRUE));
 	}
 
+	public function deleteposter()
+	{
+
+		$params = (object)$this->input->post();
+		
+		$this->Model_data->deleteposter($params);
+		$this->Model_data->deletefile($params);
+		unlink($params->path);
+		header('Content-Type: application/json');
+		echo json_encode(array("status" => TRUE));
+	}
+
 	public function updatedataberita()
 	{
 
@@ -235,6 +247,55 @@ class Jsondata extends CI_Controller {
 				$data_file = [
 						'id' => $params->idfile,
 						'type' => 'berita',
+						'path' => $path,
+						'size' => $size,
+						'extension' => $type,
+						'filename' => $name,
+						'create_date' => date("Y-m-d H:i:s"),
+						'update_date' => date("Y-m-d H:i:s")
+					];
+					$this->Model_data->updatefile($data_file);
+				}
+		}
+
+		header('Content-Type: application/json');
+		echo json_encode(array("status" => TRUE));
+
+	}
+
+	public function updatedataposter()
+	{
+
+		$params = (object)$this->input->post();
+		$params->update_by	 = $this->session->userdata('id');
+		$params->update_date = date("Y-m-d H:i:s");
+		$data = $this->Model_data->updatedataposter($params);
+
+		if(!empty($_FILES)){
+			$files = $_FILES['files'];
+			$count = count($_FILES['files']['name']);
+			$public		= FCPATH.'public';
+			$tipe		= './assets/upload/galeri/poster';
+			$date 		= date('Y/m/d');
+		
+			for ($i=0; $i < $count; $i++) { 
+
+				$name = $files['name'][$i];
+				$file = $files['tmp_name'][$i];
+				$type = $files['type'][$i];
+				$size = $files['size'][$i];
+				
+				$path = $tipe.'/'.$date;
+				if (!is_dir($path)) {
+					mkdir($path, 0777, TRUE);
+				}
+
+				
+				move_uploaded_file($file, $path.'/'.$name);
+
+				$data_file = [
+						'id' => $params->idfile,
+						'type' => 'poster',
 						'path' => $path,
 						'size' => $size,
 						'extension' => $type,
@@ -299,6 +360,18 @@ class Jsondata extends CI_Controller {
 		$params->update_by	 = $this->session->userdata('id');
 		$params->update_date = date("Y-m-d H:i:s");
 		$data = $this->Model_data->updateberita($params);
+		header('Content-Type: application/json');
+		echo json_encode(array("status" => TRUE));
+
+	}
+
+	public function updateposter()
+	{
+
+		$params = (object)$this->input->post();
+		$params->update_by	 = $this->session->userdata('id');
+		$params->update_date = date("Y-m-d H:i:s");
+		$data = $this->Model_data->updateposter($params);
 		header('Content-Type: application/json');
 		echo json_encode(array("status" => TRUE));
 

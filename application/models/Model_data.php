@@ -36,6 +36,13 @@ class Model_data extends CI_Model {
         $this->db->delete('data_berita');
     }
 
+    public function deleteposter($id)
+    {
+        // $idx = $this->db->escape_str($id);
+        $this->db->where('id', $id->id);
+        $this->db->delete('data_poster');
+    }
+
     public function deletefile($id)
     {
         // $idx = $this->db->escape_str($id);
@@ -58,6 +65,24 @@ class Model_data extends CI_Model {
         $this->db->set('update_date', $params->update_date);
         $this->db->where('id', $params->id);
         $this->db->update('data_berita');
+        
+        return $valid;
+
+    }
+
+    public function updatedataposter($params = NULL)
+    {
+        $valid = true;
+       
+        $this->db->set('judul', $params->judul);
+        $this->db->set('bulan', $params->bulan);
+        $this->db->set('tahun', $params->tahun);
+
+        $this->db->set('status', $params->stat);
+        $this->db->set('update_by', $params->update_by);
+        $this->db->set('update_date', $params->update_date);
+        $this->db->where('id', $params->id);
+        $this->db->update('data_poster');
         
         return $valid;
 
@@ -89,6 +114,20 @@ class Model_data extends CI_Model {
         $this->db->set('update_date', $params->update_date);
         $this->db->where('id', $params->id);
         $this->db->update('data_berita');
+        
+        return $valid;
+
+    }
+
+    public function updateposter($params = NULL)
+    {
+        $valid = true;
+       
+        $this->db->set('status', $params->stat);
+        $this->db->set('update_by', $params->update_by);
+        $this->db->set('update_date', $params->update_date);
+        $this->db->where('id', $params->id);
+        $this->db->update('data_poster');
         
         return $valid;
 

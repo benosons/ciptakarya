@@ -46,8 +46,11 @@ $(function () {
       show: true
     });
     $('#id').val('');
+    $('#judul').val('');
+    $('#bulan').val(0).change();
+    $('#tahun').val(0).change();
     $('.modal-title').html('<i class="fas fa-photo-video"></i> Tambah Poster');
-    $('#blah').attr('src', 'assets/img/no-image.png');
+    $('#blah_1').attr('src', 'assets/img/no-image.png');
     $('label[for="foto-user"]').text('Pilih Foto');
   });
 
@@ -117,6 +120,16 @@ $(function () {
                             {
                                 mRender: function (data, type, row){
                                   var month = ['bulan','Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September','Oktober', 'November', 'Desember'];
+
+                                  var stat = row.status;
+                                  if(stat == 1){
+                                    var st = 'Publish'
+                                    var tex = 'text-success';
+                                  }else{
+                                    var st = 'No Publish'
+                                    var tex = 'text-danger';
+                                  }
+
                                     var $rowData = '';
                                         $rowData += `<div class="card">
                                         <div class="card-body">
@@ -140,13 +153,13 @@ $(function () {
                                           </div>
                                           <!-- /.d-flex -->
                                           <div class="d-flex justify-content-between">
-                                            <p class="text-success text-sm">
-                                              <i class="fas fa-sign-in-alt"></i>
-                                            </p>
-                                            <p class="d-flex flex-column ">
-                                              <span class="text-muted">Tayang</span>
-                                            </p>
-                                          </div>
+                                    <p class="`+tex+` text-sm">
+                                      <i class="fas fa-sign-in-alt"></i>
+                                    </p>
+                                    <p class="d-flex flex-column ">
+                                      <span class="text-muted">`+st+`</span>
+                                    </p>
+                                  </div>
                                           <!-- /.d-flex -->
                                         </div>
                                       </div>`;
@@ -157,6 +170,22 @@ $(function () {
                             },
                             {
                                 mRender: function (data, type, row){
+                                  var id_file = row.files[0].id;
+                                  var path = row.files[0].path+'/'+row.files[0].filename;
+                                  
+                                    var stat = row.stat;
+                                    var file = ''
+                                    for( var key in row.files ) {
+                                      file = row.files[key].path+'/'+row.files[key].filename;
+                                      idfile = row.files[key].id;
+                                    }
+                                    
+                                    if(stat == 1){
+                                      var st = `<a class="dropdown-item" href="#" onclick="updatepublish(`+row.id+`,0)"><i class="fas fa-sign-out-alt"></i> No Publish</a>`
+                                    }else{
+                                      var st = `<a class="dropdown-item" href="#" onclick="updatepublish(`+row.id+`,1)"><i class="fas fa-sign-out-alt"></i> Publish</a>`;
+                                    }
+
                                     var $rowData = '';
                                         $rowData += `
                                         <div class="btn-group">
@@ -165,10 +194,10 @@ $(function () {
                                           <span class="sr-only">Toggle Dropdown</span>
                                         </button>
                                         <div class="dropdown-menu" role="menu">
-                                          <a class="dropdown-item" href="#"><i class="far fa-edit"></i> Edit</a>
-                                          <a class="dropdown-item" href="#"><i class="far fa-trash-alt"></i> Hapus</a>
+                                          <a class="dropdown-item" href="#" onclick="editdong('`+row.id+`', '`+row.judul+`', '`+row.bulan+`', '`+row.tahun+`', '`+file+`','`+idfile+`')"><i class="far fa-edit"></i> Edit</a>
+                                          <a class="dropdown-item" href="#" onclick="deleteData(`+row.id+`, `+id_file+`, '`+path+`')"><i class="far fa-trash-alt"></i> Hapus</a>
                                           <div class="dropdown-divider"></div>
-                                          <a class="dropdown-item" href="#"><i class="fas fa-sign-out-alt"></i> Tidak Tayang</a>
+                                          `+st+`
                                         </div>
                                       </div>`;
 
@@ -241,8 +270,10 @@ $(function () {
         }
 
         if(id){
-          var baseurl = 'updateUser';
-          var msg = 'Update User';
+          formData.append('idfile', $('#idfile').val());
+
+          var baseurl = 'updatedataposter';
+          var msg = 'Update Poster';
 
         }else{
           var baseurl = 'savedataposter';
@@ -268,7 +299,7 @@ $(function () {
               });
 
               $('#modal-default').modal('hide');
-              // loaddatauser();
+              loaddata();
             }
           });
     };
@@ -294,7 +325,7 @@ function edituser(id, username, password, status, role, name, foto){
   }
 }
 
-function deleteData(id)
+function deleteData(id, id_file, path)
 {
   const swalWithBootstrapButtons = Swal.mixin({
     customClass: {
@@ -305,7 +336,7 @@ function deleteData(id)
   });
 
   swalWithBootstrapButtons.fire({
-    title: 'Anda Yakin, hapus user ini?',
+    title: 'Anda yakin, hapus poster ini?',
     text: "",
     icon: 'warning',
     showCancelButton: true,
@@ -317,20 +348,22 @@ function deleteData(id)
     $.ajax({
       type: 'post',
       dataType: 'json',
-      url: 'deleteuser',
+      url: 'deleteposter',
       data : {
               id    : id,
+              id_file    : id_file,
+              path    : path,
             },
       success: function(data)
       {
         Swal.fire({
           title: 'Sukses!',
-          text: 'Hapus User',
+          text: 'Hapus Poster',
           icon: 'success',
           showConfirmButton: false,
           timer: 1500
         });
-        loaddatauser();
+        loaddata();
       }
     });
   }
@@ -403,4 +436,45 @@ function modaldetail(id,username,role,status,name,foto){
 
     function pilihgambar(ini){
       readURL(ini);
+    }
+
+    function editdong(id, judul, bulan, tahun, path, idfile){
+      $('#add-poster').trigger('click');
+      $('.modal-title').html('<i class="fas fa-photo-video"></i> Edit Poster');
+      $('#id').val(id);
+      $('#idfile').val(idfile);
+      $('#judul').val(judul);
+      $('#bulan').val(bulan).change();
+      $('#tahun').val(tahun).change();
+      $('#blah_1').attr('src', path);
+    
+    }
+
+    function updatepublish(id,stat){
+      var formData = new FormData();
+      formData.append('id', id);
+      formData.append('stat', stat);
+      
+      $.ajax({
+        type: 'post',
+        url: 'updateposter',
+        dataType: 'json',
+        cache: false,
+        contentType: false,
+        processData: false,
+        data: formData,
+        async:false,
+          success: function(result){
+            Swal.fire({
+              title: 'Sukses!',
+              text: 'Poster telah di publish',
+              icon: 'success',
+              showConfirmButton: false,
+              timer: 1500
+            });
+
+            $('#modal-default').modal('hide');
+            loaddata();
+          }
+        });
     }

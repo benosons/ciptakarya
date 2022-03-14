@@ -80,6 +80,7 @@
       </div>
       <div class="modal-body">
         <input id="id" hidden>
+        <input id="idfile" hidden>
           <div class="row">
             <div class="col-md-12">
               <div class="form-group">
@@ -123,7 +124,7 @@
               <div class="card card-light card-outline">
                 <div class="card-header">
                   <label class="">Upload Gambar</label>
-                  <div class="card-tools">
+                  <div class="card-tools" hidden>
                     <a onclick="addgambar()" class="btn btn-tool">
                       <i class="fas fa-plus"></i>
                     </a>
@@ -176,7 +177,8 @@
       </div>
       <div class="modal-footer">
         <!-- <button type="button" class="btn btn-primary">Tutup</button> -->
-        <button id="save-poster" type="button" class="btn btn-success" ><i class="fas fa-check"> </i> Simpan</button>
+        <button type="button" class="btn btn-danger btn-sm" data-dismiss="modal"><i class="fas fa-times"> </i> tutup</button>
+        <button id="save-poster" type="button" class="btn btn-success btn-sm" ><i class="fas fa-check"> </i> Simpan</button>
       </div>
     </div>
     <!-- /.modal-content -->
