@@ -43,6 +43,13 @@ class Model_data extends CI_Model {
         $this->db->delete('data_poster');
     }
 
+    public function deletefoto($id)
+    {
+        // $idx = $this->db->escape_str($id);
+        $this->db->where('id', $id->id);
+        $this->db->delete('data_foto');
+    }
+
     public function deletefile($id)
     {
         // $idx = $this->db->escape_str($id);

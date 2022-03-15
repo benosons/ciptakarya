@@ -48,6 +48,9 @@ $(function () {
       show: true
     });
     $('#id').val('');
+    $('#judul').val('');
+    $('#sektor').val(0).change();
+    $('#tahun').val(0).change();
     $('.modal-title').html('<i class="fas fa-photo-video"></i> Tambah Foto');
     $('#blah').attr('src', 'assets/img/no-image.png');
     $('label[for="foto-user"]').text('Pilih Foto');
@@ -144,6 +147,21 @@ function loaddata(){
                       },
                       {
                           mRender: function (data, type, row){
+                            var id_file = row.files[0].id;
+                                  var path = row.files[0].path+'/'+row.files[0].filename;
+                                  
+                                    var stat = row.stat;
+                                    var file = ''
+                                    for( var key in row.files ) {
+                                      file = row.files[key].path+'/'+row.files[key].filename;
+                                      idfile = row.files[key].id;
+                                    }
+                                    
+                                    if(stat == 1){
+                                      var st = `<a class="dropdown-item" href="#" onclick="updatepublish(`+row.id+`,0)"><i class="fas fa-sign-out-alt"></i> No Publish</a>`
+                                    }else{
+                                      var st = `<a class="dropdown-item" href="#" onclick="updatepublish(`+row.id+`,1)"><i class="fas fa-sign-out-alt"></i> Publish</a>`;
+                                    }
                               var $rowData = '';
                                   $rowData += `
                                   <div class="btn-group">
@@ -153,9 +171,9 @@ function loaddata(){
                                   </button>
                                   <div class="dropdown-menu" role="menu" x-placement="top-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(68px, -165px, 0px);">
                                     <a class="dropdown-item" href="#"><i class="far fa-edit"></i> Edit</a>
-                                    <a class="dropdown-item" href="#"><i class="far fa-trash-alt"></i> Hapus</a>
+                                    <a class="dropdown-item" href="#" onclick="deleteData(`+row.id+`, `+id_file+`, '`+path+`')"><i class="far fa-trash-alt"></i> Hapus</a>
                                     <div class="dropdown-divider"></div>
-                                    <a class="dropdown-item" href="#"><i class="fas fa-sign-out-alt"></i> Tidak Tayang</a>
+                                    `+st+`
                                   </div>
                                 </div>
                                               `;
@@ -258,7 +276,7 @@ function savedata(st){
           });
 
           $('#modal-default').modal('hide');
-          // loaddatauser();
+          loaddata();
         }
       });
     };
@@ -284,7 +302,7 @@ function edituser(id, username, password, status, role, name, foto){
   }
 }
 
-function deleteData(id)
+function deleteData(id,id_file, path)
 {
   const swalWithBootstrapButtons = Swal.mixin({
     customClass: {
@@ -295,7 +313,7 @@ function deleteData(id)
   });
 
   swalWithBootstrapButtons.fire({
-    title: 'Anda Yakin, hapus user ini?',
+    title: 'Anda yakin, hapus foto ini?',
     text: "",
     icon: 'warning',
     showCancelButton: true,
@@ -307,20 +325,22 @@ function deleteData(id)
     $.ajax({
       type: 'post',
       dataType: 'json',
-      url: 'deleteuser',
+      url: 'deletefoto',
       data : {
               id    : id,
+              id_file    : id_file,
+              path    : path,
             },
       success: function(data)
       {
         Swal.fire({
           title: 'Sukses!',
-          text: 'Hapus User',
+          text: 'Hapus Foto',
           icon: 'success',
           showConfirmButton: false,
           timer: 1500
         });
-        loaddatauser();
+        loaddata();
       }
     });
   }
