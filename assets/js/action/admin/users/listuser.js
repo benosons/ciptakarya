@@ -27,9 +27,10 @@ $( document ).ready(function() {
     $('#password').attr('disabled', false);
     $("[name='user-input']").val('');
     // $("#kota-kab").select2('data', {}).trigger('change');
-    $('#kota-kab').val(0).trigger('change');
-    $('#blah').attr('src', 'assets/img/users/default.jpg');
-    $('label[for="foto-user"]').text('Pilih Foto');
+    $('#role').val('').trigger('change');
+    $('#satker').val('').trigger('change');
+    // $('#blah').attr('src', 'assets/img/users/default.jpg');
+    // $('label[for="foto-user"]').text('Pilih Foto');
   });
 
   $('#save-user').on('click', function(){
@@ -76,23 +77,61 @@ $( document ).ready(function() {
     }
   });
 
+  $('#role').on('change', function(){
+    if(this.value == 10){
+      $('#satker').prop('disabled', true)
+      $('#name').prop('disabled', false)
+      $('#username').prop('disabled', false)
+      $('#password').prop('disabled', false)
+      $('#save-user').prop('disabled', false)
+    }else if(this.value == ''){
+      $('#name').prop('disabled', true)
+      $('#username').prop('disabled', true)
+      $('#password').prop('disabled', true)
+      $('#satker').prop('disabled', true)
+      $('#save-user').prop('disabled', true)
+    }else{
+      $('#satker').prop('disabled', false)
+      $('#name').prop('disabled', false)
+      $('#username').prop('disabled', false)
+      $('#password').prop('disabled', false)
+      $('#save-user').prop('disabled', false)
+      loadsatker(this.value);
+    }
+  })
+
+  $('#satker').on('change', function(){
+    let kode_satker = this.value
+    $('#name').val(kode_satker);
+    $('#username').val(kode_satker);
+    $('#password').val(kode_satker);
+  })
+
 });
 
-function loadkota(){
+function loadsatker(role){
     $.ajax({
         type: 'post',
         dataType: 'json',
-        url: 'loadkota',
+        url: 'loadsatker',
         data : {
-                param      : '',
+                role      : role,
          },
         success: function(result){
-          $('#kota-kab').empty();
-          var option ='<option value="0">-Pilih-</option>';
-          for (var i = 0; i < result.length; i++) {
-            option += '<option value="'+result[i].id+'">'+result[i].nama+'</option>';
+          console.log(result.length);
+          if(result.length != 0){
+            $('#satker').empty();
+            var option ='<option value="">-pilih-</option>';
+            for (var i = 0; i < result.length; i++) {
+              option += '<option value="'+result[i].kode_satker+'">'+result[i].nama_satker+'</option>';
+            }
+            $('#satker').append(option);
+          }else{
+            $('#satker').prop('disabled', true)
+            $('#name').prop('disabled', true)
+            $('#username').prop('disabled', true)
+            $('#password').prop('disabled', true)
           }
-          $('#kota-kab').append(option);
         }
       });
     };
@@ -119,10 +158,11 @@ function loadkota(){
                       autoWidth: false,
                       responsive: false,
                       pageLength: 10,
+                      dom: 'lrtip',
                       aaData: result.data,
                         aoColumns: [
                             { 'mDataProp': 'id'},
-                            { 'mDataProp': 'img'},
+                            // { 'mDataProp': 'img'},
                             { 'mDataProp': 'username'},
                             { 'mDataProp': 'role_desc'},
                             { 'mDataProp': 'status'},
@@ -130,7 +170,7 @@ function loadkota(){
                             { 'mDataProp': 'id'},
                             // { 'mDataProp': 'role'},
                         ],
-                        order: [[0, 'ASC']],
+                        // order: [[0, 'ASC']],
                         aoColumnDefs:[
                           // {
                           //   targets: [7],
@@ -144,9 +184,9 @@ function loadkota(){
                                                     <div class="col-md-4">
                                                       <button onclick="modaldetail('`+row.id+`','`+row.username+`','`+row.role_desc+`','`+row.status+`','`+row.name+`','`+row.img+`')" type="button" class="btn btn-block btn-success btn-xs"><i class="far fa-eye"></i></button>
                                                     </div>
-                                                    <div class="col-md-4">
-                                                      <button onclick="edituser('`+row.id+`','`+row.username+`','`+row.password+`','`+row.status+`','`+row.role+`','`+row.name+`','`+row.img+`')" type="button" class="btn btn-block btn-warning btn-xs"><i class="far fa-edit"></i></button>
-                                                    </div>
+                                                    <!--div class="col-md-4">
+                                                      <button onclick="edituser('`+row.id+`','`+row.username+`','`+row.password+`','`+row.status+`','`+row.role+`','`+row.name+`','`+row.satker+`')" type="button" class="btn btn-block btn-warning btn-xs"><i class="far fa-edit"></i></button>
+                                                    </div-->
                                                     <div class="col-md-4">
                                                       <button onclick="deleteData(`+row.id+`)" type="button" class="btn btn-block btn-danger btn-xs"><i class="fas fa-trash-alt"></i></button>
                                                     </div>
@@ -155,7 +195,7 @@ function loadkota(){
 
                                     return $rowData;
                                 },
-                                aTargets: [6]
+                                aTargets: [5]
                             },
                             {
                                 mRender: function (data, type, row){
@@ -168,7 +208,7 @@ function loadkota(){
 
                                     return $rowData;
                                 },
-                                aTargets: [5]
+                                aTargets: [4]
                             },
                             {
                                 mRender: function (data, type, row){
@@ -181,15 +221,15 @@ function loadkota(){
 
                                     return $rowData;
                                 },
-                                aTargets: [4]
+                                aTargets: [3]
                             },
-                            {
-                                mRender: function (data, type, row){
-                                  var $rowData = '<img src="'+row.img+'" style="width: 35px;"></img>';
-                                    return $rowData;
-                                },
-                                aTargets: [1]
-                            }
+                            // {
+                            //     mRender: function (data, type, row){
+                            //       var $rowData = '<img src="'+row.img+'" style="width: 35px;"></img>';
+                            //         return $rowData;
+                            //     },
+                            //     aTargets: [1]
+                            // }
                         ],
 
                         fnRowCallback: function(nRow, aData, iDisplayIndex, iDisplayIndexFull){
@@ -199,23 +239,32 @@ function loadkota(){
                         },
 
                         fnInitComplete: function () {
-                            var that = this;
-                            var td ;
-                            var tr ;
-
-                            this.$('td').click( function () {
-                                td = this;
-                            });
-                            this.$('tr').click( function () {
-                                tr = this;
-                            });
-
-
-                            $('#listproj_filter input').bind('keyup', function (e) {
-                                return this.value;
-                            });
+                          
+                            this.api().columns().every( function () {
+                              
+                                var column = this;
+                                var select = $('<select><option value=""></option></select>')
+                                    .appendTo( $(column.footer()).empty() )
+                                    .on( 'change', function () {
+                                        var val = $.fn.dataTable.util.escapeRegex(
+                                            $(this).val()
+                                        );
+                 
+                                        column
+                                            .search( val ? '^'+val+'$' : '', true, false )
+                                            .draw();
+                                    } );
+                 
+                                column.data().unique().sort().each( function ( d, j ) {
+                                    select.append( '<option value="'+d+'">'+d+'</option>' )
+                                } );
+                            } );
 
                         }
+                    });
+
+                    $('#table-filter').on('change', function(){
+                      dt.search(this.value).draw();   
                     });
                   }
 
@@ -253,9 +302,9 @@ function loadkota(){
                     username      : $('#username').val(),
                     password      : $('#password').val(),
                     status        : stat,
-                    kotaKab       : $("#kota-kab option:selected").val(),
-                    role          : $("input[name='role']:checked").val(),
-                    img           : img,
+                    role          : $("#role").val(),
+                    satker        : $("#role").val() == 10 ? '' : $("#satker").val(),
+                    // img           : img,
              },
             success: function(result){
               Swal.fire({
@@ -272,25 +321,22 @@ function loadkota(){
           });
         };
 
-function edituser(id, username, password, status, role, name, foto){
+function edituser(id, username, password, status, role, name, satker){
   $('#add-users').trigger('click');
   $('.modal-title').html('Edit User');
   $('#id').val(id);
   $('#name').val(name);
   $('#username').val(username);
-  $('#username').attr('disabled', true);
+  $('#username').attr('disabled', false);
   $('#password').val(password);
-  $('#password').attr('disabled', true);
-  let fot = foto.split("/");
-  $('label[for="foto-user"]').text(fot[fot.length - 1]);
-  $('#blah').attr('src', foto);
+  $('#password').attr('disabled', false);
+  // let fot = foto.split("/");
+  // $('label[for="foto-user"]').text(fot[fot.length - 1]);
+  // $('#blah').attr('src', foto);
   $("#stat").bootstrapSwitch('state', status == '1' ? true : false);
 
-  if(role == '10'){
-    $("#super-admin").attr('checked', true).trigger('click');
-  }else{
-    $("#admin").attr('checked', true).trigger('click');
-  }
+  $('#role').val(role).trigger('change')
+  $('#satker').val(satker).trigger('change')
 }
 
 function deleteData(id)

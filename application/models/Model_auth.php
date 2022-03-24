@@ -19,7 +19,7 @@ class Model_auth extends CI_Model {
                     'username'    => $data->username,
                     'kategori'    => $data->kategori,
                     'password'    => $data->password,
-                    'kotaKab'     => $data->kotaKab,
+                    'satker'      => $data->satker,
                     'role'        => $data->role,
                     'name'        => $data->name,
                     'foto'        => ($data->foto ? $data->foto : 'assets/dokumen/gambar/user/default.jpg'),

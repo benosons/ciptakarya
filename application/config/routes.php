@@ -77,4 +77,5 @@ $route['^(deletefoto)(/:any)?$'] = 'jsondata/$0';
 $route['^(saveUser)(/:any)?$'] = 'sys/$0';
 $route['^(updateUser)(/:any)?$'] = 'sys/$0';
 $route['^(deleteuser)(/:any)?$'] = 'sys/$0';
+$route['^(loadsatker)(/:any)?$'] = 'sys/$0';
 

@@ -85,13 +85,13 @@ class Model_sys extends CI_Model {
         $this->db->set("name", $params->name);
         $this->db->set("username", $params->username);
         $this->db->set("password", md5($params->password));
-        $this->db->set("kategori", 'admin');
+        $this->db->set("satker", $params->satker);
         $this->db->set("created_by", $this->session->userdata('username'));
         $this->db->set("created_at", date("Y-m-d H:i:s"));
         $this->db->set("role", $params->role);
         $this->db->set("islogin", 0);
         $this->db->set("status", $params->status);
-        $this->db->set("img", $params->foto);
+        // $this->db->set("img", $params->foto);
         $valid = $this->db->insert('muser');
 
         return $valid;
@@ -169,6 +169,19 @@ class Model_sys extends CI_Model {
         return $query;
     }
 
+    public function loadsatker($role)
+    {
+        $query    = $this->db->query("SELECT * 
+                                        FROM satker 
+                                        WHERE NOT EXISTS 
+                                            (SELECT * 
+                                            FROM muser 
+                                            WHERE muser.satker = satker.kode_satker) and role = $role"
+                                    )->result();
+
+        return $query;
+    }
+
     public function getdatausers($param)
     {
         $nama = $this->session->userdata('id');
@@ -179,7 +192,7 @@ class Model_sys extends CI_Model {
                                         m.*,
                                         r.role_desc as role_desc
                                         from muser m
-                                        INNER JOIN role r on r.id_role = m.role where m.id != '".$id."' order by m.id desc")->result();
+                                        INNER JOIN role r on r.id_role = m.role where m.id != '".$id."' order by m.role asc")->result();
 
         return $query;
     }

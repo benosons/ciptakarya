@@ -109,21 +109,22 @@ class Sys extends CI_Controller {
 			echo json_encode($data);
 	}
 
-	public function loadkota(){
+	public function loadsatker(){
 
 			$params = $columns = $totalRecords = $data = array();
 			$params = $_REQUEST;
-			$postData = $this->input->post('param');
+			$postData = $this->input->post('role');
 
-			$query = $this->Model_sys->loadkota($postData);
+			$query = $this->Model_sys->loadsatker($postData);
 			$x = 0;
 			$i=0;
 			foreach ($query as $proses) {
 				$x++;
 				$row = array();
 				$row['id'] = (!empty($proses->id) ? $proses->id : "NULL");
-				$row['id_provinsi'] = (!empty($proses->id_provinsi) ? $proses->id_provinsi : "NULL");
-				$row['nama'] = (!empty($proses->nama) ? $proses->nama : "NULL");
+				$row['kode_satker'] = (!empty($proses->kode_satker) ? $proses->kode_satker : "NULL");
+				$row['nama_satker'] = (!empty($proses->nama_satker) ? $proses->nama_satker : "NULL");
+				$row['role'] = (!empty($proses->role) ? $proses->role : "NULL");
 
 				$data[] = $row;
 			}
@@ -135,12 +136,12 @@ class Sys extends CI_Controller {
 	{
 		$params = (object)$this->input->post();
 		// remove the part that we don't need from the provided image and decode it
-		$data = base64_decode(preg_replace('#^data:image/\w+;base64,#i', '', $params->img));
+		// $data = base64_decode(preg_replace('#^data:image/\w+;base64,#i', '', $params->img));
 
-		$filepath = "assets/img/users/".$params->username.".png"; // or image.jpg
-		chmod($filepath,0777);
-		file_put_contents($filepath,$data);
-		$params->foto = $filepath;
+		// $filepath = "assets/img/users/".$params->username.".png"; // or image.jpg
+		// chmod($filepath,0777);
+		// file_put_contents($filepath,$data);
+		// $params->foto = $filepath;
 
 		$data = $this->Model_sys->save($params);
 		header('Content-Type: application/json');

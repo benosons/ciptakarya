@@ -25,8 +25,18 @@
       <div class="col-12">
         <div class="card card-danger card-outline">
           <div class="card-header">
-            <h3 class="card-title"></h3>
-
+            <div class="card-title" style="width: 30%;">
+              <div class="form-group row">
+                <label for="" class="col-sm-5 col-form-label">Filter Akses</label>
+                <div class="col-sm-7">
+                  <select class="form-control" id="table-filter">
+                    <option value="">-All-</option>
+                    <option value="Direktorat">Direktorat</option>
+                    <option value="Balai">Balai</option>
+                  </select>
+                </div>
+              </div>
+            </div>
             <div class="card-tools">
               <div class="input-group input-group-sm">
                   <div class="btn btn-info" id="add-users">
@@ -43,14 +53,14 @@
                         <th>
                             No
                         </th>
-                        <th>
+                        <!-- <th>
                             Foto
-                        </th>
+                        </th> -->
                         <th>
                             Username
                         </th>
                         <th>
-                            Level
+                            Akses
                         </th>
                         <th>
                             Status
@@ -83,6 +93,33 @@
         <input id="id" hidden>
         <div class="row">
           <div class="col-md-4">
+            
+            <div class="form-group">
+              <label>Role</label>
+              <select class="form-control" id="role">
+                <option value="">-pilih-</option>
+                {% if role == 10 %}
+                <option value="10">Admin</option>
+                {% endif %}
+                <option value="20">Dirktorat</option>
+                <option value="30">Balai</option>
+              </select>
+            </div>
+
+          </div>
+
+          <div class="col-md-4">
+            
+            <div class="form-group">
+              <label>Satker</label>
+              <select class="form-control" id="satker">
+                <option value="">-pilih-</option>
+              </select>
+            </div>
+
+          </div>
+
+          <div class="col-md-4">
             <div class="form-group">
               <label>Nama Lengkap</label>
               <input id="name" name="user-input" type="text" class="form-control" placeholder="Nama Lengkap ...">
@@ -108,8 +145,6 @@
             </div>
 
           </div>
-          </div>
-          <div class="row">
 
           <div class="col-md-4">
             <label>Status</label>
@@ -117,48 +152,9 @@
               <input id="stat" type="checkbox" name="user-input" checked data-bootstrap-switch data-off-color="warning" data-on-color="primary" data-on-label="Ready" data-off-label="Not Ready">
             </div>
           </div>
-
-          <div class="col-md-4">
-            <label>Kategori</label>
-
-            <div class="form-group">
-              <div class="icheck-primary d-inline">
-                <input type="radio" id="super-admin" name="role" value="10" >
-                <label for="super-admin">
-                  Admin
-                </label>
-              </div>
-              <!-- <div class="icheck-primary d-inline">
-                <input type="radio" id="admin" name="role" value="20" >
-                <label for="admin">
-                  Admin
-                </label>
-              </div> -->
-              <div class="icheck-primary d-inline">
-                <input type="radio" id="user" name="role" value="30" checked>
-                <label for="user">
-                  User
-                </label>
-              </div>
-            </div>
-
-          </div>
-
+        
         </div>
-        <div class="row">
-          <div class="col-md-6">
-            <div class="custom-file" style="margin-bottom: 10px;margin-top: 10px;">
-              <input type="file" class="custom-file-input" id="foto-user" name="user-input">
-              <label class="custom-file-label" for="foto-user">Pilih foto</label>
-            </div>
-          </div>
-          <div class="col-md-6">
-            <div class="text-center">
-                <img id="blah" class="profile-user-img img-fluid" src="assets/img/users/default.jpg" alt="User profile picture">
-                <canvas hidden id="myCanvas"/>
-            </div>
-          </div>
-        </div>
+     
       </div>
       <div class="modal-footer">
         <!-- <button type="button" class="btn btn-primary">Tutup</button> -->
@@ -195,7 +191,7 @@
                 <b>Status</b> <a class="float-right" id="detail-status">543</a>
               </li>
               <li class="list-group-item">
-                <b>Jenis User</b> <a class="float-right" id="detail-role">13,287</a>
+                <b>Akses</b> <a class="float-right" id="detail-role">13,287</a>
               </li>
             </ul>
 
