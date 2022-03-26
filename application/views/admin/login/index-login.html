@@ -27,7 +27,6 @@
       <div class="card-body">
         <p class="login-box-msg h2"><b>Login</b></p>
         
-  
         <form method="post" action="auth/">
           <div class="input-group mb-3">
                 <input type="text" name="username" id="username" class="form-control" placeholder="username">
@@ -46,13 +45,16 @@
             </div>
           </div>
           <div class="row">
+            <div class="col-12">
+              {% if message %}
+                <h6 class="text-danger" >
+                  {{message}}
+                </h6>
+                {% endif %}
+            </div>
+          </div>
+          <div class="row">
             <div class="col-8">
-              <div class="icheck-primary" hidden>
-                <input type="checkbox" id="remember">
-                <label for="remember">
-                  Remember Me
-                </label>
-              </div>
             </div>
             <!-- /.col -->
             <div class="col-4">

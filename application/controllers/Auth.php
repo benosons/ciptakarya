@@ -54,18 +54,17 @@ class Auth extends CI_Controller {
 			if($_POST){
 				$params = (object)$this->input->post();
 				$valid = $this->Model_auth->loginAuth($params->username, $params->password);
-
+				
 				if ($valid->valid){
-					if($valid->role == '10' || $valid->role == '20'){
-						redirect("dashboard");
-					}else if($valid->role == '30'){
+					// if($valid->role == '10' || $valid->role == '20' ){
+					// 	redirect("dashboard");
+					// }else if($valid->role == '30'){
 						$this->session->set_flashdata('msg', 'Login Berhasil!');
 						$this->session->set_flashdata('cd', '1');
 						redirect("/");
-					}
+					// }
 				}else{
 					// jang status muncul alert
-
 					$this->session->set_flashdata('msg', 'User atau Password salah silahkan cek kembali!');
 					$this->session->set_flashdata('cd', '3');
 					redirect("auth");
