@@ -59,9 +59,10 @@ class Auth extends CI_Controller {
 					// if($valid->role == '10' || $valid->role == '20' ){
 					// 	redirect("dashboard");
 					// }else if($valid->role == '30'){
-						$this->session->set_flashdata('msg', 'Login Berhasil!');
+						
+						// $this->session->set_flashdata('msg', 'Login Berhasil!');
 						$this->session->set_flashdata('cd', '1');
-						redirect("/");
+						redirect("dashboard");
 					// }
 				}else{
 					// jang status muncul alert
