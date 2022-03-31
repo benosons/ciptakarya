@@ -76,6 +76,7 @@
       </div>
       <div class="modal-body">
         <input id="id" hidden>
+        <input id="idfile" hidden>
           <div class="row">
             <div class="col-md-12">
               <div class="form-group">
@@ -84,11 +85,32 @@
               </div>
             </div>
             <div class="col-md-12">
-              <div class="form-group">
-                <label>Isi Text</label>
-                <input id="isi" name="text-input" type="text" class="form-control" placeholder=" ...">
+            <label>Pilih Salah Satu</label>
+            <div class="form-group">
+              <div class="btn-group" role="group" aria-label="Basic example">
+                <button type="button" id="link" class="btn btn-info active">Link</button>
+                <button type="button" id="hal" class="btn btn-info">Halaman</button>
               </div>
             </div>
+            <input type="text" id="tipe" value="link" hidden>
+            <div>
+              <div class="form-group" id="form-link">
+                <label>Link Teks</label>
+                <input id="link-teks" name="link-teks" type="text" class="form-control" placeholder="Masukan Link Teks ...">
+              </div>
+              <div class="form-group" id="form-hal">
+                <label class="">File</label>
+                <div class="text-center">
+                    <img id="blah_1" name="images" class="img-fluid" src="assets/img/no-image.png" alt="picture" hidden>
+                    <canvas hidden id="myCanvas_1"/>
+                </div>
+                <div class="custom-file" style="margin-bottom: 10px;margin-top: 10px;">
+                  <input type="file" class="custom-file-input" id="image_1" name="image_input">
+                  <label class="custom-file-label" id="label-file" for="image_1">Pilih File</label>
+                </div>
+              </div>
+            </div>
+          </div>
           </div>
         <div class="row">
           <div class="col-md-12">

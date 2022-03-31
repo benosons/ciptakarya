@@ -1,7 +1,7 @@
 $(function () {
 
   console.log('You are running jQuery version: ' + $.fn.jquery);
-  $('#summernote').summernote({
+  $('.summernote').summernote({
     height: 200,   //set editable area's height
     codemirror: { // codemirror options
       theme: 'monokai'
@@ -46,14 +46,9 @@ $(function () {
       show: true
     });
     $('#id').val('');
-    $('.modal-title').html('<i class="fas fa-newspaper"></i> Tambah Berita');
-    $('#username').attr('disabled', false);
-    $('#password').attr('disabled', false);
-    $("[name='user-input']").val('');
-    // $("#kota-kab").select2('data', {}).trigger('change');
-    $('#kota-kab').val(0).trigger('change');
-    $('#blah').attr('src', 'assets/img/no-image.png');
-    $('label[for="foto-user"]').text('Pilih Foto');
+    $('.modal-title').html('<i class="fas fa-newspaper"></i> Tambah Agenda');
+    // $('#blah').attr('src', 'assets/img/no-image.png');
+    // $('label[for="foto-user"]').text('Pilih Foto');
   });
 
   $('#save-user').on('click', function(){
@@ -67,6 +62,10 @@ $(function () {
       saveUser(st);
     }
   });
+
+  $('#save-agenda').click(function(){
+    savedata(st);
+  })
 
   $('#name').keyup(function(){$(this).attr('class', 'form-control')});
   $('#username').keyup(function(){$(this).attr('class', 'form-control')});
@@ -128,7 +127,7 @@ function loadkota(){
             dataType: 'json',
             url: 'getdata',
             data : {
-                    param      : 'berita',
+                    param      : 'data_agenda',
              },
             success: function(result){
               
@@ -145,13 +144,10 @@ function loadkota(){
                       pageLength: 10,
                       aaData: result.data,
                         aoColumns: [
-                            { 'mDataProp': 'id'},
-                            { 'mDataProp': 'img'},
-                            { 'mDataProp': 'username'},
-                            { 'mDataProp': 'role_desc'},
-                            { 'mDataProp': 'status'},
-                            { 'mDataProp': 'islogin'},
-                            { 'mDataProp': 'id'},
+                          { 'mDataProp': 'id'},
+                          { 'mDataProp': 'deskripsi'},
+                          { 'mDataProp': 'status'},
+                          { 'mDataProp': 'id'},
                             // { 'mDataProp': 'role'},
                         ],
                         order: [[0, 'ASC']],
@@ -160,60 +156,73 @@ function loadkota(){
                           //   targets: [7],
                           //   visible: false
                           // },
-                            {
-                                mRender: function (data, type, row){
-                                    var $rowData = '';
-                                        $rowData += `
-                                                  <div class="row">
-                                                    <div class="col-md-4">
-                                                      <button onclick="modaldetail('`+row.id+`','`+row.username+`','`+row.role_desc+`','`+row.status+`','`+row.name+`','`+row.img+`')" type="button" class="btn btn-block btn-success btn-xs"><i class="far fa-eye"></i></button>
-                                                    </div>
-                                                    <div class="col-md-4">
-                                                      <button onclick="edituser('`+row.id+`','`+row.username+`','`+row.password+`','`+row.status+`','`+row.role+`','`+row.name+`','`+row.img+`')" type="button" class="btn btn-block btn-warning btn-xs"><i class="far fa-edit"></i></button>
-                                                    </div>
-                                                    <div class="col-md-4">
-                                                      <button onclick="deleteData(`+row.id+`)" type="button" class="btn btn-block btn-danger btn-xs"><i class="fas fa-trash-alt"></i></button>
-                                                    </div>
-                                                  </div>
-                                                    `;
-
-                                    return $rowData;
-                                },
-                                aTargets: [6]
+                          {
+                            mRender: function (data, type, row){
+                              
+                                var stat = row.status;
+                                
+                                if(stat == 1){
+                                  var st = `<a class="dropdown-item" href="#" onclick="updatepublish(`+row.id+`,0)"><i class="fas fa-sign-out-alt"></i> No Publish</a>`
+                                }else{
+                                  var st = `<a class="dropdown-item" href="#" onclick="updatepublish(`+row.id+`,1)"><i class="fas fa-sign-out-alt"></i> Publish</a>`;
+                                }
+  
+                                var $rowData = '';
+                                    $rowData += `
+                                    <div class="btn-group">
+                                      <button type="button" class="btn btn-info">Action</button>
+                                      <button type="button" class="btn btn-info dropdown-toggle dropdown-icon" data-toggle="dropdown">
+                                        <span class="sr-only">Toggle Dropdown</span>
+                                      </button>
+                                      <div class="dropdown-menu" role="menu">
+                                        <a class="dropdown-item" href="javascript:void(0)" onclick="editdong('`+row.id+`','`+row.deskripsi+`','`+row.tanggal+`','`+row.status+`')"><i class="far fa-edit"></i> Edit</a>
+                                        <a class="dropdown-item" href="#" onclick="deleteData(`+row.id+`)
+                                        "><i class="far fa-trash-alt"></i> Hapus</a>
+                                        <div class="dropdown-divider"></div>
+                                        `+st+`
+                                      </div>
+                                    </div>`;
+  
+                                return $rowData;
+                              },
+                                aTargets: [3]
                             },
                             {
-                                mRender: function (data, type, row){
-                                  var $rowData = '';
-                                  if(row.islogin == 1){
-                                        $rowData +=`<span class="badge badge-success right">Online</span>`;
-                                      }else{
-                                        $rowData +=`<span class="badge badge-default right">Offline</span>`;
-                                      }
-
-                                    return $rowData;
-                                },
-                                aTargets: [5]
+                              mRender: function (data, type, row){
+                                var stat = row.status;
+                                if(stat == 1){
+                                  var st = 'Publish'
+                                  var tex = 'text-success';
+                                }else{
+                                  var st = 'No Publish'
+                                  var tex = 'text-danger';
+                                }
+                                var $rowData = '';
+                                $rowData += `<div class="card">
+                                <div class="card-body">
+                                  <div class="d-flex justify-content-between">
+                                    <p class="text-primary text-sm">
+                                      <i class="far fa-calendar-alt"></i>
+                                    </p>
+                                    <p class="d-flex flex-column">
+                                      <span class="text-muted"> `+row.tanggal+`</span>
+                                    </p>
+                                  </div>
+                                  <div class="d-flex justify-content-between">
+                                    <p class="`+tex+` text-sm">
+                                      <i class="fas fa-sign-in-alt"></i>
+                                    </p>
+                                    <p class="d-flex flex-column ">
+                                      <span class="text-muted">`+st+`</span>
+                                    </p>
+                                  </div>
+                                  </div>
+                                </div>`;
+  
+                                  return $rowData;
+                              },
+                              aTargets: [2]
                             },
-                            {
-                                mRender: function (data, type, row){
-                                  var $rowData = '';
-                                  if(row.status == 1){
-                                        $rowData +=`<span class="badge badge-primary right">Aktif</span>`;
-                                      }else{
-                                        $rowData +=`<span class="badge badge-warning right">Non Aktif</span>`;
-                                      }
-
-                                    return $rowData;
-                                },
-                                aTargets: [4]
-                            },
-                            {
-                                mRender: function (data, type, row){
-                                  var $rowData = '<img src="'+row.img+'" style="width: 35px;"></img>';
-                                    return $rowData;
-                                },
-                                aTargets: [1]
-                            }
                         ],
 
                         fnRowCallback: function(nRow, aData, iDisplayIndex, iDisplayIndexFull){
@@ -246,6 +255,75 @@ function loadkota(){
             }
         });
     }
+
+    function savedata(st){
+      var img = window.img;
+      var id = $('#id').val();
+      var deskripsi = $('#deskripsi').val();
+      var tanggal = $('#tanggal').val();
+      // if (tipe == "link") {
+      //   var keterangan = $('#link-teks').val();
+      // }else if(tipe == "halaman"){
+      //   var keterangan =$('#halaman').val();
+      // }
+      var status = $('#stat').val();
+
+      var formData = new FormData();
+      formData.append('id', id);
+      formData.append('deskripsi', deskripsi);
+      formData.append('tanggal', tanggal);
+      
+      // var iscapt = [];
+      // for (let index = 0; index < $("[name='image_input']").length; index++) {
+      //   var src = $("[name='image_input']")[index].files[0];
+        
+      //   formData.append('files[]', src);
+      // }
+      var stat;
+      switch (st) {
+        case false:
+          stat = '0';
+          break;
+      default:
+        stat = '1'
+      }
+
+        formData.append('status', stat);
+
+        if(id){
+          formData.append('idfile', $('#idfile').val());
+
+          var baseurl = 'updatedataagenda';
+          var msg = 'Update Agenda';
+
+        }else{
+          var baseurl = 'savedataagenda';
+          var msg = 'Tambah Agenda';
+        }
+
+        $.ajax({
+          type: 'post',
+          url: baseurl,
+          dataType: 'json',
+          cache: false,
+          contentType: false,
+          processData: false,
+          data: formData,
+          async:false,
+            success: function(result){
+              Swal.fire({
+                title: 'Sukses!',
+                text: msg,
+                icon: 'success',
+                showConfirmButton: false,
+                timer: 1500
+              });
+
+              $('#modal-default').modal('hide');
+              loaddata();
+            }
+          });
+    };
 
     function saveUser(st){
       var img = window.img;
@@ -448,4 +526,43 @@ function cekusername(uname){
 
     function pilihgambar(ini){
       readURL(ini);
+    }
+
+    function editdong(id, deskripsi,tanggal, status){
+      $('#add-berita').trigger('click');
+      $('.modal-title').html('<i class="fas fa-images"></i> Edit Agenda');
+      $('#id').val(id);
+      $('#deskripsi').summernote('code',deskripsi);
+      $('#tanggal').val(tanggal);
+      $("#stat").bootstrapSwitch('state', status == '1' ? true : false);
+    
+    }
+
+    function updatepublish(id,stat){
+      var formData = new FormData();
+      formData.append('id', id);
+      formData.append('status', stat);
+      
+      $.ajax({
+        type: 'post',
+        url: 'updateagenda',
+        dataType: 'json',
+        cache: false,
+        contentType: false,
+        processData: false,
+        data: formData,
+        async:false,
+          success: function(result){
+            Swal.fire({
+              title: 'Sukses!',
+              text: 'Agenda telah di publish',
+              icon: 'success',
+              showConfirmButton: false,
+              timer: 1500
+            });
+
+            $('#modal-default').modal('hide');
+            loaddata();
+          }
+        });
     }

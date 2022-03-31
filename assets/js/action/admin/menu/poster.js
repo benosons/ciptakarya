@@ -185,20 +185,20 @@ $(function () {
                                       var st = `<a class="dropdown-item" href="#" onclick="updatepublish(`+row.id+`,1)"><i class="fas fa-sign-out-alt"></i> Publish</a>`;
                                     }
 
-                                    var $rowData = '';
-                                        $rowData += `
-                                        <div class="btn-group">
-                                        <button type="button" class="btn btn-info">Action</button>
-                                        <button type="button" class="btn btn-info dropdown-toggle dropdown-icon" data-toggle="dropdown">
-                                          <span class="sr-only">Toggle Dropdown</span>
-                                        </button>
-                                        <div class="dropdown-menu" role="menu">
-                                          <a class="dropdown-item" href="#" onclick="editdong('`+row.id+`', '`+row.judul+`', '`+row.bulan+`', '`+row.tahun+`', '`+file+`','`+idfile+`','`+stat+`')"><i class="far fa-edit"></i> Edit</a>
-                                          <a class="dropdown-item" href="#" onclick="deleteData(`+row.id+`, `+id_file+`, '`+path+`')"><i class="far fa-trash-alt"></i> Hapus</a>
-                                          <div class="dropdown-divider"></div>
-                                          `+st+`
-                                        </div>
-                                      </div>`;
+                                    // var $rowData = '';
+                                    //     $rowData += `
+                                    //     <div class="btn-group">
+                                    //     <button type="button" class="btn btn-info">Action</button>
+                                    //     <button type="button" class="btn btn-info dropdown-toggle dropdown-icon" data-toggle="dropdown">
+                                    //       <span class="sr-only">Toggle Dropdown</span>
+                                    //     </button>
+                                    //     <div class="dropdown-menu" role="menu">
+                                    //       <a class="dropdown-item" href="#" onclick="editdong('`+row.id+`', '`+row.judul+`', '`+row.bulan+`', '`+row.tahun+`', '`+file+`','`+idfile+`','`+stat+`')"><i class="far fa-edit"></i> Edit</a>
+                                    //       <a class="dropdown-item" href="#" onclick="deleteData(`+row.id+`, `+id_file+`, '`+path+`')"><i class="far fa-trash-alt"></i> Hapus</a>
+                                    //       <div class="dropdown-divider"></div>
+                                    //       `+st+`
+                                    //     </div>
+                                    //   </div>`;
 
                                     return $rowData;
                                 },

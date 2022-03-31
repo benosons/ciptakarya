@@ -37,7 +37,7 @@
           </div>
           <div class="card-body">
             <input id="param" value="User" hidden>
-            <table class="table table-bordered table-hover" id="listberita">
+            <table class="table table-bordered table-hover" id="listgrafis">
                 <thead>
                     <tr>
                         <th>
@@ -75,41 +75,30 @@
       </div>
       <div class="modal-body">
         <input id="id" hidden>
+        <input id="idfile" hidden>
           <div class="row">
             <div class="col-md-12">
               <div class="form-group">
-                <label>Judul Berita</label>
-                <input id="" name="berita-input" type="text" class="form-control" placeholder="Judul Berita ...">
+                <label>Judul Gambar Infografis</label>
+                <input id="judul" name="judul" type="text" class="form-control" placeholder="Judul Berita">
               </div>
             </div>
             <div class="col-md-12">
               <div class="form-group">
-                <label>Intro Berita</label>
-                <textarea id="" name="berita-input" type="text" class="form-control" placeholder="..."></textarea>
-              </div>
-            </div>
-            <div class="col-md-12">
-              <div class="form-group">
-                <label>Tag</label>
-                <input id="" name="berita-input" type="text" class="form-control" placeholder="...">
-              </div>
-            </div>
-            <div class="col-md-12">
-              <div class="form-group">
-                <label>Isi</label>
-                <textarea id="summernote">
-                  
-                </textarea>
+                <label>Tahun</label>
+                <select class="form-control select2bs4" style="width: 100%;" id="tahun">
+                  <option value="0">-Pilih-</option>
+                  <option value="2022">2022</option>
+                </select>
               </div>
             </div>
           </div>
-
         
           <div class="row">
             <div class="col-md-12">
               <div class="card card-light card-outline">
                 <div class="card-header">
-                  <label class="">Upload Gambar</label>
+                  <label class="">Gambar Slide</label>
                   <div class="card-tools">
                     <a onclick="addgambar()" class="btn btn-tool">
                       <i class="fas fa-plus"></i>
@@ -137,7 +126,7 @@
                               <input type="file" class="custom-file-input" id="image_1" name="image_input">
                               <label class="custom-file-label" for="image_1">Pilih foto</label>
                             </div>
-                          <input id="caption_1" name="caption" type="text" class="form-control" placeholder="Caption">
+                          <!-- <input id="caption_1" name="caption" type="text" class="form-control" placeholder="Caption"> -->
                           </div>
                         </div>
                       </div>
@@ -154,32 +143,6 @@
         </div>
 
         <div class="row">
-
-          <div class="col-md-12">
-            <div class="form-group">
-              <label>Bagian</label>
-              <select class="form-control select2bs4" style="width: 100%;">
-                <option selected="selected">Alabama</option>
-                <option>Alaska</option>
-                <option>California</option>
-                <option>Delaware</option>
-                <option>Tennessee</option>
-                <option>Texas</option>
-                <option>Washington</option>
-              </select>
-            </div>
-          </div>
-          <div class="col-md-12">
-            <div class="form-group">
-              <label>Date:</label>
-                <div class="input-group date" id="reservationdate" data-target-input="nearest">
-                    <input type="text" class="form-control datetimepicker-input" data-target="#reservationdate"/>
-                    <div class="input-group-append" data-target="#reservationdate" data-toggle="datetimepicker">
-                        <div class="input-group-text"><i class="fa fa-calendar"></i></div>
-                    </div>
-                </div>
-          </div>
-
           <div class="col-md-12">
             <label>Publikasi</label>
             <div class="form-group">
@@ -192,7 +155,7 @@
       </div>
       <div class="modal-footer">
         <!-- <button type="button" class="btn btn-primary">Tutup</button> -->
-        <button id="save-user" type="button" class="btn btn-success" ><i class="fas fa-check"> </i> Simpan</button>
+        <button id="save-grafis" type="button" class="btn btn-success" ><i class="fas fa-check"> </i> Simpan</button>
       </div>
     </div>
     <!-- /.modal-content -->
@@ -253,6 +216,12 @@
 {% block js %}
 <script>
 $(function () {
+  $(".num").keypress(function (e){
+      var charCode = (e.which) ? e.which : e.keyCode;
+      if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+        return false;
+      }
+    });
   bsCustomFileInput.init();
 });
 </script>

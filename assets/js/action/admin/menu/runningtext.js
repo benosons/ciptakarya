@@ -30,6 +30,21 @@ $(function () {
   
   $('#modal-default').on('show.bs.modal', function(){
   })
+  $('#form-hal').hide();
+  $('#link').click(function(){
+    $('#link').addClass('active');
+    $('#hal').removeClass('active');
+    $('#form-hal').hide();
+    $('#form-link').show();
+    $('#tipe').val('link');
+  })
+  $('#hal').click(function(){
+    $('#hal').addClass('active');
+    $('#link').removeClass('active');
+    $('#form-link').hide();
+    $('#form-hal').show();
+    $('#tipe').val('halaman');
+  })
 
   $('.bootstrap-switch-handle-on').html('Ya');
   $('.bootstrap-switch-handle-off').html('Tidak');
@@ -44,6 +59,9 @@ $(function () {
       show: true
     });
     $('#id').val('');
+    $('#label-file').html('Pilih File');
+    $('#link-teks').val('');
+    $('#blah').attr('src', 'assets/img/no-image.png');
     $('.modal-title').html('<i class="fas fa-info-circle"></i> Tambah Running Text');
 
   });
@@ -115,6 +133,7 @@ function loadkota(){
             url: 'getdata',
             data : {
                     param      : 'data_text',
+                    type      : 'text',
              },
             success: function(result){
               
@@ -142,6 +161,42 @@ function loadkota(){
                         aoColumnDefs:[
                           {
                             mRender: function (data, type, row){
+                                var linkurl = '';
+                                if (row.files) {
+                                  var id_file = row.files[0].id;
+                                  var path = row.files[0].path+'/'+row.files[0].filename;
+                                  
+                                  var stat = row.status;
+                                  var file = ''
+                                  for( var key in row.files ) {
+                                    file = row.files[key].path+'/'+row.files[key].filename;
+                                    idfile = row.files[key].id;
+                                    caption = row.files[key].caption;
+                                  }
+                                  linkurl += row.files[key].path+'/'+row.files[key].filename;
+                                }else{
+                                  linkurl = row.isi;
+                                }
+                                var $rowData = '';
+                                    $rowData += `
+                                      <span> <i class="fa fa-globe"> </i>
+                                      <a href='`+linkurl+`' target="_blank" class="link-primary">Klik disini</a> </span>
+                                    `;
+  
+                                return $rowData;
+                            },
+                            aTargets: [2]
+                        },
+                          {
+                            mRender: function (data, type, row){
+                              var stat = row.status;
+                                  if(stat == 1){
+                                    var st = 'Publish'
+                                    var tex = 'text-success';
+                                  }else{
+                                    var st = 'No Publish'
+                                    var tex = 'text-danger';
+                                  }
 
                               var split_date = row.date.split(" - ");
                               
@@ -168,7 +223,15 @@ function loadkota(){
                                           <i class="far fa-calendar-alt"></i>
                                         </p>
                                         <p class="d-flex flex-column">
-                                          <span class="text-muted"> `+str_1+`</span> -- <span class="text-muted"> `+str_2+`</span>
+                                          <span class="text-muted"> Dari `+str_1+`</span>
+                                        </p>
+                                      </div>
+                                      <div class="d-flex justify-content-between">
+                                        <p class="text-primary text-sm">
+                                          <i class="far fa-calendar-alt"></i>
+                                        </p>
+                                        <p class="d-flex flex-column">
+                                          <span class="text-muted"> Hingga `+str_2+`</span>
                                         </p>
                                       </div>
                                       <!-- /.d-flex ->
@@ -182,11 +245,11 @@ function loadkota(){
                                       </div>
                                       <!- /.d-flex -->
                                       <div class="d-flex justify-content-between">
-                                        <p class="text-success text-sm">
+                                        <p class="`+tex+` text-sm">
                                           <i class="fas fa-sign-in-alt"></i>
                                         </p>
                                         <p class="d-flex flex-column ">
-                                          <span class="text-muted">Tayang</span>
+                                          <span class="text-muted">`+st+`</span>
                                         </p>
                                       </div>
                                       <!-- /.d-flex -->
@@ -199,21 +262,58 @@ function loadkota(){
                         },
                         {
                           mRender: function (data, type, row){
-                              var $rowData = '';
+                            var stat = row.status;
+                            var linkurl = '';
+                            if(stat == 1){
+                              var st = `<a class="dropdown-item" href="#" onclick="updatepublish(`+row.id+`,0)"><i class="fas fa-sign-out-alt"></i> No Publish</a>`
+                            }else{
+                              var st = `<a class="dropdown-item" href="#" onclick="updatepublish(`+row.id+`,1)"><i class="fas fa-sign-out-alt"></i> Publish</a>`;
+                            }
+                                if (row.files) {
+                                  var id_file = row.files[0].id;
+                                  var path = row.files[0].path+'/'+row.files[0].filename;
+                                  
+                                  var stat = row.status;
+                                  var file = ''
+                                  for( var key in row.files ) {
+                                    file = row.files[key].path+'/'+row.files[key].filename;
+                                    idfile = row.files[key].id;
+                                    caption = row.files[key].caption;
+                                  }
+                                  var $rowData = '';
                                   $rowData += `
                                   <div class="btn-group">
-                                  <button type="button" class="btn btn-info">Action</button>
-                                  <button type="button" class="btn btn-info dropdown-toggle dropdown-icon" data-toggle="dropdown">
-                                    <span class="sr-only">Toggle Dropdown</span>
-                                  </button>
-                                  <div class="dropdown-menu" role="menu">
-                                    <a class="dropdown-item" href="#"><i class="far fa-edit"></i> Edit</a>
-                                    <a class="dropdown-item" href="#"><i class="far fa-trash-alt"></i> Hapus</a>
-                                    <div class="dropdown-divider"></div>
-                                    <a class="dropdown-item" href="#"><i class="fas fa-sign-out-alt"></i> Tidak Tayang</a>
-                                  </div>
-                                </div>`;
-
+                                    <button type="button" class="btn btn-info">Action</button>
+                                    <button type="button" class="btn btn-info dropdown-toggle dropdown-icon" data-toggle="dropdown">
+                                      <span class="sr-only">Toggle Dropdown</span>
+                                    </button>
+                                    <div class="dropdown-menu" role="menu">
+                                      <a class="dropdown-item" href="javascript:void(0)" onclick="editdong('`+row.id+`','`+row.judul+`','`+row.tipe+`','`+row.isi+`','`+row.date+`','`+row.status+`','`+file+`','`+idfile+`','`+row.files[0].filename+`')"><i class="far fa-edit"></i> Edit</a>
+                                      <a class="dropdown-item" href="#" onclick="deleteData(`+row.id+`, `+id_file+`, '`+path+`')
+                                      "><i class="far fa-trash-alt"></i> Hapus</a>
+                                      <div class="dropdown-divider"></div>
+                                      `+st+`
+                                    </div>
+                                  </div>`;
+                                  linkurl += row.files[key].path+'/'+row.files[key].filename;
+                                }else{
+                                  linkurl = row.isi;
+                                  var $rowData = '';
+                                  $rowData += `
+                                  <div class="btn-group">
+                                    <button type="button" class="btn btn-info">Action</button>
+                                    <button type="button" class="btn btn-info dropdown-toggle dropdown-icon" data-toggle="dropdown">
+                                      <span class="sr-only">Toggle Dropdown</span>
+                                    </button>
+                                    <div class="dropdown-menu" role="menu">
+                                      <a class="dropdown-item" href="javascript:void(0)" onclick="editdong('`+row.id+`','`+row.judul+`','`+row.tipe+`','`+row.isi+`','`+row.date+`','`+row.status+`')"><i class="far fa-edit"></i> Edit</a>
+                                      <a class="dropdown-item" href="#" onclick="deleteData(`+row.id+`)
+                                      "><i class="far fa-trash-alt"></i> Hapus</a>
+                                      <div class="dropdown-divider"></div>
+                                      `+st+`
+                                    </div>
+                                  </div>`;
+                                }
                               return $rowData;
                           },
                           aTargets: [4]
@@ -254,13 +354,26 @@ function loadkota(){
 
     function savetext(st){
       var stat;
-
+      var img = window.img;
       var id = $('#id').val();
       var judul = $('#judul').val();
+      var tipe = $('#tipe').val();
+      var formData = new FormData();
+      if (tipe == "link") {
+        var isi = $('#link-teks').val();
+      }else if(tipe == "halaman"){
+        var isi = '-';
+        var iscapt = [];
+        for (let index = 0; index < $("[name='image_input']").length; index++) {
+          var src = $("[name='image_input']")[index].files[0];
+          
+          formData.append('files[]', src);
+        }
 
-      var isi = $('#isi').val();
+      }
       var reservation = $('#reservation').val();
 
+      
         switch (st) {
           case false:
               stat = '0';
@@ -270,21 +383,22 @@ function loadkota(){
         }
 
         if($('#id').val()){
-          var baseurl = 'updateUser';
-          var msg = 'Update User';
+          formData.append('idfile', $('#idfile').val());
+          var baseurl = 'updatedatatext';
+          var msg = 'Update Running Text';
 
         }else{
-          var baseurl = 'saveglobal';
+          var baseurl = 'savedatatext';
           var msg = 'Tambah Running Text';
         }
-        alert();
 
-        var formData = new FormData();
         formData.append('id', id);
         formData.append('judul', judul);
+        formData.append('tipe', tipe);
         formData.append('isi', isi);
         formData.append('date', reservation);
-        formData.append('table', 'data_text');
+        formData.append('status',stat);
+        // formData.append('table', 'data_text');
 
         $.ajax({
           type: 'post',
@@ -305,7 +419,7 @@ function loadkota(){
               });
 
               $('#modal-default').modal('hide');
-              loaddatauser();
+              location.reload();
             }
           });
         };
@@ -331,8 +445,8 @@ function edituser(id, username, password, status, role, name, foto){
   }
 }
 
-function deleteData(id)
-{
+
+function deleteData(id, id_file, path){
   const swalWithBootstrapButtons = Swal.mixin({
     customClass: {
       confirmButton: 'btn btn-success btn-sm swal2-styled-custom',
@@ -342,7 +456,7 @@ function deleteData(id)
   });
 
   swalWithBootstrapButtons.fire({
-    title: 'Anda Yakin, hapus user ini?',
+    title: 'Anda yakin, hapus running text ini?',
     text: "",
     icon: 'warning',
     showCancelButton: true,
@@ -354,25 +468,26 @@ function deleteData(id)
     $.ajax({
       type: 'post',
       dataType: 'json',
-      url: 'deleteuser',
+      url: 'deletetext',
       data : {
               id    : id,
+              id_file    : id_file,
+              path    : path,
             },
       success: function(data)
       {
         Swal.fire({
           title: 'Sukses!',
-          text: 'Hapus User',
+          text: 'Hapus Running Text',
           icon: 'success',
           showConfirmButton: false,
           timer: 1500
         });
-        loaddatauser();
+        loaddata();
       }
     });
   }
-})
-
+  })
 }
 
 function readURL(input) {
@@ -462,4 +577,57 @@ function cekusername(uname){
 
     function pilihgambar(ini){
       readURL(ini);
+    }
+
+    function editdong(id, judul, tipe, isi, tanggal, status, path, idfile,filename){
+      $('#add-foto').trigger('click');
+      $('.modal-title').html('<i class="fas fa-images"></i> Edit Running Text');
+      $('#id').val(id);
+      $('#idfile').val(idfile);
+      $('#judul').val(judul);
+      $('#tipe').val(tipe);
+      $('#reservation').val(tanggal);
+      if (tipe =='link') {
+        $('#label-file').html('Pilih File');
+      }else{
+        $('#label-file').html(filename);
+      }
+      if (tipe == 'link') {
+        $('#link').trigger('click');
+        $('#link-teks').val(isi);
+      }else if(tipe == "halaman"){
+        $('#hal').trigger('click');
+        $('#blah_1').attr('src', path);
+      }
+      $("#stat").bootstrapSwitch('state', status == '1' ? true : false);
+    
+    }
+
+    function updatepublish(id,stat){
+      var formData = new FormData();
+      formData.append('id', id);
+      formData.append('status', stat);
+      
+      $.ajax({
+        type: 'post',
+        url: 'updatetext',
+        dataType: 'json',
+        cache: false,
+        contentType: false,
+        processData: false,
+        data: formData,
+        async:false,
+          success: function(result){
+            Swal.fire({
+              title: 'Sukses!',
+              text: 'Banner telah di publish',
+              icon: 'success',
+              showConfirmButton: false,
+              timer: 1500
+            });
+
+            $('#modal-default').modal('hide');
+            loaddata();
+          }
+        });
     }

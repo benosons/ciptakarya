@@ -42,6 +42,18 @@ class Model_data extends CI_Model {
         $this->db->where('id', $id->id);
         $this->db->delete('data_poster');
     }
+    public function deletebanner($id)
+    {
+        // $idx = $this->db->escape_str($id);
+        $this->db->where('id', $id->id);
+        $this->db->delete('data_banner');
+    }
+    public function deletetext($id)
+    {
+        // $idx = $this->db->escape_str($id);
+        $this->db->where('id', $id->id);
+        $this->db->delete('data_text');
+    }
 
     public function deletefoto($id)
     {
@@ -72,6 +84,69 @@ class Model_data extends CI_Model {
         $this->db->set('update_date', $params->update_date);
         $this->db->where('id', $params->id);
         $this->db->update('data_berita');
+        
+        return $valid;
+
+    }
+    public function updatedatagrafis($params = NULL)
+    {
+        $valid = true;
+       
+        $this->db->set('judul', $params->judul);
+        $this->db->set('tahun', $params->tahun);
+        $this->db->set('status', $params->status);
+        $this->db->set('updated_by', $params->updated_by);
+        $this->db->set('updated_at', $params->updated_at);
+        $this->db->where('id', $params->id);
+        $this->db->update('data_grafis');
+        
+        return $valid;
+
+    }
+    public function updatedatatext($params = NULL)
+    {
+        $valid = true;
+       
+        $this->db->set('judul', $params->judul);
+        $this->db->set('tipe', $params->tipe);
+        $this->db->set('isi', $params->isi);
+        $this->db->set('date', $params->date);
+        $this->db->set('status', $params->status);
+        $this->db->set('update_by', $params->updated_by);
+        $this->db->set('update_date', $params->updated_at);
+        $this->db->where('id', $params->id);
+        $this->db->update('data_text');
+        
+        return $valid;
+
+    }
+    public function updatedatabanner($params = NULL)
+    {
+        $valid = true;
+       
+        $this->db->set('judul', $params->judul);
+        $this->db->set('tipe', $params->tipe);
+        $this->db->set('keterangan', $params->keterangan);
+        $this->db->set('status', $params->status);
+        $this->db->set('updated_by', $params->updated_by);
+        $this->db->set('updated_at', $params->updated_at);
+        $this->db->where('id', $params->id);
+        $this->db->update('data_banner');
+        
+        return $valid;
+
+    }
+    public function updatedataagenda($params = NULL)
+    {
+        $valid = true;
+       
+        $this->db->set('deskripsi', $params->deskripsi);
+        $this->db->set('tanggal', $params->tanggal);
+        $this->db->set('status', $params->status);
+        $this->db->set('updated_by', $params->updated_by);
+        $this->db->set('updated_at', $params->updated_at);
+        $this->db->where('id', $params->id);
+        $this->db->update('data_agenda');
         
         return $valid;
 
@@ -112,6 +187,19 @@ class Model_data extends CI_Model {
 
     }
 
+    public function updateagenda($params = NULL)
+    {
+        $valid = true;
+       
+        $this->db->set('status', $params->status);
+        $this->db->set('updated_by', $params->updated_by);
+        $this->db->set('updated_at', $params->updated_date);
+        $this->db->where('id', $params->id);
+        $this->db->update('data_agenda');
+        
+        return $valid;
+
+    }
     public function updateberita($params = NULL)
     {
         $valid = true;
@@ -121,6 +209,45 @@ class Model_data extends CI_Model {
         $this->db->set('update_date', $params->update_date);
         $this->db->where('id', $params->id);
         $this->db->update('data_berita');
+        
+        return $valid;
+
+    }
+    public function updategrafis($params = NULL)
+    {
+        $valid = true;
+       
+        $this->db->set('status', $params->status);
+        $this->db->set('updated_by', $params->updated_by);
+        $this->db->set('updated_at', $params->updated_date);
+        $this->db->where('id', $params->id);
+        $this->db->update('data_grafis');
+        
+        return $valid;
+
+    }
+    public function updatebanner($params = NULL)
+    {
+        $valid = true;
+       
+        $this->db->set('status', $params->status);
+        $this->db->set('updated_by', $params->update_by);
+        $this->db->set('updated_at', $params->update_date);
+        $this->db->where('id', $params->id);
+        $this->db->update('data_banner');
+        
+        return $valid;
+
+    }
+    public function updatetext($params = NULL)
+    {
+        $valid = true;
+       
+        $this->db->set('status', $params->status);
+        $this->db->set('update_by', $params->updated_by);
+        $this->db->set('update_date', $params->updated_at);
+        $this->db->where('id', $params->id);
+        $this->db->update('data_text');
         
         return $valid;
 

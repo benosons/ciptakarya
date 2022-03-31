@@ -213,6 +213,28 @@ class Jsondata extends CI_Controller {
 		header('Content-Type: application/json');
 		echo json_encode(array("status" => TRUE));
 	}
+	public function deletebanner()
+	{
+
+		$params = (object)$this->input->post();
+		
+		$this->Model_data->deletebanner($params);
+		$this->Model_data->deletefile($params);
+		unlink($params->path);
+		header('Content-Type: application/json');
+		echo json_encode(array("status" => TRUE));
+	}
+	public function deletetext()
+	{
+
+		$params = (object)$this->input->post();
+		
+		$this->Model_data->deletetext($params);
+		$this->Model_data->deletefile($params);
+		unlink($params->path);
+		header('Content-Type: application/json');
+		echo json_encode(array("status" => TRUE));
+	}
 
 	public function deletefoto()
 	{
@@ -226,6 +248,151 @@ class Jsondata extends CI_Controller {
 		echo json_encode(array("status" => TRUE));
 	}
 
+	public function updatedatatext()
+	{
+
+		$params = (object)$this->input->post();
+		$params->updated_by	 = $this->session->userdata('id');
+		$params->updated_at = date("Y-m-d H:i:s");
+		$data = $this->Model_data->updatedatatext($params);
+
+		if(!empty($_FILES)){
+			$files = $_FILES['files'];
+			$count = count($_FILES['files']['name']);
+			$public		= FCPATH.'public';
+			$tipe		= './assets/upload/file/text';
+			$date 		= date('Y/m/d');
+		
+			for ($i=0; $i < $count; $i++) { 
+
+				$name = $files['name'][$i];
+				$file = $files['tmp_name'][$i];
+				$type = $files['type'][$i];
+				$size = $files['size'][$i];
+				
+				$path = $tipe.'/'.$date;
+				if (!is_dir($path)) {
+					mkdir($path, 0777, TRUE);
+				}
+
+				
+				move_uploaded_file($file, $path.'/'.$name);
+
+				$data_file = [
+						'id' => $params->idfile,
+						'type' => 'banner',
+						'path' => $path,
+						'size' => $size,
+						'extension' => $type,
+						'filename' => $name,
+						'create_date' => date("Y-m-d H:i:s"),
+						'update_date' => date("Y-m-d H:i:s")
+					];
+					$this->Model_data->updatefile($data_file);
+				}
+		}
+
+		header('Content-Type: application/json');
+		echo json_encode(array("status" => TRUE));
+
+	}
+	public function updatedatabanner()
+	{
+
+		$params = (object)$this->input->post();
+		$params->updated_by	 = $this->session->userdata('id');
+		$params->updated_at = date("Y-m-d H:i:s");
+		$data = $this->Model_data->updatedatabanner($params);
+
+		if(!empty($_FILES)){
+			$files = $_FILES['files'];
+			$count = count($_FILES['files']['name']);
+			$public		= FCPATH.'public';
+			$tipe		= './assets/upload/galeri/banner';
+			$date 		= date('Y/m/d');
+		
+			for ($i=0; $i < $count; $i++) { 
+
+				$name = $files['name'][$i];
+				$file = $files['tmp_name'][$i];
+				$type = $files['type'][$i];
+				$size = $files['size'][$i];
+				
+				$path = $tipe.'/'.$date;
+				if (!is_dir($path)) {
+					mkdir($path, 0777, TRUE);
+				}
+
+				
+				move_uploaded_file($file, $path.'/'.$name);
+
+				$data_file = [
+						'id' => $params->idfile,
+						'type' => 'banner',
+						'path' => $path,
+						'size' => $size,
+						'extension' => $type,
+						'filename' => $name,
+						'create_date' => date("Y-m-d H:i:s"),
+						'update_date' => date("Y-m-d H:i:s")
+					];
+					$this->Model_data->updatefile($data_file);
+				}
+		}
+
+		header('Content-Type: application/json');
+		echo json_encode(array("status" => TRUE));
+
+	}
+
+	public function updatedatagrafis()
+	{
+
+		$params = (object)$this->input->post();
+		$params->updated_by	 = $this->session->userdata('id');
+		$params->updated_at = date("Y-m-d H:i:s");
+		$data = $this->Model_data->updatedatagrafis($params);
+
+		if(!empty($_FILES)){
+			$files = $_FILES['files'];
+			$count = count($_FILES['files']['name']);
+			$public		= FCPATH.'public';
+			$tipe		= './assets/upload/galeri/infografis';
+			$date 		= date('Y/m/d');
+		
+			for ($i=0; $i < $count; $i++) { 
+
+				$name = $files['name'][$i];
+				$file = $files['tmp_name'][$i];
+				$type = $files['type'][$i];
+				$size = $files['size'][$i];
+				
+				$path = $tipe.'/'.$date;
+				if (!is_dir($path)) {
+					mkdir($path, 0777, TRUE);
+				}
+
+				
+				move_uploaded_file($file, $path.'/'.$name);
+
+				$data_file = [
+						'id' => $params->idfile,
+						'type' => 'banner',
+						'path' => $path,
+						'size' => $size,
+						'extension' => $type,
+						'filename' => $name,
+						'create_date' => date("Y-m-d H:i:s"),
+						'update_date' => date("Y-m-d H:i:s")
+					];
+					$this->Model_data->updatefile($data_file);
+				}
+		}
+
+		header('Content-Type: application/json');
+		echo json_encode(array("status" => TRUE));
+
+	}
 	public function updatedataberita()
 	{
 
@@ -489,41 +656,100 @@ class Jsondata extends CI_Controller {
 
 	}
 
+	public function updategrafis()
+	{
+		$params = (object)$this->input->post();
+		// remove the part that we don't need from the provided image and decode it
+		// if($params->img){
+		// 	$data = base64_decode(preg_replace('#^data:image/\w+;base64,#i', '', $params->img));
+		// 	$filepath = "assets/dokumen/gambar/banner/".$params->username.".jpg"; // or image.jpg
+		// 	chmod($filepath,0777);
+		// 	file_put_contents($filepath,$data);
+		// 	$params->foto = $filepath;
+		// }
+		$params->updated_by = $this->session->userdata('id');
+		$params->updated_date = date('d-m-Y H:i:s');
+
+		$data = $this->Model_data->updategrafis($params);
+		header('Content-Type: application/json');
+		echo json_encode(array("status" => TRUE));
+
+	}
+	public function updateagenda()
+	{
+		$params = (object)$this->input->post();
+		// remove the part that we don't need from the provided image and decode it
+		// if($params->img){
+		// 	$data = base64_decode(preg_replace('#^data:image/\w+;base64,#i', '', $params->img));
+		// 	$filepath = "assets/dokumen/gambar/banner/".$params->username.".jpg"; // or image.jpg
+		// 	chmod($filepath,0777);
+		// 	file_put_contents($filepath,$data);
+		// 	$params->foto = $filepath;
+		// }\
+		$params->updated_by = $this->session->userdata('id');
+		$params->updated_date = date('d-m-Y H:i:s');
+
+		$data = $this->Model_data->updateagenda($params);
+		header('Content-Type: application/json');
+		echo json_encode(array("status" => TRUE));
+
+	}
+	public function updatetext()
+	{
+		$params = (object)$this->input->post();
+		// remove the part that we don't need from the provided image and decode it
+		// if($params->img){
+		// 	$data = base64_decode(preg_replace('#^data:image/\w+;base64,#i', '', $params->img));
+		// 	$filepath = "assets/dokumen/gambar/banner/".$params->username.".jpg"; // or image.jpg
+		// 	chmod($filepath,0777);
+		// 	file_put_contents($filepath,$data);
+		// 	$params->foto = $filepath;
+		// }
+		$params->updated_by = $this->session->userdata('id');
+		$params->updated_date = date('d-m-Y H:i:s');
+
+		$data = $this->Model_data->updatetext($params);
+		header('Content-Type: application/json');
+		echo json_encode(array("status" => TRUE));
+
+	}
 	public function updatebanner()
 	{
 		$params = (object)$this->input->post();
 		// remove the part that we don't need from the provided image and decode it
-		if($params->img){
-			$data = base64_decode(preg_replace('#^data:image/\w+;base64,#i', '', $params->img));
-			$filepath = "assets/dokumen/gambar/banner/".$params->username.".jpg"; // or image.jpg
-			chmod($filepath,0777);
-			file_put_contents($filepath,$data);
-			$params->foto = $filepath;
-		}
+		// if($params->img){
+		// 	$data = base64_decode(preg_replace('#^data:image/\w+;base64,#i', '', $params->img));
+		// 	$filepath = "assets/dokumen/gambar/banner/".$params->username.".jpg"; // or image.jpg
+		// 	chmod($filepath,0777);
+		// 	file_put_contents($filepath,$data);
+		// 	$params->foto = $filepath;
+		// }
+		$params->updated_by = $this->session->userdata('id');
+		$params->updated_date = date('d-m-Y H:i:s');
 
-		$data = $this->Model_sys->updatebanner($params);
+		$data = $this->Model_data->updatebanner($params);
 		header('Content-Type: application/json');
 		echo json_encode(array("status" => TRUE));
 
 	}
 
-	public function deletebanner()
-	{
+	// public function deletebanner()
+	// {
 
-		$params = (object)$this->input->post();
-		$path = $params->path;
+	// 	$params = (object)$this->input->post();
+	// 	$path = $params->path;
 
-		$files = glob($path.'*'); // get all file names
-		foreach($files as $file){ // iterate files
-		  if(is_file($file))
-		    unlink($file); // delete file
-		    //echo $file.'file deleted';
-		}
+	// 	$files = glob($path.'*'); // get all file names
+	// 	foreach($files as $file){ // iterate files
+	// 	  if(is_file($file))
+	// 	    unlink($file); // delete file
+	// 	    //echo $file.'file deleted';
+	// 	}
 		
-		$this->Model_sys->deletebanner($params);
-		header('Content-Type: application/json');
-		echo json_encode(array("status" => TRUE));
-	}
+	// 	$this->Model_sys->deletebanner($params);
+	// 	header('Content-Type: application/json');
+	// 	echo json_encode(array("status" => TRUE));
+	// }
 
 	public function updateprofile()
 	{
@@ -690,6 +916,57 @@ class Jsondata extends CI_Controller {
 		
 
 	}
+	public function savedataagenda(){
+		try
+		{
+
+			$params = (object)$this->input->post();
+			$id = $params->id;
+
+			$params->created_by	 = $this->session->userdata('id');
+			$params->created_at = date("Y-m-d H:i:s");
+			
+			$id = $this->Model_data->createdata('data_agenda', $params);
+
+			$response = [
+				'status'   => 'sukses',
+				'code'     => '0',
+				'data' 	   => 'terkirim'
+			];
+			header('Content-Type: application/json');
+			echo json_encode($response);
+			exit;
+
+		}
+		catch (\Exception $e)
+		{
+			die($e->getMessage());
+		}
+		
+
+	}
+	public function updatedataagenda(){
+		try
+		{
+
+			$params = (object)$this->input->post();
+			$params->created_by	 = $this->session->userdata('id');
+			$params->created_at = date("Y-m-d H:i:s");
+			
+			$result = $this->Model_data->updatedataagenda($params);
+
+			echo json_encode(array("status" => TRUE));
+			exit;
+
+		}
+		catch (\Exception $e)
+		{
+			die($e->getMessage());
+		}
+		
+
+	}
+
 	public function savedatabalai(){
 		try
 		{
@@ -720,6 +997,216 @@ class Jsondata extends CI_Controller {
 
 	}
 
+	public function savedatabanner(){
+		try
+		{
+
+			$params = (object)$this->input->post();
+			$id = $params->id;
+
+			$params->created_by	 = $this->session->userdata('id');
+			$params->updated_by	 = $this->session->userdata('id');
+			$params->created_at = date("Y-m-d H:i:s");
+			$params->updated_at = date("Y-m-d H:i:s");
+			
+			$id = $this->Model_data->createdata('data_banner', $params);
+			
+			if($id){
+				if(!empty($_FILES)){
+					$files = $_FILES['files'];
+					$count = count($_FILES['files']['name']);
+					$public		= FCPATH.'public';
+					$tipe		= './assets/upload/galeri/banner';
+					$date 		= date('Y/m/d');
+				
+					for ($i=0; $i < $count; $i++) { 
+
+						$name = $files['name'][$i];
+						$file = $files['tmp_name'][$i];
+						$type = $files['type'][$i];
+						$size = $files['size'][$i];
+						$size = $files['size'][$i];
+						$caption = $params->caption[$i];
+
+						$path = $tipe.'/'.$date;
+						if (!is_dir($path)) {
+							mkdir($path, 0777, TRUE);
+						}
+						move_uploaded_file($file, $path.'/'.$name);
+
+						$data_file = [
+								'id_parent' => $id,
+								'type' => 'banner',
+								'path' => $path,
+								'size' => $size,
+								'extension' => $type,
+								'filename' => $name,
+								'caption' => $caption,
+								'create_date' => date("Y-m-d H:i:s"),
+								'update_date' => date("Y-m-d H:i:s")
+							];
+							$this->Model_data->createdata('data_file', $data_file);
+						}
+				}
+			}
+
+			$response = [
+				'status'   => 'sukses',
+				'code'     => '0',
+				'data' 	   => 'terkirim'
+		];
+		header('Content-Type: application/json');
+		echo json_encode($response);
+		exit;
+
+		}
+		catch (\Exception $e)
+		{
+			die($e->getMessage());
+		}
+		
+
+	}
+	public function savedatatext(){
+		try
+		{
+
+			$params = (object)$this->input->post();
+			$id = $params->id;
+
+			$params->create_by	 = $this->session->userdata('id');
+			$params->update_by	 = $this->session->userdata('id');
+			$params->create_date = date("Y-m-d H:i:s");
+			$params->update_date = date("Y-m-d H:i:s");
+			
+			$id = $this->Model_data->createdata('data_text', $params);
+			
+			if($id){
+				if(!empty($_FILES)){
+					$files = $_FILES['files'];
+					$count = count($_FILES['files']['name']);
+					$public		= FCPATH.'public';
+					$tipe		= './assets/upload/file/text';
+					$date 		= date('Y/m/d');
+				
+					for ($i=0; $i < $count; $i++) { 
+
+						$name = $files['name'][$i];
+						$file = $files['tmp_name'][$i];
+						$type = $files['type'][$i];
+						$size = $files['size'][$i];
+						$size = $files['size'][$i];
+						$caption = $params->caption[$i];
+
+						$path = $tipe.'/'.$date;
+						if (!is_dir($path)) {
+							mkdir($path, 0777, TRUE);
+						}
+						move_uploaded_file($file, $path.'/'.$name);
+
+						$data_file = [
+								'id_parent' => $id,
+								'type' => 'text',
+								'path' => $path,
+								'size' => $size,
+								'extension' => $type,
+								'filename' => $name,
+								'caption' => $caption,
+								'create_date' => date("Y-m-d H:i:s"),
+								'update_date' => date("Y-m-d H:i:s")
+							];
+							$this->Model_data->createdata('data_file', $data_file);
+						}
+				}
+			}
+
+			$response = [
+				'status'   => 'sukses',
+				'code'     => '0',
+				'data' 	   => 'terkirim'
+		];
+		header('Content-Type: application/json');
+		echo json_encode($response);
+		exit;
+
+		}
+		catch (\Exception $e)
+		{
+			die($e->getMessage());
+		}
+		
+
+	}
+	public function savedatagrafis(){
+		try
+		{
+
+			$params = (object)$this->input->post();
+			$id = $params->id;
+
+			$params->created_by	 = $this->session->userdata('id');
+			$params->updated_by	 = $this->session->userdata('id');
+			$params->created_at = date("Y-m-d H:i:s");
+			$params->updated_at = date("Y-m-d H:i:s");
+			
+			$id = $this->Model_data->createdata('data_grafis', $params);
+			
+			if($id){
+				if(!empty($_FILES)){
+					$files = $_FILES['files'];
+					$count = count($_FILES['files']['name']);
+					$public		= FCPATH.'public';
+					$tipe		= './assets/upload/galeri/infografis';
+					$date 		= date('Y/m/d');
+				
+					for ($i=0; $i < $count; $i++) { 
+
+						$name = $files['name'][$i];
+						$file = $files['tmp_name'][$i];
+						$type = $files['type'][$i];
+						$size = $files['size'][$i];
+						$size = $files['size'][$i];
+						$caption = $params->caption[$i];
+
+						$path = $tipe.'/'.$date;
+						if (!is_dir($path)) {
+							mkdir($path, 0777, TRUE);
+						}
+						move_uploaded_file($file, $path.'/'.$name);
+
+						$data_file = [
+								'id_parent' => $id,
+								'type' => 'grafis',
+								'path' => $path,
+								'size' => $size,
+								'extension' => $type,
+								'filename' => $name,
+								'caption' => $caption,
+								'create_date' => date("Y-m-d H:i:s"),
+								'update_date' => date("Y-m-d H:i:s")
+							];
+							$this->Model_data->createdata('data_file', $data_file);
+						}
+				}
+			}
+
+			$response = [
+				'status'   => 'sukses',
+				'code'     => '0',
+				'data' 	   => 'terkirim'
+		];
+		header('Content-Type: application/json');
+		echo json_encode($response);
+		exit;
+
+		}
+		catch (\Exception $e)
+		{
+			die($e->getMessage());
+		}
+		
+
+	}
 	public function savedataposter(){
 		try
 		{

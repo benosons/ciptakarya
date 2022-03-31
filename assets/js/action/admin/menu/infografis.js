@@ -46,12 +46,7 @@ $(function () {
       show: true
     });
     $('#id').val('');
-    $('.modal-title').html('<i class="fas fa-newspaper"></i> Tambah Berita');
-    $('#username').attr('disabled', false);
-    $('#password').attr('disabled', false);
-    $("[name='user-input']").val('');
-    // $("#kota-kab").select2('data', {}).trigger('change');
-    $('#kota-kab').val(0).trigger('change');
+    $('.modal-title').html('<i class="fas fa-newspaper"></i> Tambah Gambar Infografis');
     $('#blah').attr('src', 'assets/img/no-image.png');
     $('label[for="foto-user"]').text('Pilih Foto');
   });
@@ -100,6 +95,10 @@ $(function () {
     }
   });
 
+  $('#save-grafis').click(function(){
+    savedata(st);
+  })
+
 });
 
 function loadkota(){
@@ -128,12 +127,13 @@ function loadkota(){
             dataType: 'json',
             url: 'getdata',
             data : {
-                    param      : 'berita',
+                    param      : 'data_grafis',
+                    type      : 'infografis',
              },
             success: function(result){
               
               if(result.code == 1){
-                    var dt = $('#listberita').DataTable({
+                    var dt = $('#listgrafis').DataTable({
                       destroy: true,
                       paging: true,
                       lengthChange: false,
@@ -145,13 +145,11 @@ function loadkota(){
                       pageLength: 10,
                       aaData: result.data,
                         aoColumns: [
-                            { 'mDataProp': 'id'},
-                            { 'mDataProp': 'img'},
-                            { 'mDataProp': 'username'},
-                            { 'mDataProp': 'role_desc'},
-                            { 'mDataProp': 'status'},
-                            { 'mDataProp': 'islogin'},
-                            { 'mDataProp': 'id'},
+                          { 'mDataProp': 'id'},
+                          { 'mDataProp': 'id'},
+                          { 'mDataProp': 'judul'},
+                          { 'mDataProp': 'status'},
+                          { 'mDataProp': 'id'},
                             // { 'mDataProp': 'role'},
                         ],
                         order: [[0, 'ASC']],
@@ -160,60 +158,105 @@ function loadkota(){
                           //   targets: [7],
                           //   visible: false
                           // },
-                            {
-                                mRender: function (data, type, row){
-                                    var $rowData = '';
-                                        $rowData += `
-                                                  <div class="row">
-                                                    <div class="col-md-4">
-                                                      <button onclick="modaldetail('`+row.id+`','`+row.username+`','`+row.role_desc+`','`+row.status+`','`+row.name+`','`+row.img+`')" type="button" class="btn btn-block btn-success btn-xs"><i class="far fa-eye"></i></button>
-                                                    </div>
-                                                    <div class="col-md-4">
-                                                      <button onclick="edituser('`+row.id+`','`+row.username+`','`+row.password+`','`+row.status+`','`+row.role+`','`+row.name+`','`+row.img+`')" type="button" class="btn btn-block btn-warning btn-xs"><i class="far fa-edit"></i></button>
-                                                    </div>
-                                                    <div class="col-md-4">
-                                                      <button onclick="deleteData(`+row.id+`)" type="button" class="btn btn-block btn-danger btn-xs"><i class="fas fa-trash-alt"></i></button>
-                                                    </div>
-                                                  </div>
-                                                    `;
-
-                                    return $rowData;
-                                },
-                                aTargets: [6]
-                            },
-                            {
-                                mRender: function (data, type, row){
+                          {'width':'30%','targets':1},
+                          {
+                              mRender: function (data, type, row){
+                                var id_file = row.files[0].id;
+                                var path = row.files[0].path+'/'+row.files[0].filename;
+                                
+                                  var stat = row.status;
+                                  var file = ''
+                                  for( var key in row.files ) {
+                                    file = row.files[key].path+'/'+row.files[key].filename;
+                                    idfile = row.files[key].id;
+                                    caption = row.files[key].caption;
+                                  }
+                                  
+                                  if(stat == 1){
+                                    var st = `<a class="dropdown-item" href="#" onclick="updatepublish(`+row.id+`,0)"><i class="fas fa-sign-out-alt"></i> No Publish</a>`
+                                  }else{
+                                    var st = `<a class="dropdown-item" href="#" onclick="updatepublish(`+row.id+`,1)"><i class="fas fa-sign-out-alt"></i> Publish</a>`;
+                                  }
+    
                                   var $rowData = '';
-                                  if(row.islogin == 1){
-                                        $rowData +=`<span class="badge badge-success right">Online</span>`;
-                                      }else{
-                                        $rowData +=`<span class="badge badge-default right">Offline</span>`;
-                                      }
+                                      $rowData += `
+                                      <div class="btn-group">
+                                      <button type="button" class="btn btn-info">Action</button>
+                                      <button type="button" class="btn btn-info dropdown-toggle dropdown-icon" data-toggle="dropdown">
+                                        <span class="sr-only">Toggle Dropdown</span>
+                                      </button>
+                                      <div class="dropdown-menu" role="menu">
+                                        <a class="dropdown-item" href="javascript:void(0)" onclick="editdong('`+row.id+`','`+row.judul+`','`+row.tahun+`','`+row.status+`','`+file+`','`+idfile+`')"><i class="far fa-edit"></i> Edit</a>
+                                        <a class="dropdown-item" href="#" onclick="deleteData(`+row.id+`, `+id_file+`, '`+path+`')
+                                        "><i class="far fa-trash-alt"></i> Hapus</a>
+                                        <div class="dropdown-divider"></div>
+                                        `+st+`
+                                      </div>
+                                    </div>`;
+    
+                                  return $rowData;
+                              },
+                              aTargets: [4]
+                          },
+                          {
+                            mRender: function (data, type, row){
+                              var stat = row.status;
+                              if(stat == 1){
+                                var st = 'Publish'
+                                var tex = 'text-success';
+                              }else{
+                                var st = 'No Publish'
+                                var tex = 'text-danger';
+                              }
+                              var $rowData = '';
+                              $rowData += `<div class="card">
+                              <div class="card-body">
+                                <div class="d-flex justify-content-between">
+                                  <p class="text-primary text-sm">
+                                    <i class="far fa-calendar-alt"></i>
+                                  </p>
+                                  <p class="d-flex flex-column">
+                                    <span class="text-muted"> `+row.tahun+`</span>
+                                  </p>
+                                </div>
+                                <div class="d-flex justify-content-between">
+                                  <p class="`+tex+` text-sm">
+                                    <i class="fas fa-sign-in-alt"></i>
+                                  </p>
+                                  <p class="d-flex flex-column ">
+                                    <span class="text-muted">`+st+`</span>
+                                  </p>
+                                </div>
+                                </div>
+                              </div>`;
 
-                                    return $rowData;
-                                },
-                                aTargets: [5]
+                                return $rowData;
                             },
-                            {
-                                mRender: function (data, type, row){
-                                  var $rowData = '';
-                                  if(row.status == 1){
-                                        $rowData +=`<span class="badge badge-primary right">Aktif</span>`;
-                                      }else{
-                                        $rowData +=`<span class="badge badge-warning right">Non Aktif</span>`;
-                                      }
+                            aTargets: [3]
+                        },
+                        {
+                          mRender: function (data, type, row){
+                              var $rowData = '';
+                              var col = 12;
+                              
+                              // if (row.files.length == 2) {
+                              //   col = 6;
+                              // }else if (row.files.length > 2){
+                              //   col = 4;
+                              // }
+                              
+                              for( var key in row.files ) {
+                                $rowData += `
+                                <img id="" name="" class="img-fluid" src="`+row.files[key].path+'/'+row.files[key].filename+`" alt="">
+                                  `;
+                              }
 
-                                    return $rowData;
-                                },
-                                aTargets: [4]
-                            },
-                            {
-                                mRender: function (data, type, row){
-                                  var $rowData = '<img src="'+row.img+'" style="width: 35px;"></img>';
-                                    return $rowData;
-                                },
-                                aTargets: [1]
-                            }
+                              $rowData += '</div>';
+                              
+                              return $rowData;
+                          },
+                          aTargets: [1]
+                      },
                         ],
 
                         fnRowCallback: function(nRow, aData, iDisplayIndex, iDisplayIndexFull){
@@ -246,6 +289,75 @@ function loadkota(){
             }
         });
     }
+
+    function savedata(st){
+      var img = window.img;
+      var id = $('#id').val();
+      var judul = $('#judul').val();
+      var tahun = $('#tahun').val();
+      // if (tipe == "link") {
+      //   var keterangan = $('#link-teks').val();
+      // }else if(tipe == "halaman"){
+      //   var keterangan =$('#halaman').val();
+      // }
+      var status = $('#stat').val();
+
+      var formData = new FormData();
+      formData.append('id', id);
+      formData.append('judul', judul);
+      formData.append('tahun', tahun);
+      
+      var iscapt = [];
+      for (let index = 0; index < $("[name='image_input']").length; index++) {
+        var src = $("[name='image_input']")[index].files[0];
+        
+        formData.append('files[]', src);
+      }
+      var stat;
+      switch (st) {
+        case false:
+          stat = '0';
+          break;
+      default:
+        stat = '1'
+      }
+
+        formData.append('status', stat);
+
+        if(id){
+          formData.append('idfile', $('#idfile').val());
+
+          var baseurl = 'updatedatagrafis';
+          var msg = 'Update Infografis';
+
+        }else{
+          var baseurl = 'savedatagrafis';
+          var msg = 'Tambah Infografis';
+        }
+
+        $.ajax({
+          type: 'post',
+          url: baseurl,
+          dataType: 'json',
+          cache: false,
+          contentType: false,
+          processData: false,
+          data: formData,
+          async:false,
+            success: function(result){
+              Swal.fire({
+                title: 'Sukses!',
+                text: msg,
+                icon: 'success',
+                showConfirmButton: false,
+                timer: 1500
+              });
+
+              $('#modal-default').modal('hide');
+              loaddata();
+            }
+          });
+    };
 
     function saveUser(st){
       var img = window.img;
@@ -448,4 +560,45 @@ function cekusername(uname){
 
     function pilihgambar(ini){
       readURL(ini);
+    }
+
+    function editdong(id, judul,tahun, status, path, idfile){
+      $('#add-berita').trigger('click');
+      $('.modal-title').html('<i class="fas fa-images"></i> Edit Banner');
+      $('#id').val(id);
+      $('#idfile').val(idfile);
+      $('#judul').val(judul);
+      $('#tahun').val(tahun).trigger('change');
+      $("#stat").bootstrapSwitch('state', status == '1' ? true : false);
+      $('#blah_1').attr('src', path);
+    
+    }
+
+    function updatepublish(id,stat){
+      var formData = new FormData();
+      formData.append('id', id);
+      formData.append('status', stat);
+      
+      $.ajax({
+        type: 'post',
+        url: 'updategrafis',
+        dataType: 'json',
+        cache: false,
+        contentType: false,
+        processData: false,
+        data: formData,
+        async:false,
+          success: function(result){
+            Swal.fire({
+              title: 'Sukses!',
+              text: 'Infografis telah di publish',
+              icon: 'success',
+              showConfirmButton: false,
+              timer: 1500
+            });
+
+            $('#modal-default').modal('hide');
+            loaddata();
+          }
+        });
     }

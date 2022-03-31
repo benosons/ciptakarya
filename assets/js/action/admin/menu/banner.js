@@ -1,7 +1,7 @@
 $(function () {
 
   console.log('You are running jQuery version: ' + $.fn.jquery);
-  $('#summernote').summernote({
+  $('.summernote').summernote({
     height: 200,   //set editable area's height
     codemirror: { // codemirror options
       theme: 'monokai'
@@ -27,6 +27,21 @@ $(function () {
       }
     });
   });
+  $('#form-hal').hide();
+  $('#link').click(function(){
+    $('#link').addClass('active');
+    $('#hal').removeClass('active');
+    $('#form-hal').hide();
+    $('#form-link').show();
+    $('#tipe').val('link');
+  })
+  $('#hal').click(function(){
+    $('#hal').addClass('active');
+    $('#link').removeClass('active');
+    $('#form-link').hide();
+    $('#form-hal').show();
+    $('#tipe').val('halaman');
+  })
 
   $('#listfoto').DataTable();
   
@@ -46,7 +61,7 @@ $(function () {
       show: true
     });
     $('#id').val('');
-    $('.modal-title').html('<i class="fas fa-photo-video"></i> Tambah Foto');
+    $('.modal-title').html('<i class="fas fa-photo-video"></i> Tambah Banner');
     $('#username').attr('disabled', false);
     $('#password').attr('disabled', false);
     $("[name='user-input']").val('');
@@ -55,6 +70,10 @@ $(function () {
     $('#blah').attr('src', 'assets/img/no-image.png');
     $('label[for="foto-user"]').text('Pilih Foto');
   });
+
+  $('#save-banner').click(function(){
+    savedata(st);
+  })
 
   $('#save-user').on('click', function(){
     if(!$('#name').val()){
@@ -128,12 +147,13 @@ function loadkota(){
             dataType: 'json',
             url: 'getdata',
             data : {
-                    param      : 'berita',
+                    param      : 'data_banner',
+                    type       : 'banner'
              },
             success: function(result){
               
               if(result.code == 1){
-                    var dt = $('#listberita').DataTable({
+                    var dt = $('#listbanner').DataTable({
                       destroy: true,
                       paging: true,
                       lengthChange: false,
@@ -146,11 +166,10 @@ function loadkota(){
                       aaData: result.data,
                         aoColumns: [
                             { 'mDataProp': 'id'},
-                            { 'mDataProp': 'img'},
-                            { 'mDataProp': 'username'},
-                            { 'mDataProp': 'role_desc'},
+                            { 'mDataProp': 'id'},
+                            { 'mDataProp': 'judul'},
+                            { 'mDataProp': 'keterangan'},
                             { 'mDataProp': 'status'},
-                            { 'mDataProp': 'islogin'},
                             { 'mDataProp': 'id'},
                             // { 'mDataProp': 'role'},
                         ],
@@ -160,60 +179,124 @@ function loadkota(){
                           //   targets: [7],
                           //   visible: false
                           // },
+                          {'width':'30%','targets':1},
                             {
                                 mRender: function (data, type, row){
+                                  var id_file = row.files[0].id;
+                                  var path = row.files[0].path+'/'+row.files[0].filename;
+                                  
+                                    var stat = row.status;
+                                    var file = ''
+                                    for( var key in row.files ) {
+                                      file = row.files[key].path+'/'+row.files[key].filename;
+                                      idfile = row.files[key].id;
+                                      caption = row.files[key].caption;
+                                    }
+                                    
+                                    if(stat == 1){
+                                      var st = `<a class="dropdown-item" href="#" onclick="updatepublish(`+row.id+`,0)"><i class="fas fa-sign-out-alt"></i> No Publish</a>`
+                                    }else{
+                                      var st = `<a class="dropdown-item" href="#" onclick="updatepublish(`+row.id+`,1)"><i class="fas fa-sign-out-alt"></i> Publish</a>`;
+                                    }
+      
                                     var $rowData = '';
                                         $rowData += `
-                                                  <div class="row">
-                                                    <div class="col-md-4">
-                                                      <button onclick="modaldetail('`+row.id+`','`+row.username+`','`+row.role_desc+`','`+row.status+`','`+row.name+`','`+row.img+`')" type="button" class="btn btn-block btn-success btn-xs"><i class="far fa-eye"></i></button>
-                                                    </div>
-                                                    <div class="col-md-4">
-                                                      <button onclick="edituser('`+row.id+`','`+row.username+`','`+row.password+`','`+row.status+`','`+row.role+`','`+row.name+`','`+row.img+`')" type="button" class="btn btn-block btn-warning btn-xs"><i class="far fa-edit"></i></button>
-                                                    </div>
-                                                    <div class="col-md-4">
-                                                      <button onclick="deleteData(`+row.id+`)" type="button" class="btn btn-block btn-danger btn-xs"><i class="fas fa-trash-alt"></i></button>
-                                                    </div>
-                                                  </div>
-                                                    `;
-
-                                    return $rowData;
-                                },
-                                aTargets: [6]
-                            },
-                            {
-                                mRender: function (data, type, row){
-                                  var $rowData = '';
-                                  if(row.islogin == 1){
-                                        $rowData +=`<span class="badge badge-success right">Online</span>`;
-                                      }else{
-                                        $rowData +=`<span class="badge badge-default right">Offline</span>`;
-                                      }
-
+                                        <div class="btn-group">
+                                        <button type="button" class="btn btn-info">Action</button>
+                                        <button type="button" class="btn btn-info dropdown-toggle dropdown-icon" data-toggle="dropdown">
+                                          <span class="sr-only">Toggle Dropdown</span>
+                                        </button>
+                                        <div class="dropdown-menu" role="menu">
+                                          <a class="dropdown-item" href="javascript:void(0)" onclick="editdong('`+row.id+`','`+row.judul+`','`+row.tipe+`','`+row.keterangan+`','`+row.status+`','`+file+`','`+idfile+`')"><i class="far fa-edit"></i> Edit</a>
+                                          <a class="dropdown-item" href="#" onclick="deleteData(`+row.id+`, `+id_file+`, '`+path+`')
+                                          "><i class="far fa-trash-alt"></i> Hapus</a>
+                                          <div class="dropdown-divider"></div>
+                                          `+st+`
+                                        </div>
+                                      </div>`;
+      
                                     return $rowData;
                                 },
                                 aTargets: [5]
                             },
                             {
                                 mRender: function (data, type, row){
+                                  var mydate = new Date(row.created_at);
+                                  var date = ("0" + mydate.getDate()).slice(-2);
+                                  var month = ("0" + (mydate.getMonth() + 1)).slice(-2);
+                                  var year = mydate.getFullYear();
+                                  var str = date+'/'+month+'/'+year;
+                                  var stat = row.status;
+                                  if(stat == 1){
+                                    var st = 'Publish'
+                                    var tex = 'text-success';
+                                  }else{
+                                    var st = 'No Publish'
+                                    var tex = 'text-danger';
+                                  }
                                   var $rowData = '';
-                                  if(row.status == 1){
-                                        $rowData +=`<span class="badge badge-primary right">Aktif</span>`;
-                                      }else{
-                                        $rowData +=`<span class="badge badge-warning right">Non Aktif</span>`;
-                                      }
+                                  $rowData += `<div class="card">
+                                  <div class="card-body">
+                                    <div class="d-flex justify-content-between">
+                                      <p class="text-primary text-sm">
+                                        <i class="far fa-calendar-alt"></i>
+                                      </p>
+                                      <p class="d-flex flex-column">
+                                        <span class="text-muted"> `+str+`</span>
+                                      </p>
+                                    </div>
+                                    <div class="d-flex justify-content-between">
+                                      <p class="`+tex+` text-sm">
+                                        <i class="fas fa-sign-in-alt"></i>
+                                      </p>
+                                      <p class="d-flex flex-column ">
+                                        <span class="text-muted">`+st+`</span>
+                                      </p>
+                                    </div>
+                                    </div>
+                                  </div>`;
 
                                     return $rowData;
                                 },
                                 aTargets: [4]
                             },
                             {
-                                mRender: function (data, type, row){
-                                  var $rowData = '<img src="'+row.img+'" style="width: 35px;"></img>';
-                                    return $rowData;
-                                },
-                                aTargets: [1]
-                            }
+                              mRender: function (data, type, row){
+                                  var $rowData = '';
+                                  var col = 12;
+                                  
+                                  // if (row.files.length == 2) {
+                                  //   col = 6;
+                                  // }else if (row.files.length > 2){
+                                  //   col = 4;
+                                  // }
+                                  
+                                  for( var key in row.files ) {
+                                    $rowData += `
+                                    <img id="" name="" class="img-fluid" src="`+row.files[key].path+'/'+row.files[key].filename+`" alt="">
+                                      `;
+                                  }
+    
+                                  $rowData += '</div>';
+                                  
+                                  return $rowData;
+                              },
+                              aTargets: [1]
+                          },
+                            {
+                              mRender: function (data, type, row){
+                                  var $rowData = '';
+                                  if (row.tipe == 'link') {
+                                    $rowData += '<p>Link Eksternal</p>';
+                                    $rowData += '<p><i class="fa fa-globe"></i> <a target="_blank" href="'+row.keterangan+'" class="link-primary">klik disini</a></p>';
+                                  }else{
+                                    $rowData = row.keterangan;
+                                  }
+                                  
+                                  return $rowData;
+                              },
+                              aTargets: [3]
+                          },
                         ],
 
                         fnRowCallback: function(nRow, aData, iDisplayIndex, iDisplayIndexFull){
@@ -246,6 +329,76 @@ function loadkota(){
             }
         });
     }
+
+    function savedata(st){
+      var img = window.img;
+      var id = $('#id').val();
+      var judul = $('#judul').val();
+      var tipe = $('#tipe').val();
+      if (tipe == "link") {
+        var keterangan = $('#link-teks').val();
+      }else if(tipe == "halaman"){
+        var keterangan =$('#halaman').val();
+      }
+      var status = $('#stat').val();
+
+      var formData = new FormData();
+      formData.append('id', id);
+      formData.append('judul', judul);
+      formData.append('tipe', tipe);
+      formData.append('keterangan',keterangan);
+      
+      var iscapt = [];
+      for (let index = 0; index < $("[name='image_input']").length; index++) {
+        var src = $("[name='image_input']")[index].files[0];
+        
+        formData.append('files[]', src);
+      }
+      var stat;
+      switch (st) {
+        case false:
+          stat = '0';
+          break;
+      default:
+        stat = '1'
+      }
+
+        formData.append('status', stat);
+
+        if(id){
+          formData.append('idfile', $('#idfile').val());
+
+          var baseurl = 'updatedatabanner';
+          var msg = 'Update Banner';
+
+        }else{
+          var baseurl = 'savedatabanner';
+          var msg = 'Tambah Banner';
+        }
+
+        $.ajax({
+          type: 'post',
+          url: baseurl,
+          dataType: 'json',
+          cache: false,
+          contentType: false,
+          processData: false,
+          data: formData,
+          async:false,
+            success: function(result){
+              Swal.fire({
+                title: 'Sukses!',
+                text: msg,
+                icon: 'success',
+                showConfirmButton: false,
+                timer: 1500
+              });
+
+              $('#modal-default').modal('hide');
+              loaddata();
+            }
+          });
+    };
 
     function saveUser(st){
       var img = window.img;
@@ -317,8 +470,7 @@ function edituser(id, username, password, status, role, name, foto){
   }
 }
 
-function deleteData(id)
-{
+function deleteData(id, id_file, path){
   const swalWithBootstrapButtons = Swal.mixin({
     customClass: {
       confirmButton: 'btn btn-success btn-sm swal2-styled-custom',
@@ -328,7 +480,7 @@ function deleteData(id)
   });
 
   swalWithBootstrapButtons.fire({
-    title: 'Anda Yakin, hapus user ini?',
+    title: 'Anda yakin, hapus banner ini?',
     text: "",
     icon: 'warning',
     showCancelButton: true,
@@ -340,25 +492,26 @@ function deleteData(id)
     $.ajax({
       type: 'post',
       dataType: 'json',
-      url: 'deleteuser',
+      url: 'deletebanner',
       data : {
               id    : id,
+              id_file    : id_file,
+              path    : path,
             },
       success: function(data)
       {
         Swal.fire({
           title: 'Sukses!',
-          text: 'Hapus User',
+          text: 'Hapus Banner',
           icon: 'success',
           showConfirmButton: false,
           timer: 1500
         });
-        loaddatauser();
+        loaddata();
       }
     });
   }
-})
-
+  })
 }
 
 function readURL(input) {
@@ -448,4 +601,52 @@ function cekusername(uname){
 
     function pilihgambar(ini){
       readURL(ini);
+    }
+
+    function editdong(id, judul, tipe, keterangan,status, path, idfile){
+      $('#add-foto').trigger('click');
+      $('.modal-title').html('<i class="fas fa-images"></i> Edit Banner');
+      $('#id').val(id);
+      $('#idfile').val(idfile);
+      $('#judul').val(judul);
+      $('#tipe').val(tipe);
+      if (tipe == 'link') {
+        $('#link').trigger('click');
+        $('#link-teks').val(keterangan);
+      }else if(tipe == "halaman"){
+        $('#hal').trigger('click');
+        $('#halaman').summernote('code', keterangan);
+      }
+      $("#stat").bootstrapSwitch('state', status == '1' ? true : false);
+      $('#blah_1').attr('src', path);
+    
+    }
+
+    function updatepublish(id,stat){
+      var formData = new FormData();
+      formData.append('id', id);
+      formData.append('status', stat);
+      
+      $.ajax({
+        type: 'post',
+        url: 'updatebanner',
+        dataType: 'json',
+        cache: false,
+        contentType: false,
+        processData: false,
+        data: formData,
+        async:false,
+          success: function(result){
+            Swal.fire({
+              title: 'Sukses!',
+              text: 'Banner telah di publish',
+              icon: 'success',
+              showConfirmButton: false,
+              timer: 1500
+            });
+
+            $('#modal-default').modal('hide');
+            loaddata();
+          }
+        });
     }
