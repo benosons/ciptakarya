@@ -45,7 +45,7 @@ $(function () {
     });
     $('#id').val('');
     $('#judul').val('');
-    $('#intro').val('');
+    // $('#intro').val('');
     $('#tag').val('');
     $('#isi').summernote('reset');
     $('#bagian').val('0').change();
@@ -216,7 +216,7 @@ function loaddata(){
                                     <span class="sr-only">Toggle Dropdown</span>
                                   </button>
                                   <div class="dropdown-menu" role="menu">
-                                    <a class="dropdown-item" href="javascript:void(0)" onclick="editdong('`+row.id+`','`+row.judul+`','`+row.tag+`','`+row.isi+`','`+file+`','`+idfile+`','`+row.intro+`','`+row.bagian+`','`+row.date+`','`+caption+`')"><i class="far fa-edit"></i> Edit</a>
+                                    <a class="dropdown-item" href="javascript:void(0)" onclick="editdong('`+row.id+`','`+row.judul+`','`+row.tag+`','`+row.isi+`','`+file+`','`+idfile+`','`+row.bagian+`','`+row.date+`','`+caption+`')"><i class="far fa-edit"></i> Edit</a>
                                     <a class="dropdown-item" href="#" onclick="deleteData(`+row.id+`, `+id_file+`, '`+path+`')
                                     "><i class="far fa-trash-alt"></i> Hapus</a>
                                     <div class="dropdown-divider"></div>
@@ -266,7 +266,7 @@ function loaddata(){
       var id = $('#id').val();
 
       var judul = $('#judul').val();
-      var intro = $('#intro').val();
+      // var intro = $('#intro').val();
       var tag = $('#tag').val();
       var isi = $('#isi').val();
       var bagian = $('#bagian').val();
@@ -276,7 +276,7 @@ function loaddata(){
       var formData = new FormData();
       formData.append('id', id);
       formData.append('judul', judul);
-      formData.append('intro', intro);
+      // formData.append('intro', intro);
       formData.append('tag', tag);
       formData.append('isi', isi);
       formData.append('bagian', bagian);
@@ -471,13 +471,13 @@ function modaldetail(id,username,role,status,name,foto){
       readURL(ini);
     }
 
-    function editdong(id, judul, tag, isi, path, idfile, intro, bagian, date, caption){
+    function editdong(id, judul, tag, isi, path, idfile, bagian, date, caption){
       $('#add-berita').trigger('click');
       $('.modal-title').html('<i class="fas fa-newspaper"></i> Edit Berita');
       $('#id').val(id);
       $('#idfile').val(idfile);
       $('#judul').val(judul);
-      $('#intro').val(intro);
+      // $('#intro').val(intro);
       $("#tag").val(tag);
       $("#bagian").val(bagian).change();
       $("#date").val(date);

@@ -86,8 +86,8 @@ class Model_sys extends CI_Model {
         $this->db->set("username", $params->username);
         $this->db->set("password", md5($params->password));
         $this->db->set("satker", $params->satker);
-        $this->db->set("created_by", $this->session->userdata('username'));
-        $this->db->set("created_at", date("Y-m-d H:i:s"));
+        $this->db->set("create_by", $this->session->userdata('username'));
+        $this->db->set("create_at", date("Y-m-d H:i:s"));
         $this->db->set("role", $params->role);
         $this->db->set("islogin", 0);
         $this->db->set("status", $params->status);
@@ -104,8 +104,8 @@ class Model_sys extends CI_Model {
         $this->db->set("username", $params->username_regis);
         $this->db->set("password", md5($params->password_regis));
         $this->db->set("kategori", 'user');
-        $this->db->set("created_by", '');
-        $this->db->set("created_at", date("Y-m-d H:i:s"));
+        $this->db->set("create_by", '');
+        $this->db->set("create_at", date("Y-m-d H:i:s"));
         $this->db->set("role", '30');
         $this->db->set("islogin", 0);
         $this->db->set("status", '1');
@@ -130,8 +130,8 @@ class Model_sys extends CI_Model {
         // }
         $this->db->set("username", $params->username);
         $this->db->set("name", $params->name);
-        $this->db->set("updated_by", $this->session->userdata('username'));
-        $this->db->set("updated_at", date("Y-m-d H:i:s"));
+        $this->db->set("update_by", $this->session->userdata('username'));
+        $this->db->set("update_at", date("Y-m-d H:i:s"));
         $this->db->set("role", $params->role);
         $this->db->set("status", $params->status);
         if($params->foto){
@@ -221,8 +221,8 @@ class Model_sys extends CI_Model {
     {
         $valid = true;
 
-        // $this->db->set("updated_by", $this->session->userdata('username'));
-        // $this->db->set("updated_at", date("Y-m-d H:i:s"));
+        // $this->db->set("update_by", $this->session->userdata('username'));
+        // $this->db->set("update_at", date("Y-m-d H:i:s"));
         $this->db->set("nama", $params->nama);
         $this->db->set("deskripsi", $params->deskripsi);
         $this->db->set("alamat", $params->alamat);
@@ -247,8 +247,8 @@ class Model_sys extends CI_Model {
 
         $this->db->set("judul", $params->judul);
         $this->db->set("deskripsi", $params->deskripsi);
-        $this->db->set("created_by", $this->session->userdata('username'));
-        $this->db->set("created_date", date("Y-m-d H:i:s"));
+        $this->db->set("create_by", $this->session->userdata('username'));
+        $this->db->set("create_date", date("Y-m-d H:i:s"));
         $this->db->set("status", $params->status);
         $this->db->set("img", $params->foto);
         $valid = $this->db->insert('banner');
@@ -263,8 +263,8 @@ class Model_sys extends CI_Model {
 
         $this->db->set("judul", $params->judul);
         $this->db->set("deskripsi", $params->deskripsi);
-        $this->db->set("created_by", $this->session->userdata('username'));
-        $this->db->set("created_date", date("Y-m-d H:i:s"));
+        $this->db->set("create_by", $this->session->userdata('username'));
+        $this->db->set("create_date", date("Y-m-d H:i:s"));
         $this->db->set("status", $params->status);
         if($params->foto){
 
@@ -290,8 +290,8 @@ class Model_sys extends CI_Model {
 
         $this->db->set("username", $params->username);
         $this->db->set("name", $params->name);
-        $this->db->set("updated_by", $this->session->userdata('username'));
-        $this->db->set("updated_at", date("Y-m-d H:i:s"));
+        $this->db->set("update_by", $this->session->userdata('username'));
+        $this->db->set("update_at", date("Y-m-d H:i:s"));
         $this->db->set("no_telp", $params->no_telp);
         $this->db->set("email", $params->email);
         if($params->password){

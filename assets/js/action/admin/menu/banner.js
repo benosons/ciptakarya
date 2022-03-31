@@ -221,7 +221,7 @@ function loadkota(){
                             },
                             {
                                 mRender: function (data, type, row){
-                                  var mydate = new Date(row.created_at);
+                                  var mydate = new Date(row.create_at);
                                   var date = ("0" + mydate.getDate()).slice(-2);
                                   var month = ("0" + (mydate.getMonth() + 1)).slice(-2);
                                   var year = mydate.getFullYear();

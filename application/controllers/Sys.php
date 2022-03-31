@@ -94,8 +94,8 @@ class Sys extends CI_Controller {
 				$row['username'] = (!empty($proses->username) ? $proses->username : "NULL");
 				$row['kotaKab'] = (!empty($proses->kotaKab) ? $proses->kotaKab : "NULL");
 				$row['kategori'] = (!empty($proses->kategori) ? $proses->kategori : "NULL");
-				$row['created_at'] = (!empty($proses->created_at) ? $proses->created_at : "NULL");
-				$row['updated_at'] = (!empty($proses->updated_at) ? $proses->updated_at : "NULL");
+				$row['create_at'] = (!empty($proses->create_at) ? $proses->create_at : "NULL");
+				$row['update_at'] = (!empty($proses->update_at) ? $proses->update_at : "NULL");
 				$row['role'] = (!empty($proses->role) ? $proses->role : "NULL");
 				$row['status'] = (!empty($proses->status) ? $proses->status : "NULL");
 				$row['name'] = (!empty($proses->name) ? $proses->name : "NULL");
@@ -203,9 +203,9 @@ class Sys extends CI_Controller {
 				$row['deskripsi'] = (!empty($proses->deskripsi) ? $proses->deskripsi : "NULL");
 				$row['foto'] = (!empty($proses->foto) ? $proses->foto : "assets/dokumen/gambar/user/default.jpg");
 				$row['status'] = (!empty($proses->status) ? $proses->status : "NULL");
-				$row['created_by'] = (!empty($proses->created_by) ? $proses->created_by : "NULL");
-				$row['created_date'] = (!empty($proses->created_date) ? $proses->created_date : "NULL");
-				$row['updated_date'] = (!empty($proses->updated_date) ? $proses->updated_date : "NULL");
+				$row['create_by'] = (!empty($proses->create_by) ? $proses->create_by : "NULL");
+				$row['create_date'] = (!empty($proses->create_date) ? $proses->create_date : "NULL");
+				$row['update_date'] = (!empty($proses->update_date) ? $proses->update_date : "NULL");
 
 				$data[] = $row;
 			}
@@ -236,9 +236,9 @@ class Sys extends CI_Controller {
 				$row['deskripsi'] = (!empty($proses->deskripsi) ? $proses->deskripsi : "NULL");
 				$row['foto'] = (!empty($proses->foto) ? $proses->foto : "assets/dokumen/gambar/user/default.jpg");
 				$row['status'] = (!empty($proses->status) ? $proses->status : "NULL");
-				$row['created_by'] = (!empty($proses->created_by) ? $proses->created_by : "NULL");
-				$row['created_date'] = (!empty($proses->created_date) ? $proses->created_date : "NULL");
-				$row['updated_date'] = (!empty($proses->updated_date) ? $proses->updated_date : "NULL");
+				$row['create_by'] = (!empty($proses->create_by) ? $proses->create_by : "NULL");
+				$row['create_date'] = (!empty($proses->create_date) ? $proses->create_date : "NULL");
+				$row['update_date'] = (!empty($proses->update_date) ? $proses->update_date : "NULL");
 
 				$data[] = $row;
 			}

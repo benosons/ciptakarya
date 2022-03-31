@@ -382,7 +382,7 @@ function twig_date_modify_filter(Twig_Environment $env, $date, $modifier)
  * Converts an input to a DateTime instance.
  *
  * <pre>
- *    {% if date(user.created_at) < date('+2days') %}
+ *    {% if date(user.create_at) < date('+2days') %}
  *      {# do something #}
  *    {% endif %}
  * </pre>

@@ -56,17 +56,17 @@ CREATE TABLE `data_agenda` (
   `deskripsi` text NOT NULL,
   `tanggal` date NOT NULL,
   `status` int(11) NOT NULL,
-  `created_at` datetime NOT NULL,
-  `created_by` varchar(50) NOT NULL,
-  `updated_at` datetime NOT NULL,
-  `updated_by` varchar(50) NOT NULL
+  `create_at` datetime NOT NULL,
+  `create_by` varchar(50) NOT NULL,
+  `update_at` datetime NOT NULL,
+  `update_by` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `data_agenda`
 --
 
-INSERT INTO `data_agenda` (`id`, `deskripsi`, `tanggal`, `status`, `created_at`, `created_by`, `updated_at`, `updated_by`) VALUES
+INSERT INTO `data_agenda` (`id`, `deskripsi`, `tanggal`, `status`, `create_at`, `create_by`, `update_at`, `update_by`) VALUES
 (2, '<p>testing</p>', '2022-04-09', 1, '2022-03-31 20:37:29', '1', '0000-00-00 00:00:00', '1');
 
 -- --------------------------------------------------------
@@ -87,15 +87,15 @@ CREATE TABLE `data_balai` (
   `mta` int(50) NOT NULL,
   `toilet` int(50) NOT NULL,
   `jml_orang` int(50) NOT NULL,
-  `created_at` datetime NOT NULL,
-  `created_by` varchar(50) NOT NULL
+  `create_at` datetime NOT NULL,
+  `create_by` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `data_balai`
 --
 
-INSERT INTO `data_balai` (`id`, `kategori`, `linkgeo`, `jml_pns`, `jml_nonpns`, `aset_terimakan`, `aset_proses`, `hu`, `mta`, `toilet`, `jml_orang`, `created_at`, `created_by`) VALUES
+INSERT INTO `data_balai` (`id`, `kategori`, `linkgeo`, `jml_pns`, `jml_nonpns`, `aset_terimakan`, `aset_proses`, `hu`, `mta`, `toilet`, `jml_orang`, `create_at`, `create_by`) VALUES
 (1, 1, '-', 1, 1, 1, 1, 1, 1, 0, 1, '2022-03-30 03:15:31', '1'),
 (2, 3, '-', 1, 1, 1, 1, 1, 1, 0, 1, '2022-03-30 03:17:13', '1'),
 (3, 3, '-', 1, 1, 1, 1, 1, 1, 1, 1, '2022-03-30 03:20:24', '1');
@@ -112,17 +112,17 @@ CREATE TABLE `data_banner` (
   `tipe` varchar(50) NOT NULL,
   `keterangan` text NOT NULL,
   `status` int(5) NOT NULL,
-  `created_at` datetime NOT NULL,
-  `created_by` varchar(50) NOT NULL,
-  `updated_at` datetime DEFAULT NULL,
-  `updated_by` varchar(50) DEFAULT NULL
+  `create_at` datetime NOT NULL,
+  `create_by` varchar(50) NOT NULL,
+  `update_at` datetime DEFAULT NULL,
+  `update_by` varchar(50) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `data_banner`
 --
 
-INSERT INTO `data_banner` (`id`, `judul`, `tipe`, `keterangan`, `status`, `created_at`, `created_by`, `updated_at`, `updated_by`) VALUES
+INSERT INTO `data_banner` (`id`, `judul`, `tipe`, `keterangan`, `status`, `create_at`, `create_by`, `update_at`, `update_by`) VALUES
 (4, 'judul', 'halaman', 'test', 0, '2022-03-31 06:43:21', '1', NULL, NULL);
 
 -- --------------------------------------------------------
@@ -231,17 +231,17 @@ CREATE TABLE `data_grafis` (
   `judul` varchar(255) NOT NULL,
   `tahun` varchar(50) NOT NULL,
   `status` int(5) NOT NULL,
-  `created_at` datetime NOT NULL,
-  `created_by` varchar(50) NOT NULL,
-  `updated_at` datetime NOT NULL,
-  `updated_by` varchar(50) NOT NULL
+  `create_at` datetime NOT NULL,
+  `create_by` varchar(50) NOT NULL,
+  `update_at` datetime NOT NULL,
+  `update_by` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `data_grafis`
 --
 
-INSERT INTO `data_grafis` (`id`, `judul`, `tahun`, `status`, `created_at`, `created_by`, `updated_at`, `updated_by`) VALUES
+INSERT INTO `data_grafis` (`id`, `judul`, `tahun`, `status`, `create_at`, `create_by`, `update_at`, `update_by`) VALUES
 (2, 'judulpoi', '2022', 0, '2022-03-31 19:45:38', '1', '0000-00-00 00:00:00', '');
 
 -- --------------------------------------------------------
@@ -452,10 +452,10 @@ CREATE TABLE `muser` (
   `id` int(50) NOT NULL,
   `username` varchar(50) DEFAULT NULL,
   `password` varchar(50) DEFAULT NULL,
-  `created_by` varchar(50) DEFAULT NULL,
-  `updated_by` varchar(50) DEFAULT NULL,
-  `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` varchar(30) DEFAULT NULL,
+  `create_by` varchar(50) DEFAULT NULL,
+  `update_by` varchar(50) DEFAULT NULL,
+  `create_at` timestamp NULL DEFAULT NULL,
+  `update_at` varchar(30) DEFAULT NULL,
   `role` int(16) DEFAULT NULL,
   `islogin` int(1) DEFAULT NULL,
   `status` int(5) DEFAULT NULL COMMENT '0 = nonactive, 1= active,',
@@ -470,7 +470,7 @@ CREATE TABLE `muser` (
 -- Dumping data for table `muser`
 --
 
-INSERT INTO `muser` (`id`, `username`, `password`, `created_by`, `updated_by`, `created_at`, `updated_at`, `role`, `islogin`, `status`, `name`, `no_telp`, `email`, `img`, `satker`) VALUES
+INSERT INTO `muser` (`id`, `username`, `password`, `create_by`, `update_by`, `create_at`, `update_at`, `role`, `islogin`, `status`, `name`, `no_telp`, `email`, `img`, `satker`) VALUES
 (1, 'admin', '827ccb0eea8a706c4c34a16891f84e7b', NULL, NULL, NULL, NULL, 10, 1, 1, 'admin', NULL, NULL, 'assets/dokumen/gambar/user/default.jpg.', NULL),
 (44, '452780', '1a97768dc9dffc384357957de04045f6', 'admin', NULL, '2022-03-24 08:46:50', NULL, 20, 0, 1, '452780', NULL, NULL, NULL, '452780'),
 (41, '420138', 'db72353c6d6ed20192d08b36e11124fb', 'admin', NULL, '2022-03-24 08:46:09', NULL, 20, 0, 1, '420138', NULL, NULL, NULL, '420138'),
