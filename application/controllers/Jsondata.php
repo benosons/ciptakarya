@@ -690,6 +690,35 @@ class Jsondata extends CI_Controller {
 		
 
 	}
+	public function savedatabalai(){
+		try
+		{
+
+			$params = (object)$this->input->post();
+			$id = $params->id;
+
+			$params->created_by	 = $this->session->userdata('id');
+			$params->created_at = date("Y-m-d H:i:s");
+			
+			$id = $this->Model_data->createdata('data_balai', $params);
+
+			$response = [
+				'status'   => 'sukses',
+				'code'     => '0',
+				'data' 	   => 'terkirim'
+			];
+			header('Content-Type: application/json');
+			echo json_encode($response);
+			exit;
+
+		}
+		catch (\Exception $e)
+		{
+			die($e->getMessage());
+		}
+		
+
+	}
 
 	public function savedataposter(){
 		try

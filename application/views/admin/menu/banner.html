@@ -79,82 +79,53 @@
       </div>
       <div class="modal-body">
         <input id="id" hidden>
-          <div class="row">
-            <div class="col-md-12">
-              <div class="form-group">
-                <label>Judul</label>
-                <input id="" name="berita-input" type="text" class="form-control" placeholder="Judul Berita ...">
-              </div>
-            </div>
-            <div class="col-md-12">
-              <div class="form-group">
-                <label>Sektor</label>
-                <select class="form-control select2bs4" style="width: 100%;">
-                  <option selected="selected">Alabama</option>
-                  <option>Alaska</option>
-                  <option>California</option>
-                  <option>Delaware</option>
-                  <option>Tennessee</option>
-                  <option>Texas</option>
-                  <option>Washington</option>
-                </select>
-              </div>
-            </div>
-            <div class="col-md-12">
-              <div class="form-group">
-                <label>Tahun</label>
-                <select class="form-control select2bs4" style="width: 100%;">
-                  <option selected="selected">Alabama</option>
-                  <option>Alaska</option>
-                  <option>California</option>
-                  <option>Delaware</option>
-                  <option>Tennessee</option>
-                  <option>Texas</option>
-                  <option>Washington</option>
-                </select>
-              </div>
+        <div class="row">
+          <div class="col-md-12">
+            <div class="form-group">
+              <label>Judul</label>
+              <input id="" name="berita-input" type="text" class="form-control" placeholder="Judul Berita ...">
             </div>
           </div>
+        </div>
 
-          <div class="row">
-            <div class="col-md-12">
-              <div class="card card-light card-outline">
-                <div class="card-header">
-                  <label class="">Upload Gambar</label>
-                  <div class="card-tools">
-                    <a onclick="addgambar()" class="btn btn-tool">
-                      <i class="fas fa-plus"></i>
-                    </a>
-                  </div>
+        <div class="row">
+          <div class="col-md-12">
+            <div class="card card-light card-outline">
+              <div class="card-header">
+                <label class="">Upload Gambar</label>
+                <div class="card-tools">
+                  <a onclick="addgambar()" class="btn btn-tool">
+                    <i class="fas fa-plus"></i>
+                  </a>
                 </div>
-                <div class="card-body">
-                  <div class="row" id="gambar-container">
+              </div>
+              <div class="card-body">
+                <div class="row" id="gambar-container">
 
-                    <div class="col-md-4">
-                      <div class="card card-light card-outline">
-                        <div class="card-tools">
-                          <a href="#" class="btn btn-tool">
-                            <i class="fas fa-timess"></i>
-                          </a>
-                        </div>
-                        <div class="card-body">
-                          <div class="form-group">
-                            <label></label>
-                            <div class="text-center">
-                                <img id="blah_1" name="images" class="img-fluid" src="assets/img/no-image.png" alt="picture">
-                                <canvas hidden id="myCanvas_1"/>
-                            </div>
-                            <div class="custom-file" style="margin-bottom: 10px;margin-top: 10px;">
-                              <input type="file" class="custom-file-input" id="image_1" name="image_input">
-                              <label class="custom-file-label" for="image_1">Pilih foto</label>
-                            </div>
-                          <input id="caption_1" name="caption" type="text" class="form-control" placeholder="Caption">
+                  <div class="col-md-4">
+                    <div class="card card-light card-outline">
+                      <div class="card-tools">
+                        <a href="#" class="btn btn-tool">
+                          <i class="fas fa-timess"></i>
+                        </a>
+                      </div>
+                      <div class="card-body">
+                        <div class="form-group">
+                          <label></label>
+                          <div class="text-center">
+                              <img id="blah_1" name="images" class="img-fluid" src="assets/img/no-image.png" alt="picture">
+                              <canvas hidden id="myCanvas_1"/>
                           </div>
+                          <div class="custom-file" style="margin-bottom: 10px;margin-top: 10px;">
+                            <input type="file" class="custom-file-input" id="image_1" name="image_input">
+                            <label class="custom-file-label" for="image_1">Pilih foto</label>
+                          </div>
+                        <input id="caption_1" name="caption" type="text" class="form-control" placeholder="Caption">
                         </div>
                       </div>
                     </div>
-
                   </div>
+                </div>
               </div>
             </div>
           </div>

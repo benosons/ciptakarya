@@ -1,60 +1,144 @@
 {% extends "admin/layout.html" %} {% block content %}
 
 <section class="content-header">
-  <div class="container-fluid">
-    <div class="row mb-2">
-      <div class="col-sm-6">
-        <h1><i class="nav-icon fas fa-info-circle"></i> Info Balai </h1>
-      </div>
-      <div class="col-sm-6">
-        <ol class="breadcrumb float-sm-right">
-          <li class="breadcrumb-item"><a href="#">Info</a></li>
-          <li class="breadcrumb-item active">Info Balai</li>
-        </ol>
-      </div>
-    </div>
-  </div><!-- /.container-fluid -->
+	<div class="container-fluid">
+		<div class="row mb-2">
+			<div class="col-sm-6">
+				<h1><i class="nav-icon fas fa-info-circle"></i> Info Balai </h1>
+			</div>
+			<div class="col-sm-6">
+				<ol class="breadcrumb float-sm-right">
+					<li class="breadcrumb-item"><a href="#">Info</a></li>
+					<li class="breadcrumb-item active">Info Balai</li>
+				</ol>
+			</div>
+		</div>
+	</div><!-- /.container-fluid -->
 </section>
 
 <!-- Main content -->
 <section class="content">
 
-  <!-- Default box -->
-  <div class="container-fluid">
-    <div class="row">
-      <div class="col-12">
-        <div class="card card-navy card-outline">
-          <div class="card-body">
-            <input id="param" value="" hidden>
-
+	<!-- Default box -->
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-12">
+				<div class="card card-navy card-outline">
+					<div class="card-body">
+            
+            <form>
             <div class="row">
-              <div class="col-sm-12">
-                <div class="card card-light card-outline">
-                  <div class="card-header">
-                    <label class="">Kategori Info Balai</label>
-                  </div>
-                  <div class="card-body">
-                    <div class="form-group">
-                      <label>Pilih Kategori</label>
-                      <select class="form-control select2bs4" style="width: 100%;">
-                        <option selected="selected">Alabama</option>
-                        <option>Alaska</option>
-                        <option>California</option>
-                        <option>Delaware</option>
-                        <option>Tennessee</option>
-                        <option>Texas</option>
-                        <option>Washington</option>
-                      </select>
+                <input id="param" value="" hidden>
+                <input id="idnya" value="" hidden>
+                <div class="col-sm-12">
+                  <div class="card card-light card-outline">
+                    <div class="card-header">
+                      <label class="">Kategori Info Balai</label>
                     </div>
+                    <div class="card-body">
+                      <div class="form-group">
+                        <label>Pilih Kategori</label>
+                        <select class="form-control select2bs4" id="kategori" name="kategori" style="width: 100%;">
+                          <option value="1">Dukungan Manajemen</option>
+                          <option value="2">Perencanaan dan Pelaksanaan</option>
+                          <option value="3">Bina Penataan Bangunan</option>
+                          <option value="4">Pengembangan Kawasan Permukiman</option>
+                          <option value="5">Pengembangan Penyehatan Lingkungan Permukiman</option>
+                          <option value="6">Pengembangan Sistem Penyediaan Air Minum</option>
+                          <option value="7">Pengembangan Sarana Prasarana Pendidikan, Olahraga dan Pasar</option>
+                        </select>
+                      </div>
+                      <div class="form-group">
+                        <label>Link Geoportal</label>
+                          <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                              <span class="input-group-text" id="basic-addon1"><i class="fa fa-pen"></i></span>
+                            </div>
+                            <input type="text" class="form-control" id="linkgeo" name="linkgeo" aria-describedby="basic-addon1">
+                          </div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
+                <div class="col-sm-12">
+                  <div class="card card-light card-outline">
+                    <div class="card-header">
+                      <label class="">Jumlah Pegawai Balai</label>
+                    </div>
+                    <div class="card-body">
+                      <div class="form-group">
+                        <label>PNS</label>
+                        <input type="text" id="jml_pns" class="form-control num" required>
+                      </div>
+                      <div class="form-group">
+                        <label>Non PNS</label>
+                        <input type="text" id="jml_nonpns" class="form-control num" required>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-sm-12">
+                  <div class="card card-light card-outline">
+                    <div class="card-header">
+                      <label class="">Aset BMN</label>
+                    </div>
+                    <div class="card-body">
+                      <div class="form-group">
+                        <label>Aset BMN Yang Sudah Di serah terimakan</label>
+                        <input type="text" id="aset_terimakan" class="form-control num" required>
+                      </div>
+                      <div class="form-group">
+                        <label>Aset BMN yang sedang Dalam Proses</label>
+                        <input type="text" id="aset_proses" class="form-control num" required>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-sm-12">
+                  <div class="card card-light card-outline">
+                    <div class="card-header">
+                      <label class="">Sarana dan prasarana Tanggap Darurat Permukiman</label>
+                    </div>
+                    <div class="card-body">
+                      <div class="form-group">
+                        <label>Unit HU</label>
+                        <input type="text" id="hu" class="form-control num" required>
+                      </div>
+                      <div class="form-group">
+                        <label>Unit MTA</label>
+                        <input type="text" id="mta" class="form-control num" required>
+                      </div>
+                      <div class="form-group">
+                        <label>Unit Toilet</label>
+                        <input type="text" id="toilet" class="form-control num" required>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-sm-12">
+                  <div class="card card-light card-outline">
+                    <div class="card-header">
+                      <label class="">Satgas Tanggap Darurat</label>
+                    </div>
+                    <div class="card-body">
+                      <div class="form-group">
+                        <label>Jumlah Orang Satgas Tanggap Darurat</label>
+                        <input type="text" id="jml_orang" class="form-control num" required>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-sm-12">
+                  <button type="button" id="save-balai" class="btn btn-primary btn-sm float-right">Simpan</button>
+                  <a href="#" class="btn btn-secondary btn-sm float-right mr-2">Cancel</a>
                 </div>
               </div>
-            </div>
-      </div>
-    </div>
-  </div>
-</div>
-</div>
+            </form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 
 </section>
 
@@ -64,8 +148,15 @@
 {% endblock %}
 {% block js %}
 <script>
-$(function () {
-  bsCustomFileInput.init();
-});
+	$(function () {
+		$(".num").keypress(function (e){
+      var charCode = (e.which) ? e.which : e.keyCode;
+      if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+        return false;
+      }
+    });
+    bsCustomFileInput.init();
+	});
+
 </script>
 {% endblock %}

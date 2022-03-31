@@ -68,6 +68,10 @@ $(function () {
     }
   });
 
+  $('#save-balai').click(function(){
+    savedata();
+  })
+
   $('#name').keyup(function(){$(this).attr('class', 'form-control')});
   $('#username').keyup(function(){$(this).attr('class', 'form-control')});
   $('#password').keyup(function(){$(this).attr('class', 'form-control')});
@@ -128,124 +132,87 @@ function loadkota(){
             dataType: 'json',
             url: 'getdata',
             data : {
-                    param      : 'berita',
+                    param      : 'data_balai',
              },
             success: function(result){
               
               if(result.code == 1){
-                    var dt = $('#listberita').DataTable({
-                      destroy: true,
-                      paging: true,
-                      lengthChange: false,
-                      searching: true,
-                      ordering: true,
-                      info: true,
-                      autoWidth: false,
-                      responsive: false,
-                      pageLength: 10,
-                      aaData: result.data,
-                        aoColumns: [
-                            { 'mDataProp': 'id'},
-                            { 'mDataProp': 'img'},
-                            { 'mDataProp': 'username'},
-                            { 'mDataProp': 'role_desc'},
-                            { 'mDataProp': 'status'},
-                            { 'mDataProp': 'islogin'},
-                            { 'mDataProp': 'id'},
-                            // { 'mDataProp': 'role'},
-                        ],
-                        order: [[0, 'ASC']],
-                        aoColumnDefs:[
-                          // {
-                          //   targets: [7],
-                          //   visible: false
-                          // },
-                            {
-                                mRender: function (data, type, row){
-                                    var $rowData = '';
-                                        $rowData += `
-                                                  <div class="row">
-                                                    <div class="col-md-4">
-                                                      <button onclick="modaldetail('`+row.id+`','`+row.username+`','`+row.role_desc+`','`+row.status+`','`+row.name+`','`+row.img+`')" type="button" class="btn btn-block btn-success btn-xs"><i class="far fa-eye"></i></button>
-                                                    </div>
-                                                    <div class="col-md-4">
-                                                      <button onclick="edituser('`+row.id+`','`+row.username+`','`+row.password+`','`+row.status+`','`+row.role+`','`+row.name+`','`+row.img+`')" type="button" class="btn btn-block btn-warning btn-xs"><i class="far fa-edit"></i></button>
-                                                    </div>
-                                                    <div class="col-md-4">
-                                                      <button onclick="deleteData(`+row.id+`)" type="button" class="btn btn-block btn-danger btn-xs"><i class="fas fa-trash-alt"></i></button>
-                                                    </div>
-                                                  </div>
-                                                    `;
-
-                                    return $rowData;
-                                },
-                                aTargets: [6]
-                            },
-                            {
-                                mRender: function (data, type, row){
-                                  var $rowData = '';
-                                  if(row.islogin == 1){
-                                        $rowData +=`<span class="badge badge-success right">Online</span>`;
-                                      }else{
-                                        $rowData +=`<span class="badge badge-default right">Offline</span>`;
-                                      }
-
-                                    return $rowData;
-                                },
-                                aTargets: [5]
-                            },
-                            {
-                                mRender: function (data, type, row){
-                                  var $rowData = '';
-                                  if(row.status == 1){
-                                        $rowData +=`<span class="badge badge-primary right">Aktif</span>`;
-                                      }else{
-                                        $rowData +=`<span class="badge badge-warning right">Non Aktif</span>`;
-                                      }
-
-                                    return $rowData;
-                                },
-                                aTargets: [4]
-                            },
-                            {
-                                mRender: function (data, type, row){
-                                  var $rowData = '<img src="'+row.img+'" style="width: 35px;"></img>';
-                                    return $rowData;
-                                },
-                                aTargets: [1]
-                            }
-                        ],
-
-                        fnRowCallback: function(nRow, aData, iDisplayIndex, iDisplayIndexFull){
-                            var index = iDisplayIndexFull + 1;
-                            $('td:eq(0)', nRow).html(' '+index);
-                            return  ;
-                        },
-
-                        fnInitComplete: function () {
-                            var that = this;
-                            var td ;
-                            var tr ;
-
-                            this.$('td').click( function () {
-                                td = this;
-                            });
-                            this.$('tr').click( function () {
-                                tr = this;
-                            });
-
-
-                            $('#listproj_filter input').bind('keyup', function (e) {
-                                return this.value;
-                            });
-
-                        }
-                    });
-                }
+                var count = result.data.length;
+                var index = count - 1;
+                $('#idnya').val(result['data'][index].id);
+                $('#kategori').val(result['data'][index].kategori).trigger('change');
+                $('#linkgeo').val(result['data'][index].linkgeo);
+                $('#jml_pns').val(result['data'][index].jml_pns);
+                $('#jml_nonpns').val(result['data'][index].jml_nonpns);
+                $('#aset_terimakan').val(result['data'][index].aset_terimakan);
+                $('#aset_proses').val(result['data'][index].aset_proses);
+                $('#hu').val(result['data'][index].hu);
+                $('#mta').val(result['data'][index].mta);
+                $('#toilet').val(result['data'][index].toilet);
+                $('#jml_orang').val(result['data'][index].jml_orang);
+              }else{
+                $('#jml_pns').val('0');
+                $('#jml_nonpns').val('0');
+                $('#aset_terimakan').val('0');
+                $('#aset_proses').val('0');
+                $('#hu').val('0');
+                $('#mta').val('0');
+                $('#toilet').val('0');
+                $('#jml_orang').val('0');
+              }
 
             }
         });
     }
+
+    function savedata(st){
+      var kategori = $('#kategori').val();
+      var linkgeo = $('#linkgeo').val();
+      var jml_pns = $('#jml_pns').val();
+      var jml_nonpns = $('#jml_nonpns').val();
+      var aset_terimakan = $('#aset_terimakan').val();
+      var aset_proses = $('#aset_proses').val();
+      var hu = $('#hu').val();
+      var mta = $('#mta').val();
+      var toilet = $('#toilet').val();
+      var jml_orang = $('#jml_orang').val();
+    
+      var formData = new FormData();
+      formData.append('kategori', kategori);
+      formData.append('linkgeo', linkgeo);
+      formData.append('jml_pns', jml_pns);
+      formData.append('jml_nonpns', jml_nonpns);
+      formData.append('aset_terimakan', aset_terimakan);
+      formData.append('aset_proses', aset_proses);
+      formData.append('hu', hu);
+      formData.append('mta', mta);
+      formData.append('toilet', toilet);
+      formData.append('jml_orang', jml_orang);
+      var baseurl = 'savedatabalai';
+      var msg = 'Tambah Info Balai';
+    
+        $.ajax({
+          type: 'post',
+          url: baseurl,
+          dataType: 'json',
+          cache: false,
+          contentType: false,
+          processData: false,
+          data: formData,
+          async:false,
+            success: function(result){
+              Swal.fire({
+                title: 'Sukses!',
+                text: msg,
+                icon: 'success',
+                showConfirmButton: false,
+                timer: 1500
+              }); 
+              loaddata();
+              // loaddatauser();
+            }
+          });
+    };
 
     function saveUser(st){
       var img = window.img;

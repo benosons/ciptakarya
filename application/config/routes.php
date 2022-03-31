@@ -66,13 +66,14 @@ $route['^(cekusername)(/:any)?$'] = "auth/$0";
 
 $route['getdata'] = 'jsondata/getdata';
 $route['getdatausers'] = 'jsondata/getdatausers';
-$route['^(savedataberita|savedataprofile|savedataposter|savedatafoto)(/:any)?$'] = "jsondata/$0";
+$route['^(savedataberita|savedataprofile|savedataposter|savedatafoto|savedatabalai)(/:any)?$'] = "jsondata/$0";
 $route['^(saveglobal)(/:any)?$'] = "jsondata/$0";
 $route['^(deleteberita)(/:any)?$'] = 'jsondata/$0';
 $route['^(updateberita)(/:any)?$'] = 'jsondata/$0';
+$route['^(updatedataberita)(/:any)?$'] = 'jsondata/$0';
 $route['^(updatedataposter)(/:any)?$'] = 'jsondata/$0';
 $route['^(updateposter)(/:any)?$'] = 'jsondata/$0';
-$route['^(deletefoto)(/:any)?$'] = 'jsondata/$0';
+$route['^(deletefoto|deleteposter)(/:any)?$'] = 'jsondata/$0';
 
 $route['^(saveUser)(/:any)?$'] = 'sys/$0';
 $route['^(updateUser)(/:any)?$'] = 'sys/$0';

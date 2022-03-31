@@ -129,12 +129,14 @@ function loaddata(){
       success: function(result){
         
         if(result.code == 1){
-          $('#idnya').val(result['data'][0].id);
-          $('#tusi').summernote("code",result['data'][0].tusi);
-          $('#visi').summernote("code",result['data'][0].visi);
-          $('#profilenya').summernote("code",result['data'][0].profile);
-          $('#alamat').val(result['data'][0].alamat);
-          var file = result['data'][0].files[0];
+          var count = result.data.length;
+          var index = count - 1;
+          $('#idnya').val(result['data'][index].id);
+          $('#tusi').summernote("code",result['data'][index].tusi);
+          $('#visi').summernote("code",result['data'][index].visi);
+          $('#profilenya').summernote("code",result['data'][index].profile);
+          $('#alamat').val(result['data'][index].alamat);
+          var file = result['data'][index].files[0];
           $('#blah_1').attr('src',file.path+'/'+file.filename);
           }
 

@@ -55,7 +55,6 @@ $(function () {
   });
 
   $('#save-poster').on('click', function(){
-    
       savedata(st);
   });
 
@@ -173,7 +172,7 @@ $(function () {
                                   var id_file = row.files[0].id;
                                   var path = row.files[0].path+'/'+row.files[0].filename;
                                   
-                                    var stat = row.stat;
+                                    var stat = row.status;
                                     var file = ''
                                     for( var key in row.files ) {
                                       file = row.files[key].path+'/'+row.files[key].filename;
@@ -194,7 +193,7 @@ $(function () {
                                           <span class="sr-only">Toggle Dropdown</span>
                                         </button>
                                         <div class="dropdown-menu" role="menu">
-                                          <a class="dropdown-item" href="#" onclick="editdong('`+row.id+`', '`+row.judul+`', '`+row.bulan+`', '`+row.tahun+`', '`+file+`','`+idfile+`')"><i class="far fa-edit"></i> Edit</a>
+                                          <a class="dropdown-item" href="#" onclick="editdong('`+row.id+`', '`+row.judul+`', '`+row.bulan+`', '`+row.tahun+`', '`+file+`','`+idfile+`','`+stat+`')"><i class="far fa-edit"></i> Edit</a>
                                           <a class="dropdown-item" href="#" onclick="deleteData(`+row.id+`, `+id_file+`, '`+path+`')"><i class="far fa-trash-alt"></i> Hapus</a>
                                           <div class="dropdown-divider"></div>
                                           `+st+`
@@ -251,23 +250,23 @@ $(function () {
       formData.append('judul', judul);
       formData.append('bulan', bulan);
       formData.append('tahun', tahun);
-      formData.append('status', status);
-
+      
       var iscapt = [];
       for (let index = 0; index < $("[name='image_input']").length; index++) {
         var src = $("[name='image_input']")[index].files[0];
         
         formData.append('files[]', src);
       }
-      
       var stat;
-        switch (st) {
-          case false:
-              stat = '0';
-            break;
-          default:
-              stat = '1'
-        }
+      switch (st) {
+        case false:
+          stat = '0';
+          break;
+      default:
+        stat = '1'
+      }
+
+        formData.append('status', stat);
 
         if(id){
           formData.append('idfile', $('#idfile').val());
@@ -438,12 +437,13 @@ function modaldetail(id,username,role,status,name,foto){
       readURL(ini);
     }
 
-    function editdong(id, judul, bulan, tahun, path, idfile){
+    function editdong(id, judul, bulan, tahun, path, idfile,stat){
       $('#add-poster').trigger('click');
       $('.modal-title').html('<i class="fas fa-photo-video"></i> Edit Poster');
       $('#id').val(id);
       $('#idfile').val(idfile);
       $('#judul').val(judul);
+      $("#stat").bootstrapSwitch('state', stat == '1' ? true : false);
       $('#bulan').val(bulan).change();
       $('#tahun').val(tahun).change();
       $('#blah_1').attr('src', path);

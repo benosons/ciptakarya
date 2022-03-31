@@ -85,7 +85,7 @@ class Model_data extends CI_Model {
         $this->db->set('bulan', $params->bulan);
         $this->db->set('tahun', $params->tahun);
 
-        $this->db->set('status', $params->stat);
+        $this->db->set('status', $params->status);
         $this->db->set('update_by', $params->update_by);
         $this->db->set('update_date', $params->update_date);
         $this->db->where('id', $params->id);

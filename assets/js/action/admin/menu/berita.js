@@ -216,7 +216,7 @@ function loaddata(){
                                     <span class="sr-only">Toggle Dropdown</span>
                                   </button>
                                   <div class="dropdown-menu" role="menu">
-                                    <a class="dropdown-item" href="#" onclick="editdong('`+row.id+`','`+row.judul+`','`+row.tag+`','`+row.isi+`','`+file+`','`+idfile+`','`+row.intro+`','`+row.bagian+`','`+row.date+`','`+caption+`')"><i class="far fa-edit"></i> Edit</a>
+                                    <a class="dropdown-item" href="javascript:void(0)" onclick="editdong('`+row.id+`','`+row.judul+`','`+row.tag+`','`+row.isi+`','`+file+`','`+idfile+`','`+row.intro+`','`+row.bagian+`','`+row.date+`','`+caption+`')"><i class="far fa-edit"></i> Edit</a>
                                     <a class="dropdown-item" href="#" onclick="deleteData(`+row.id+`, `+id_file+`, '`+path+`')
                                     "><i class="far fa-trash-alt"></i> Hapus</a>
                                     <div class="dropdown-divider"></div>
@@ -281,7 +281,6 @@ function loaddata(){
       formData.append('isi', isi);
       formData.append('bagian', bagian);
       formData.append('date', date);
-      formData.append('stat', stat);
 
       var iscapt = [];
       for (let index = 0; index < $("[name='image_input']").length; index++) {
@@ -302,6 +301,7 @@ function loaddata(){
           default:
               stat = '1'
         }
+        formData.append('stat', stat);
 
         if(id){
           var baseurl = 'updatedataberita';
