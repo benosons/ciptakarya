@@ -65,15 +65,19 @@ $route['^(register)(/:any)?$'] = "auth/$0";
 $route['^(cekusername)(/:any)?$'] = "auth/$0";
 
 $route['getdata'] = 'jsondata/getdata';
+$route['getkategoriprofil'] = 'jsondata/getkategoriprofil';
+$route['getkategoriprofils'] = 'jsondata/getkategoriprofils';
+$route['getkategorilaporan'] = 'jsondata/getkategorilaporan';
+$route['getkategorilaporans'] = 'jsondata/getkategorilaporans';
 $route['getdatausers'] = 'jsondata/getdatausers';
-$route['^(savedataberita|savedataprofile|savedataposter|savedatafoto|savedatabalai|savedatabanner|savedatagrafis|savedataagenda|savedatatext)(/:any)?$'] = "jsondata/$0";
-$route['^(saveglobal)(/:any)?$'] = "jsondata/$0";
+$route['^(savedataberita|savedataprofile|savedataposter|savedatafoto|savedatabalai|savedatabanner|savedatagrafis|savedataagenda|savedatatext|savedatabuku|savedatalaporan)(/:any)?$'] = "jsondata/$0";
+$route['^(saveglobal|updateglobal)(/:any)?$'] = "jsondata/$0";
 $route['^(deleteberita)(/:any)?$'] = 'jsondata/$0';
-$route['^(updateberita|updatebanner|updategrafis|updateagenda|updatetext)(/:any)?$'] = 'jsondata/$0';
-$route['^(updatedataberita|updatedatabanner|updatedatagrafis|updatedataagenda|updatedatatext)(/:any)?$'] = 'jsondata/$0';
+$route['^(updateberita|updatebanner|updategrafis|updateagenda|updatetext|updatebuku|updatelaporan)(/:any)?$'] = 'jsondata/$0';
+$route['^(updatedataberita|updatedatabanner|updatedatagrafis|updatedataagenda|updatedatatext|updatedatabuku|updatedatalaporan)(/:any)?$'] = 'jsondata/$0';
 $route['^(updatedataposter)(/:any)?$'] = 'jsondata/$0';
 $route['^(updateposter)(/:any)?$'] = 'jsondata/$0';
-$route['^(deletefoto|deleteposter|deletebanner|deletetext)(/:any)?$'] = 'jsondata/$0';
+$route['^(deletefoto|deleteposter|deletebanner|deletetext|deletebuku|deletekategori|deletelaporan|deletekategorilaporan)(/:any)?$'] = 'jsondata/$0';
 
 $route['^(saveUser)(/:any)?$'] = 'sys/$0';
 $route['^(updateUser)(/:any)?$'] = 'sys/$0';

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Mar 31, 2022 at 11:22 AM
+-- Generation Time: Apr 03, 2022 at 08:26 AM
 -- Server version: 5.7.33
 -- PHP Version: 7.4.19
 
@@ -157,6 +157,33 @@ INSERT INTO `data_berita` (`id`, `judul`, `intro`, `tag`, `isi`, `bagian`, `date
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `data_buku_profil`
+--
+
+CREATE TABLE `data_buku_profil` (
+  `id` int(5) NOT NULL,
+  `judul` varchar(255) NOT NULL,
+  `intro` text NOT NULL,
+  `tahun` varchar(20) NOT NULL,
+  `kategori` varchar(150) NOT NULL,
+  `stat` int(5) NOT NULL,
+  `create_date` datetime NOT NULL,
+  `create_by` varchar(50) NOT NULL,
+  `update_date` datetime NOT NULL,
+  `update_by` varchar(50) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `data_buku_profil`
+--
+
+INSERT INTO `data_buku_profil` (`id`, `judul`, `intro`, `tahun`, `kategori`, `stat`, `create_date`, `create_by`, `update_date`, `update_by`) VALUES
+(1, 'judulpoi', 'testsdsadsdasdas', '2022', 'Profil Infrastruktur Permukiman', 1, '2022-04-02 23:00:32', '1', '0000-00-00 00:00:00', '1'),
+(2, 'judul', 'fdghjk', '2022', 'test', 1, '2022-04-03 08:16:14', '1', '2022-04-03 08:16:14', '1');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `data_file`
 --
 
@@ -191,9 +218,15 @@ INSERT INTO `data_file` (`id`, `id_parent`, `type`, `path`, `size`, `extension`,
 (29, 4, 'profile', './assets/upload/profile/2022/03/28', '79637', 'image/jpeg', 'thumb-v-y-1.jpg', NULL, '2022-03-28 13:12:08', '2022-03-28 13:12:08'),
 (32, 6, 'profile', './assets/upload/profile/2022/03/30', '55484', 'image/jpeg', 'example1.jpeg', NULL, '2022-03-30 01:48:52', '2022-03-30 01:48:52'),
 (33, 13, 'poster', './assets/upload/galeri/poster/2022/03/31', '36688', 'image/jpeg', '1.jpg', NULL, '2022-03-31 03:12:57', '2022-03-31 03:13:26'),
+(56, 2, 'buku', './assets/upload/file/buku/2022/04/03', '107424', 'application/pdf', 'dummy_file.pdf', NULL, '2022-04-03 08:16:14', '2022-04-03 08:16:14'),
 (37, 4, 'banner', './assets/upload/galeri/banner/2022/03/31', '83825', 'image/jpeg', 'img_2.jpg', NULL, '2022-03-31 06:43:21', '2022-03-31 07:25:09'),
 (38, 2, 'infografis', './assets/upload/galeri/infografis/2022/03/31', '11293', 'image/png', 'darkBG.png', NULL, '2022-03-31 19:45:38', '2022-03-31 19:45:38'),
-(39, 6, 'text', './assets/upload/file/text/2022/03/31', '107424', 'application/pdf', 'dummy_file.pdf', NULL, '2022-03-31 22:46:59', '2022-03-31 22:46:59');
+(54, 1, 'buku', './assets/upload/file/buku/2022/04/02', '107424', 'application/pdf', 'dummy_file.pdf', NULL, '2022-04-02 23:00:32', '2022-04-02 23:00:32'),
+(55, 1, 'buku', './assets/upload/file/buku/2022/04/03', '237441', 'application/x-zip-compressed', 'lightbox2-2.11.1.zip', NULL, '2022-04-02 23:00:32', '2022-04-03 05:51:33'),
+(57, 2, 'buku', './assets/upload/file/buku/2022/04/03', '12361371', 'application/x-zip-compressed', 'IDM.6.37.b.14.kuyhAa.Me.zip', NULL, '2022-04-03 08:16:14', '2022-04-03 08:16:14'),
+(60, 2, 'laporan', './assets/upload/file/laporan/2022/04/03', '107424', 'application/pdf', 'dummy_file.pdf', NULL, '2022-04-03 08:23:34', '2022-04-03 08:23:34'),
+(61, 2, 'laporan', './assets/upload/file/laporan/2022/04/03', '237441', 'application/x-zip-compressed', 'lightbox2-2.11.1.zip', NULL, '2022-04-03 08:23:34', '2022-04-03 08:23:34'),
+(62, 14, 'poster', './assets/upload/galeri/poster/2022/04/03', '1542777', 'image/jpeg', 'hunter-newton-wxu6mKDrYd8-unsplash.jpg', NULL, '2022-04-03 08:24:10', '2022-04-03 08:24:10');
 
 -- --------------------------------------------------------
 
@@ -247,6 +280,32 @@ INSERT INTO `data_grafis` (`id`, `judul`, `tahun`, `status`, `created_at`, `crea
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `data_laporan`
+--
+
+CREATE TABLE `data_laporan` (
+  `id` int(5) NOT NULL,
+  `judul` varchar(255) NOT NULL,
+  `intro` text NOT NULL,
+  `tahun` varchar(50) NOT NULL,
+  `kategori` varchar(150) NOT NULL,
+  `stat` int(5) NOT NULL,
+  `create_by` varchar(50) NOT NULL,
+  `create_date` datetime NOT NULL,
+  `update_by` varchar(50) DEFAULT NULL,
+  `update_date` datetime DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `data_laporan`
+--
+
+INSERT INTO `data_laporan` (`id`, `judul`, `intro`, `tahun`, `kategori`, `stat`, `create_by`, `create_date`, `update_by`, `update_date`) VALUES
+(2, 'judul', 'test', '2022', 'test', 1, '1', '2022-04-03 08:23:34', '1', '2022-04-03 08:23:34');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `data_poster`
 --
 
@@ -267,6 +326,7 @@ CREATE TABLE `data_poster` (
 --
 
 INSERT INTO `data_poster` (`id`, `judul`, `bulan`, `tahun`, `status`, `create_by`, `update_by`, `create_date`, `update_date`) VALUES
+(14, 'judul', '1', '2022', '1', '1', '1', '2022-04-03 08:24:10', '2022-04-03 08:24:10'),
 (13, 'judul', '1', '2022', '1', '1', '1', '2022-03-31 03:12:57', '2022-03-31 03:49:57');
 
 -- --------------------------------------------------------
@@ -317,13 +377,6 @@ CREATE TABLE `data_text` (
   `update_by` datetime DEFAULT NULL,
   `stat` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 ROW_FORMAT=DYNAMIC;
-
---
--- Dumping data for table `data_text`
---
-
-INSERT INTO `data_text` (`id`, `judul`, `tipe`, `isi`, `date`, `status`, `create_date`, `create_by`, `update_date`, `update_by`, `stat`) VALUES
-(6, 'judulannn', 'halaman', '-', '03/31/2022 - 04/23/2022', 1, '2022-03-31 22:46:59', '1', '2022-03-31 11:09:37', '0000-00-00 00:00:00', NULL);
 
 -- --------------------------------------------------------
 
@@ -400,6 +453,53 @@ INSERT INTO `kabupaten_kota` (`id`, `id_provinsi`, `nama`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `kategori_laporan`
+--
+
+CREATE TABLE `kategori_laporan` (
+  `id` int(5) NOT NULL,
+  `nama` varchar(150) NOT NULL,
+  `create_by` varchar(50) NOT NULL,
+  `create_date` datetime NOT NULL,
+  `update_by` varchar(50) DEFAULT NULL,
+  `update_date` datetime DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `kategori_laporan`
+--
+
+INSERT INTO `kategori_laporan` (`id`, `nama`, `create_by`, `create_date`, `update_by`, `update_date`) VALUES
+(1, 'test', '1', '2022-04-03 08:15:32', NULL, NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `kategori_profile`
+--
+
+CREATE TABLE `kategori_profile` (
+  `id` int(5) NOT NULL,
+  `nama` varchar(150) NOT NULL,
+  `create_by` varchar(50) NOT NULL,
+  `create_date` datetime NOT NULL,
+  `update_by` varchar(50) DEFAULT NULL,
+  `update_date` datetime DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `kategori_profile`
+--
+
+INSERT INTO `kategori_profile` (`id`, `nama`, `create_by`, `create_date`, `update_by`, `update_date`) VALUES
+(2, 'Profil Infrastruktur Permukiman\r\n', '1', '2022-04-03 05:56:47', NULL, NULL),
+(3, 'test', '1', '2022-04-03 06:25:42', NULL, NULL),
+(4, 'popoperserqweqwe', '1', '2022-04-03 06:28:23', '1', '2022-04-03 07:51:25'),
+(6, 'tewstas', '1', '2022-04-03 08:12:11', NULL, NULL);
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `kota`
 --
 
@@ -471,7 +571,7 @@ CREATE TABLE `muser` (
 --
 
 INSERT INTO `muser` (`id`, `username`, `password`, `created_by`, `updated_by`, `created_at`, `updated_at`, `role`, `islogin`, `status`, `name`, `no_telp`, `email`, `img`, `satker`) VALUES
-(1, 'admin', '827ccb0eea8a706c4c34a16891f84e7b', NULL, NULL, NULL, NULL, 10, 1, 1, 'admin', NULL, NULL, 'assets/dokumen/gambar/user/default.jpg.', NULL),
+(1, 'admin', '827ccb0eea8a706c4c34a16891f84e7b', NULL, NULL, NULL, NULL, 10, 0, 1, 'admin', NULL, NULL, 'assets/dokumen/gambar/user/default.jpg.', NULL),
 (44, '452780', '1a97768dc9dffc384357957de04045f6', 'admin', NULL, '2022-03-24 08:46:50', NULL, 20, 0, 1, '452780', NULL, NULL, NULL, '452780'),
 (41, '420138', 'db72353c6d6ed20192d08b36e11124fb', 'admin', NULL, '2022-03-24 08:46:09', NULL, 20, 0, 1, '420138', NULL, NULL, NULL, '420138'),
 (42, '420139', 'd83cccccc3b1a614f801dfc6df0fe61b', 'admin', NULL, '2022-03-24 08:46:24', NULL, 20, 0, 1, '420139', NULL, NULL, NULL, '420139'),
@@ -634,6 +734,12 @@ ALTER TABLE `data_berita`
   ADD PRIMARY KEY (`id`) USING BTREE;
 
 --
+-- Indexes for table `data_buku_profil`
+--
+ALTER TABLE `data_buku_profil`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `data_file`
 --
 ALTER TABLE `data_file`
@@ -649,6 +755,12 @@ ALTER TABLE `data_foto`
 -- Indexes for table `data_grafis`
 --
 ALTER TABLE `data_grafis`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `data_laporan`
+--
+ALTER TABLE `data_laporan`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -674,6 +786,18 @@ ALTER TABLE `data_text`
 --
 ALTER TABLE `data_video`
   ADD PRIMARY KEY (`id`) USING BTREE;
+
+--
+-- Indexes for table `kategori_laporan`
+--
+ALTER TABLE `kategori_laporan`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `kategori_profile`
+--
+ALTER TABLE `kategori_profile`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `kota`
@@ -734,10 +858,16 @@ ALTER TABLE `data_berita`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
+-- AUTO_INCREMENT for table `data_buku_profil`
+--
+ALTER TABLE `data_buku_profil`
+  MODIFY `id` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
 -- AUTO_INCREMENT for table `data_file`
 --
 ALTER TABLE `data_file`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=40;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=63;
 
 --
 -- AUTO_INCREMENT for table `data_foto`
@@ -752,10 +882,16 @@ ALTER TABLE `data_grafis`
   MODIFY `id` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
+-- AUTO_INCREMENT for table `data_laporan`
+--
+ALTER TABLE `data_laporan`
+  MODIFY `id` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
 -- AUTO_INCREMENT for table `data_poster`
 --
 ALTER TABLE `data_poster`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT for table `data_profile`
@@ -767,13 +903,25 @@ ALTER TABLE `data_profile`
 -- AUTO_INCREMENT for table `data_text`
 --
 ALTER TABLE `data_text`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `data_video`
 --
 ALTER TABLE `data_video`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT for table `kategori_laporan`
+--
+ALTER TABLE `kategori_laporan`
+  MODIFY `id` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT for table `kategori_profile`
+--
+ALTER TABLE `kategori_profile`
+  MODIFY `id` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `kota`

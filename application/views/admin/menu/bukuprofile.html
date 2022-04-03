@@ -37,7 +37,7 @@
           </div>
           <div class="card-body">
             <input id="param" value="User" hidden>
-            <table class="table table-bordered table-hover" id="listberita">
+            <table class="table table-bordered table-hover" id="listbuku">
                 <thead>
                     <tr>
                         <th>
@@ -45,6 +45,9 @@
                         </th>
                         <th>
                             Judul
+                        </th>
+                        <th>
+                            Intro
                         </th>
                         <th>
                             Kategori
@@ -78,111 +81,106 @@
       </div>
       <div class="modal-body">
         <input id="id" hidden>
+        <input id="idfile1" hidden>
+        <input id="idfile2" hidden>
           <div class="row">
             <div class="col-md-12">
               <div class="form-group">
-                <label>Judul Berita</label>
-                <input id="" name="berita-input" type="text" class="form-control" placeholder="Judul Berita ...">
+                <label>Judul</label>
+                <input id="judul" name="judul" type="text" class="form-control" placeholder="Judul Berita ...">
               </div>
             </div>
             <div class="col-md-12">
               <div class="form-group">
-                <label>Intro Berita</label>
-                <textarea id="" name="berita-input" type="text" class="form-control" placeholder="..."></textarea>
+                <label>Intro</label>
+                <textarea id="intro" name="intro" type="text" class="form-control" placeholder="..."></textarea>
               </div>
             </div>
             <div class="col-md-12">
               <div class="form-group">
-                <label>Tag</label>
-                <input id="" name="berita-input" type="text" class="form-control" placeholder="...">
+                <label>Tahun</label>
+                <select class="form-control select2bs4" style="width: 100%;" id="tahun">
+                  <option value="0">-Pilih-</option>
+                  <option value="2022">2022</option>
+                </select>
               </div>
             </div>
             <div class="col-md-12">
-              <div class="form-group">
-                <label>Isi</label>
-                <textarea id="summernote">
-                  
-                </textarea>
-              </div>
-            </div>
-          </div>
-
-        
-          <div class="row">
-            <div class="col-md-12">
-              <div class="card card-light card-outline">
-                <div class="card-header">
-                  <label class="">Upload Gambar</label>
-                  <div class="card-tools">
-                    <a onclick="addgambar()" class="btn btn-tool">
-                      <i class="fas fa-plus"></i>
-                    </a>
+              <ul class="nav nav-tabs" id="myTab" role="tablist">
+                <li class="nav-item">
+                  <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="kategori" aria-selected="true">Pilih Kategori</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profiles" role="tab" aria-controls="profile" aria-selected="false">Tambah Kategori</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">List Kategori</a>
+                </li>
+              </ul>
+              <div class="tab-content" id="myTabContent">
+                <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                  <div class="form-group mt-3">
+                    <label>Pilih Kategori</label>
+                    <select class="form-control select2bs4" style="width: 100%;" id="pilih_kategori">
+                      <!-- <option value="0">-Pilih-</option>
+                      <option value="2022">2022</option> -->
+                    </select>
                   </div>
                 </div>
-                <div class="card-body">
-                  <div class="row" id="gambar-container">
-
-                    <div class="col-md-4">
-                      <div class="card card-light card-outline">
-                        <div class="card-tools">
-                          <a href="#" class="btn btn-tool">
-                            <i class="fas fa-timess"></i>
-                          </a>
-                        </div>
-                        <div class="card-body">
-                          <div class="form-group">
-                            <label></label>
-                            <div class="text-center">
-                                <img id="blah_1" name="images" class="img-fluid" src="assets/img/no-image.png" alt="picture">
-                                <canvas hidden id="myCanvas_1"/>
-                            </div>
-                            <div class="custom-file" style="margin-bottom: 10px;margin-top: 10px;">
-                              <input type="file" class="custom-file-input" id="image_1" name="image_input">
-                              <label class="custom-file-label" for="image_1">Pilih foto</label>
-                            </div>
-                          <input id="caption_1" name="caption" type="text" class="form-control" placeholder="Caption">
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-
+                <div class="tab-pane fade" id="profiles" role="tabpanel" aria-labelledby="profile-tab">
+                  <div class="form-group mt-3">
+                    <label for="">Nama Kategori</label>
+                    <input type="text" id="nama_kategori" class="form-control">
                   </div>
+                  <div class="form-group">
+                    <!-- <input type="text" id="id_kat" hidden> -->
+                    <button id="save-kategori" class="btn btn-primary btn-sm">Tambah</button>
+                  </div>
+                </div>
+                <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
+                  <table class="table table-bordered mt-3" id="listkategori">
+                    <thead>
+                      <tr>
+                        <th>No</th>
+                        <th>Nama Kategori</th>
+                        <th>Aksi</th>
+                      </tr>
+                    </thead>
+                  </table>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-7">
+              <div class="form-group">
+                <label>File Buku Profil PDF</label>
+                <div class="text-center">
+                    <img id="blah_1" name="images" class="img-fluid" src="assets/img/no-image.png" alt="picture" hidden>
+                    <!-- <canvas hidden id="myCanvas_1"/> -->
+                </div>
+                <div class="custom-file" style="margin-bottom: 10px;margin-top: 10px;">
+                  <input type="file" class="custom-file-input" id="image_1" name="image_input">
+                  <label class="custom-file-label" id="lbl1" for="image_1">Pilih File</label>
+                </div>
+              <!-- <input id="caption_1" name="caption" type="text" class="form-control" placeholder="Caption"> -->
+              </div>
+            </div>
+            <div class="col-md-7">
+              <div class="form-group">
+                <label>File Buku Profil Baca Online</label>
+                <div class="text-center">
+                    <img id="blah_2" name="images" class="img-fluid" src="assets/img/no-image.png" alt="picture" hidden>
+                    <!-- <canvas hidden id="myCanvas_1"/> -->
+                </div>
+                <div class="custom-file" style="margin-bottom: 10px;margin-top: 10px;">
+                  <input type="file" class="custom-file-input" id="image_2" name="image_input">
+                  <label class="custom-file-label" id="lbl2" for="image_2">Pilih File</label>
+                </div>
+              <!-- <input id="caption_2" name="caption" type="text" class="form-control" placeholder="Caption"> -->
               </div>
             </div>
           </div>
-
-          <div class="col-md-12">
-            
-          </div>
-        </div>
 
         <div class="row">
-
-          <div class="col-md-12">
-            <div class="form-group">
-              <label>Bagian</label>
-              <select class="form-control select2bs4" style="width: 100%;">
-                <option selected="selected">Alabama</option>
-                <option>Alaska</option>
-                <option>California</option>
-                <option>Delaware</option>
-                <option>Tennessee</option>
-                <option>Texas</option>
-                <option>Washington</option>
-              </select>
-            </div>
-          </div>
-          <div class="col-md-12">
-            <div class="form-group">
-              <label>Date:</label>
-                <div class="input-group date" id="reservationdate" data-target-input="nearest">
-                    <input type="text" class="form-control datetimepicker-input" data-target="#reservationdate"/>
-                    <div class="input-group-append" data-target="#reservationdate" data-toggle="datetimepicker">
-                        <div class="input-group-text"><i class="fa fa-calendar"></i></div>
-                    </div>
-                </div>
-          </div>
-
           <div class="col-md-12">
             <label>Publikasi</label>
             <div class="form-group">
@@ -194,8 +192,8 @@
 
       </div>
       <div class="modal-footer">
-        <!-- <button type="button" class="btn btn-primary">Tutup</button> -->
-        <button id="save-user" type="button" class="btn btn-success" ><i class="fas fa-check"> </i> Simpan</button>
+        <button type="reset" class="btn btn-primary" id="btn-resets" hidden>reset</button>
+        <button id="save-buku" type="button" class="btn btn-success" ><i class="fas fa-check"> </i> Simpan</button>
       </div>
     </div>
     <!-- /.modal-content -->
