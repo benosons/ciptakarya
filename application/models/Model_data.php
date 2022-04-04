@@ -20,6 +20,12 @@ class Model_data extends CI_Model {
         return $query;
     }
 
+    public function getkategori($param)
+    {
+        $query = $this->db->query("select * from $param order by id asc")->result();
+        return $query;
+    }
+
     public function getfile($id, $type)
     {
         $query = $this->db->query("select * from data_file where id_parent = '$id' and type = '$type' order by id asc")->result();
@@ -33,11 +39,24 @@ class Model_data extends CI_Model {
         return $insert_id;
     }
 
+    public function updatedata($table, $params = NULL)
+    {
+        $this->db->where('id',$params->id);
+        $query = $this->db->update($table,$params);
+        return $query;
+    }
+
     public function deleteberita($id)
     {
         // $idx = $this->db->escape_str($id);
         $this->db->where('id', $id->id);
         $this->db->delete('data_berita');
+    }
+    public function deletekategori($id)
+    {
+        // $idx = $this->db->escape_str($id);
+        $this->db->where('id', $id->id);
+        $this->db->delete('kategori_profile');
     }
 
     public function deleteposter($id)
@@ -57,6 +76,18 @@ class Model_data extends CI_Model {
         // $idx = $this->db->escape_str($id);
         $this->db->where('id', $id->id);
         $this->db->delete('data_text');
+    }
+    public function deletebuku($id)
+    {
+        // $idx = $this->db->escape_str($id);
+        $this->db->where('id', $id->id);
+        $this->db->delete('data_buku_profil');
+    }
+    public function deletelaporan($id)
+    {
+        // $idx = $this->db->escape_str($id);
+        $this->db->where('id', $id->id);
+        $this->db->delete('data_laporan');
     }
 
     public function deletefoto($id)
@@ -120,6 +151,40 @@ class Model_data extends CI_Model {
         $this->db->set('update_date', $params->update_at);
         $this->db->where('id', $params->id);
         $this->db->update('data_text');
+        
+        return $valid;
+
+    }
+    public function updatedatabuku($params = NULL)
+    {
+        $valid = true;
+       
+        $this->db->set('judul', $params->judul);
+        $this->db->set('intro', $params->intro);
+        $this->db->set('tahun', $params->tahun);
+        $this->db->set('kategori', $params->kategori);
+        $this->db->set('stat', $params->stat);
+        $this->db->set('update_by', $params->update_by);
+        $this->db->set('update_date', $params->update_date);
+        $this->db->where('id', $params->id);
+        $this->db->update('data_buku_profil');
+        
+        return $valid;
+
+    }
+    public function updatedatalaporan($params = NULL)
+    {
+        $valid = true;
+       
+        $this->db->set('judul', $params->judul);
+        $this->db->set('intro', $params->intro);
+        $this->db->set('tahun', $params->tahun);
+        $this->db->set('kategori', $params->kategori);
+        $this->db->set('stat', $params->stat);
+        $this->db->set('update_by', $params->update_by);
+        $this->db->set('update_date', $params->update_date);
+        $this->db->where('id', $params->id);
+        $this->db->update('data_laporan');
         
         return $valid;
 
@@ -226,6 +291,32 @@ class Model_data extends CI_Model {
         $this->db->set('update_at', $params->update_date);
         $this->db->where('id', $params->id);
         $this->db->update('data_grafis');
+        
+        return $valid;
+
+    }
+    public function updatebuku($params = NULL)
+    {
+        $valid = true;
+       
+        $this->db->set('stat', $params->stat);
+        $this->db->set('update_by', $params->update_by);
+        $this->db->set('update_date', $params->update_date);
+        $this->db->where('id', $params->id);
+        $this->db->update('data_buku_profil');
+        
+        return $valid;
+
+    }
+    public function updatelaporan($params = NULL)
+    {
+        $valid = true;
+       
+        $this->db->set('stat', $params->stat);
+        $this->db->set('update_by', $params->update_by);
+        $this->db->set('update_date', $params->update_date);
+        $this->db->where('id', $params->id);
+        $this->db->update('data_laporan');
         
         return $valid;
 

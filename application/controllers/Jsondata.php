@@ -235,6 +235,40 @@ class Jsondata extends CI_Controller {
 		header('Content-Type: application/json');
 		echo json_encode(array("status" => TRUE));
 	}
+	public function deletebuku()
+	{
+
+		$params = (object)$this->input->post();
+		
+		$this->Model_data->deletebuku($params);
+		$data1 = new stdClass;
+		$data1->id_file = $params->id_file1;
+		$this->Model_data->deletefile($data1);
+		unlink($params->path1);
+		$data2 = new stdClass;
+		$data2->id_file = $params->id_file2;
+		$this->Model_data->deletefile($data2);
+		unlink($params->path2);
+		header('Content-Type: application/json');
+		echo json_encode(array("status" => TRUE));
+	}
+	public function deletelaporan()
+	{
+
+		$params = (object)$this->input->post();
+		
+		$this->Model_data->deletelaporan($params);
+		$data1 = new stdClass;
+		$data1->id_file = $params->id_file1;
+		$this->Model_data->deletefile($data1);
+		unlink($params->path1);
+		$data2 = new stdClass;
+		$data2->id_file = $params->id_file2;
+		$this->Model_data->deletefile($data2);
+		unlink($params->path2);
+		header('Content-Type: application/json');
+		echo json_encode(array("status" => TRUE));
+	}
 
 	public function deletefoto()
 	{
@@ -244,6 +278,16 @@ class Jsondata extends CI_Controller {
 		$this->Model_data->deletefoto($params);
 		$this->Model_data->deletefile($params);
 		unlink($params->path);
+		header('Content-Type: application/json');
+		echo json_encode(array("status" => TRUE));
+	}
+
+	public function deletekategori()
+	{
+
+		$params = (object)$this->input->post();
+		
+		$this->Model_data->deletekategori($params);
 		header('Content-Type: application/json');
 		echo json_encode(array("status" => TRUE));
 	}
@@ -288,6 +332,128 @@ class Jsondata extends CI_Controller {
 						'create_date' => date("Y-m-d H:i:s"),
 						'update_date' => date("Y-m-d H:i:s")
 					];
+					$this->Model_data->updatefile($data_file);
+				}
+		}
+
+		header('Content-Type: application/json');
+		echo json_encode(array("status" => TRUE));
+
+	}
+	public function updatedatabuku()
+	{
+
+		$params = (object)$this->input->post();
+		$params->update_by	 = $this->session->userdata('id');
+		$params->update_date = date("Y-m-d H:i:s");
+		$data = $this->Model_data->updatedatabuku($params);
+
+		if(!empty($_FILES)){
+			$files = $_FILES['files'];
+			$count = count($_FILES['files']['name']);
+			$public		= FCPATH.'public';
+			$tipe		= './assets/upload/file/buku';
+			$date 		= date('Y/m/d');
+		
+			for ($i=0; $i < $count; $i++) { 
+
+				$name = $files['name'][$i];
+				$file = $files['tmp_name'][$i];
+				$type = $files['type'][$i];
+				$size = $files['size'][$i];
+				
+				$path = $tipe.'/'.$date;
+				if (!is_dir($path)) {
+					mkdir($path, 0777, TRUE);
+				}
+
+				
+				move_uploaded_file($file, $path.'/'.$name);
+
+				if (i == 0) {
+					$data_file = [
+						'id' => $params->idfile2,
+						'type' => 'buku',
+						'path' => $path,
+						'size' => $size,
+						'extension' => $type,
+						'filename' => $name,
+						'create_date' => date("Y-m-d H:i:s"),
+						'update_date' => date("Y-m-d H:i:s")
+					];
+				}else if(i == 1){
+					$data_file = [
+						'id' => $params->idfile2,
+						'type' => 'buku',
+						'path' => $path,
+						'size' => $size,
+						'extension' => $type,
+						'filename' => $name,
+						'create_date' => date("Y-m-d H:i:s"),
+						'update_date' => date("Y-m-d H:i:s")
+					];
+				}
+					$this->Model_data->updatefile($data_file);
+				}
+		}
+
+		header('Content-Type: application/json');
+		echo json_encode(array("status" => TRUE));
+
+	}
+	public function updatedatalaporan()
+	{
+
+		$params = (object)$this->input->post();
+		$params->update_by	 = $this->session->userdata('id');
+		$params->update_date = date("Y-m-d H:i:s");
+		$data = $this->Model_data->updatedatalaporan($params);
+
+		if(!empty($_FILES)){
+			$files = $_FILES['files'];
+			$count = count($_FILES['files']['name']);
+			$public		= FCPATH.'public';
+			$tipe		= './assets/upload/file/laporan';
+			$date 		= date('Y/m/d');
+		
+			for ($i=0; $i < $count; $i++) { 
+
+				$name = $files['name'][$i];
+				$file = $files['tmp_name'][$i];
+				$type = $files['type'][$i];
+				$size = $files['size'][$i];
+				
+				$path = $tipe.'/'.$date;
+				if (!is_dir($path)) {
+					mkdir($path, 0777, TRUE);
+				}
+
+				
+				move_uploaded_file($file, $path.'/'.$name);
+
+				if (i == 0) {
+					$data_file = [
+						'id' => $params->idfile2,
+						'type' => 'laporan',
+						'path' => $path,
+						'size' => $size,
+						'extension' => $type,
+						'filename' => $name,
+						'create_date' => date("Y-m-d H:i:s"),
+						'update_date' => date("Y-m-d H:i:s")
+					];
+				}else if(i == 1){
+					$data_file = [
+						'id' => $params->idfile2,
+						'type' => 'laporan',
+						'path' => $path,
+						'size' => $size,
+						'extension' => $type,
+						'filename' => $name,
+						'create_date' => date("Y-m-d H:i:s"),
+						'update_date' => date("Y-m-d H:i:s")
+					];
+				}
 					$this->Model_data->updatefile($data_file);
 				}
 		}
@@ -732,6 +898,44 @@ class Jsondata extends CI_Controller {
 		echo json_encode(array("status" => TRUE));
 
 	}
+	public function updatebuku()
+	{
+		$params = (object)$this->input->post();
+		// remove the part that we don't need from the provided image and decode it
+		// if($params->img){
+		// 	$data = base64_decode(preg_replace('#^data:image/\w+;base64,#i', '', $params->img));
+		// 	$filepath = "assets/dokumen/gambar/banner/".$params->username.".jpg"; // or image.jpg
+		// 	chmod($filepath,0777);
+		// 	file_put_contents($filepath,$data);
+		// 	$params->foto = $filepath;
+		// }
+		$params->update_by = $this->session->userdata('id');
+		$params->update_date = date('d-m-Y H:i:s');
+
+		$data = $this->Model_data->updatebuku($params);
+		header('Content-Type: application/json');
+		echo json_encode(array("status" => TRUE));
+
+	}
+	public function updatelaporan()
+	{
+		$params = (object)$this->input->post();
+		// remove the part that we don't need from the provided image and decode it
+		// if($params->img){
+		// 	$data = base64_decode(preg_replace('#^data:image/\w+;base64,#i', '', $params->img));
+		// 	$filepath = "assets/dokumen/gambar/banner/".$params->username.".jpg"; // or image.jpg
+		// 	chmod($filepath,0777);
+		// 	file_put_contents($filepath,$data);
+		// 	$params->foto = $filepath;
+		// }
+		$params->update_by = $this->session->userdata('id');
+		$params->update_date = date('d-m-Y H:i:s');
+
+		$data = $this->Model_data->updatelaporan($params);
+		header('Content-Type: application/json');
+		echo json_encode(array("status" => TRUE));
+
+	}
 
 	// public function deletebanner()
 	// {
@@ -997,6 +1201,146 @@ class Jsondata extends CI_Controller {
 
 	}
 
+	public function savedatabuku(){
+		try
+		{
+
+			$params = (object)$this->input->post();
+			$id = $params->id;
+
+			$params->create_by	 = $this->session->userdata('id');
+			$params->update_by	 = $this->session->userdata('id');
+			$params->create_date = date("Y-m-d H:i:s");
+			$params->update_date = date("Y-m-d H:i:s");
+			
+			$id = $this->Model_data->createdata('data_buku_profil', $params);
+			
+			if($id){
+				if(!empty($_FILES)){
+					$files = $_FILES['files'];
+					$count = count($_FILES['files']['name']);
+					$public		= FCPATH.'public';
+					$tipe		= './assets/upload/file/buku';
+					$date 		= date('Y/m/d');
+				
+					for ($i=0; $i < $count; $i++) { 
+
+						$name = $files['name'][$i];
+						$file = $files['tmp_name'][$i];
+						$type = $files['type'][$i];
+						$size = $files['size'][$i];
+						$size = $files['size'][$i];
+						$caption = $params->caption[$i];
+
+						$path = $tipe.'/'.$date;
+						if (!is_dir($path)) {
+							mkdir($path, 0777, TRUE);
+						}
+						move_uploaded_file($file, $path.'/'.$name);
+
+						$data_file = [
+								'id_parent' => $id,
+								'type' => 'buku',
+								'path' => $path,
+								'size' => $size,
+								'extension' => $type,
+								'filename' => $name,
+								'caption' => $caption,
+								'create_date' => date("Y-m-d H:i:s"),
+								'update_date' => date("Y-m-d H:i:s")
+							];
+							$this->Model_data->createdata('data_file', $data_file);
+						}
+				}
+			}
+
+			$response = [
+				'status'   => 'sukses',
+				'code'     => '0',
+				'data' 	   => 'terkirim'
+		];
+		header('Content-Type: application/json');
+		echo json_encode($response);
+		exit;
+
+		}
+		catch (\Exception $e)
+		{
+			die($e->getMessage());
+		}
+		
+
+	}
+	public function savedatalaporan(){
+		try
+		{
+
+			$params = (object)$this->input->post();
+			$id = $params->id;
+
+			$params->create_by	 = $this->session->userdata('id');
+			$params->update_by	 = $this->session->userdata('id');
+			$params->create_date = date("Y-m-d H:i:s");
+			$params->update_date = date("Y-m-d H:i:s");
+			
+			$id = $this->Model_data->createdata('data_laporan', $params);
+			
+			if($id){
+				if(!empty($_FILES)){
+					$files = $_FILES['files'];
+					$count = count($_FILES['files']['name']);
+					$public		= FCPATH.'public';
+					$tipe		= './assets/upload/file/laporan';
+					$date 		= date('Y/m/d');
+				
+					for ($i=0; $i < $count; $i++) { 
+
+						$name = $files['name'][$i];
+						$file = $files['tmp_name'][$i];
+						$type = $files['type'][$i];
+						$size = $files['size'][$i];
+						$size = $files['size'][$i];
+						$caption = $params->caption[$i];
+
+						$path = $tipe.'/'.$date;
+						if (!is_dir($path)) {
+							mkdir($path, 0777, TRUE);
+						}
+						move_uploaded_file($file, $path.'/'.$name);
+
+						$data_file = [
+								'id_parent' => $id,
+								'type' => 'laporan',
+								'path' => $path,
+								'size' => $size,
+								'extension' => $type,
+								'filename' => $name,
+								'caption' => $caption,
+								'create_date' => date("Y-m-d H:i:s"),
+								'update_date' => date("Y-m-d H:i:s")
+							];
+							$this->Model_data->createdata('data_file', $data_file);
+						}
+				}
+			}
+
+			$response = [
+				'status'   => 'sukses',
+				'code'     => '0',
+				'data' 	   => 'terkirim'
+		];
+		header('Content-Type: application/json');
+		echo json_encode($response);
+		exit;
+
+		}
+		catch (\Exception $e)
+		{
+			die($e->getMessage());
+		}
+		
+
+	}
 	public function savedatabanner(){
 		try
 		{
@@ -1357,9 +1701,9 @@ class Jsondata extends CI_Controller {
 			$id = $params->id;
 			$table = $params->table;
 			$params->create_by	 = $this->session->userdata('id');
-			$params->update_by	 = $this->session->userdata('id');
+			// $params->update_by	 = $this->session->userdata('id');
 			$params->create_date = date("Y-m-d H:i:s");
-			$params->update_date = date("Y-m-d H:i:s");
+			// $params->update_date = date("Y-m-d H:i:s");
 			unset($params->table);
 			$id = $this->Model_data->createdata($table, $params);
 			
@@ -1418,5 +1762,91 @@ class Jsondata extends CI_Controller {
 		
 
 	}
+	public function updateglobal(){
+		try
+		{
+
+			$params = (object)$this->input->post();
+			$id = $params->id;
+			$table = $params->table;
+			// $params->create_by	 = $this->session->userdata('id');
+			$params->update_by	 = $this->session->userdata('id');
+			// $params->create_date = date("Y-m-d H:i:s");
+			$params->update_date = date("Y-m-d H:i:s");
+			unset($params->table);
+			$id = $this->Model_data->updatedata($table, $params);
+			
+			if(!empty($_FILES)){
+				if($id){
+					$files = $_FILES['files'];
+					$count = count($_FILES['files']['name']);
+					$public		= FCPATH.'public';
+					$tipe		= './assets/upload/berita';
+					$date 		= date('Y/m/d');
+				
+					for ($i=0; $i < $count; $i++) { 
+
+						$name = $files['name'][$i];
+						$file = $files['tmp_name'][$i];
+						$type = $files['type'][$i];
+						$size = $files['size'][$i];
+						$size = $files['size'][$i];
+						$caption = $params->caption[$i];
+
+						$path = $tipe.'/'.$date;
+						if (!is_dir($path)) {
+							mkdir($path, 0777, TRUE);
+						}
+						move_uploaded_file($file, $path.'/'.$name);
+
+						$data_file = [
+								'id_parent' => $id,
+								'type' => 'berita',
+								'path' => $path,
+								'size' => $size,
+								'extension' => $type,
+								'filename' => $name,
+								'create_date' => date("Y-m-d H:i:s"),
+								'update_date' => date("Y-m-d H:i:s")
+							];
+							$this->Model_data->createdata('data_file', $data_file);
+						}
+				}
+			}
+
+			$response = [
+				'status'   => 'sukses',
+				'code'     => '0',
+				'data' 	   => 'terkirim'
+		];
+		header('Content-Type: application/json');
+		echo json_encode($response);
+		exit;
+
+		}
+		catch (\Exception $e)
+		{
+			die($e->getMessage());
+		}
+		
+
+	}
+
+	public function getkategoriprofil()
+	{
+		$result = $this->Model_data->getkategori('kategori_profile');
+		echo json_encode($result);
+	}
+	public function getkategorilaporan()
+	{
+		$result = $this->Model_data->getkategori('kategori_laporan');
+		echo json_encode($result);
+	}
+
+	// public function getkategoriprofils()
+	// {
+	// 	$result = $this->Model_data->getkategori('kategori_profile');
+	// 	echo json_encode($result);
+	// }
 
 }
