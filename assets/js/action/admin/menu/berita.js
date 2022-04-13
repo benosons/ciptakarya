@@ -137,7 +137,7 @@ function loaddata(){
                           var year = mydate.getFullYear();
                           var str = date+'/'+month+'/'+year;
 
-                          var stat = row.stat;
+                          var stat = row.status;
                           if(stat == 1){
                             var st = 'Publish'
                             var tex = 'text-success';
@@ -194,18 +194,20 @@ function loaddata(){
                             var id_file = row.files[0].id;
                             var path = row.files[0].path+'/'+row.files[0].filename;
                             
-                              var stat = row.stat;
+                              var stat = row.status;
                               var file = ''
                               for( var key in row.files ) {
                                 file = row.files[key].path+'/'+row.files[key].filename;
                                 idfile = row.files[key].id;
                                 caption = row.files[key].caption;
                               }
-                              
-                              if(stat == 1){
-                                var st = `<a class="dropdown-item" href="#" onclick="updatepublish(`+row.id+`,0)"><i class="fas fa-sign-out-alt"></i> No Publish</a>`
-                              }else{
-                                var st = `<a class="dropdown-item" href="#" onclick="updatepublish(`+row.id+`,1)"><i class="fas fa-sign-out-alt"></i> Publish</a>`;
+                              var st = ''
+                              if($('#role-user').val() == 10){
+                                if(stat == 1){
+                                  st = `<div class="dropdown-divider"></div><a class="dropdown-item" href="#" onclick="updatepublish(`+row.id+`,0)"><i class="fas fa-sign-out-alt"></i> No Publish</a>`
+                                }else{
+                                  st = `<div class="dropdown-divider"></div><a class="dropdown-item" href="#" onclick="updatepublish(`+row.id+`,1)"><i class="fas fa-sign-out-alt"></i> Publish</a>`;
+                                }
                               }
 
                               var $rowData = '';
@@ -219,7 +221,7 @@ function loaddata(){
                                     <a class="dropdown-item" href="javascript:void(0)" onclick="editdong('`+row.id+`','`+row.judul+`','`+row.tag+`','`+row.isi+`','`+file+`','`+idfile+`','`+row.bagian+`','`+row.date+`','`+caption+`')"><i class="far fa-edit"></i> Edit</a>
                                     <a class="dropdown-item" href="#" onclick="deleteData(`+row.id+`, `+id_file+`, '`+path+`')
                                     "><i class="far fa-trash-alt"></i> Hapus</a>
-                                    <div class="dropdown-divider"></div>
+                                    
                                     `+st+`
                                   </div>
                                 </div>`;
@@ -255,6 +257,11 @@ function loaddata(){
 
                   }
               });
+          }else{
+            var table = $('#listberita').DataTable();
+
+                  //clear datatable
+                  table.clear().draw();
           }
 
       }
@@ -301,7 +308,7 @@ function loaddata(){
           default:
               stat = '1'
         }
-        formData.append('stat', stat);
+        formData.append('status', 0);
 
         if(id){
           var baseurl = 'updatedataberita';
@@ -490,7 +497,7 @@ function modaldetail(id,username,role,status,name,foto){
     function updatepublish(id,stat){
       var formData = new FormData();
       formData.append('id', id);
-      formData.append('stat', stat);
+      formData.append('status', stat);
       
       $.ajax({
         type: 'post',

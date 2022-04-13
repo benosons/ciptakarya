@@ -152,13 +152,13 @@ $(function () {
                                           </div>
                                           <!-- /.d-flex -->
                                           <div class="d-flex justify-content-between">
-                                    <p class="`+tex+` text-sm">
-                                      <i class="fas fa-sign-in-alt"></i>
-                                    </p>
-                                    <p class="d-flex flex-column ">
-                                      <span class="text-muted">`+st+`</span>
-                                    </p>
-                                  </div>
+                                            <p class="`+tex+` text-sm">
+                                              <i class="fas fa-sign-in-alt"></i>
+                                            </p>
+                                            <p class="d-flex flex-column ">
+                                              <span class="text-muted">`+st+`</span>
+                                            </p>
+                                          </div>
                                           <!-- /.d-flex -->
                                         </div>
                                       </div>`;
@@ -178,11 +178,14 @@ $(function () {
                                       file = row.files[key].path+'/'+row.files[key].filename;
                                       idfile = row.files[key].id;
                                     }
-                                    
-                                    if(stat == 1){
-                                      var st = `<a class="dropdown-item" href="#" onclick="updatepublish(`+row.id+`,0)"><i class="fas fa-sign-out-alt"></i> No Publish</a>`
-                                    }else{
-                                      var st = `<a class="dropdown-item" href="#" onclick="updatepublish(`+row.id+`,1)"><i class="fas fa-sign-out-alt"></i> Publish</a>`;
+
+                                    var st = ''
+                                    if($('#role-user').val() == 10){
+                                      if(stat == 1){
+                                        st = `<div class="dropdown-divider"></div><a class="dropdown-item" href="#" onclick="updatepublish(`+row.id+`,0)"><i class="fas fa-sign-out-alt"></i> No Publish</a>`
+                                      }else{
+                                        st = `<div class="dropdown-divider"></div><a class="dropdown-item" href="#" onclick="updatepublish(`+row.id+`,1)"><i class="fas fa-sign-out-alt"></i> Publish</a>`;
+                                      }
                                     }
 
                                     var $rowData = '';
@@ -195,7 +198,7 @@ $(function () {
                                         <div class="dropdown-menu" role="menu">
                                           <a class="dropdown-item" href="#" onclick="editdong('`+row.id+`', '`+row.judul+`', '`+row.bulan+`', '`+row.tahun+`', '`+file+`','`+idfile+`','`+stat+`')"><i class="far fa-edit"></i> Edit</a>
                                           <a class="dropdown-item" href="#" onclick="deleteData(`+row.id+`, `+id_file+`, '`+path+`')"><i class="far fa-trash-alt"></i> Hapus</a>
-                                          <div class="dropdown-divider"></div>
+                                          
                                           `+st+`
                                         </div>
                                       </div>`;
@@ -231,6 +234,11 @@ $(function () {
 
                         }
                     });
+                }else{
+                  var table = $('#listposter').DataTable();
+      
+                        //clear datatable
+                        table.clear().draw();
                 }
 
             }
@@ -266,7 +274,7 @@ $(function () {
         stat = '1'
       }
 
-        formData.append('status', stat);
+        formData.append('status', 0);
 
         if(id){
           formData.append('idfile', $('#idfile').val());

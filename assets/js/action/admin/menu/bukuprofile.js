@@ -380,7 +380,7 @@ function loadkota(){
                               var month = ("0" + (mydate.getMonth() + 1)).slice(-2);
                               var year = mydate.getFullYear();
                               var str = date+'/'+month+'/'+year;
-                              var stat = row.stat;
+                              var stat = row.status;
                               if(stat == 1){
                                 var st = 'Publish'
                                 var tex = 'text-success';
@@ -419,11 +419,14 @@ function loadkota(){
                             var id_file = row.files[0].id;
                             var path = row.files[0].path+'/'+row.files[0].filename;
                             
-                              var stat = row.stat;
-                              if(stat == 1){
-                                var st = `<a class="dropdown-item" href="#" onclick="updatepublish(`+row.id+`,0)"><i class="fas fa-sign-out-alt"></i> No Publish</a>`
-                              }else{
-                                var st = `<a class="dropdown-item" href="#" onclick="updatepublish(`+row.id+`,1)"><i class="fas fa-sign-out-alt"></i> Publish</a>`;
+                              var stat = row.status;
+                              var stat = ''
+                              if($('#role-user').val() == 10){
+                                if(stat == 1){
+                                  st = `<div class="dropdown-divider"></div><a class="dropdown-item" href="#" onclick="updatepublish(`+row.id+`,0)"><i class="fas fa-sign-out-alt"></i> No Publish</a>`
+                                }else{
+                                  st = `<div class="dropdown-divider"></div><a class="dropdown-item" href="#" onclick="updatepublish(`+row.id+`,1)"><i class="fas fa-sign-out-alt"></i> Publish</a>`;
+                                }
                               }
                               var file = ''
                               for( var key in row.files ) {
@@ -447,9 +450,9 @@ function loadkota(){
                                 <span class="sr-only">Toggle Dropdown</span>
                               </button>
                               <div class="dropdown-menu" role="menu">
-                                  <a class="dropdown-item" href="javascript:void(0)" onclick="editdong('`+row.id+`','`+row.judul+`','`+row.intro+`','`+row.tahun+`','`+row.kategori+`','`+row.stat+`','`+file1+`','`+file2+`','`+idfile1+`','`+idfile2+`', '`+filename1+`', '`+filename2+`')"><i class="far fa-edit"></i> Edit</a>
+                                  <a class="dropdown-item" href="javascript:void(0)" onclick="editdong('`+row.id+`','`+row.judul+`','`+row.intro+`','`+row.tahun+`','`+row.kategori+`','`+row.status+`','`+file1+`','`+file2+`','`+idfile1+`','`+idfile2+`', '`+filename1+`', '`+filename2+`')"><i class="far fa-edit"></i> Edit</a>
                                   <a class="dropdown-item" href="#" onclick="deleteData(`+row.id+`, `+idfile1+`, '`+file1+`',`+idfile2+`, '`+file2+`')"><i class="far fa-trash-alt"></i> Hapus</a>
-                                  <div class="dropdown-divider"></div>
+                                  
                                   `+st+`
                                 </div>
                               </div>`;
@@ -522,6 +525,11 @@ function loadkota(){
 
                       }
                   });
+              }else{
+                var table = $('#listbuku').DataTable();
+    
+                      //clear datatable
+                      table.clear().draw();
               }
 
           }
@@ -559,7 +567,7 @@ function loadkota(){
         stat = '1'
       }
 
-        formData.append('stat', stat);
+        formData.append('status', 0);
 
         if(id){
           formData.append('idfile1', $('#idfile1').val());
@@ -823,7 +831,7 @@ function cekusername(uname){
     function updatepublish(id,stat){
       var formData = new FormData();
       formData.append('id', id);
-      formData.append('stat', stat);
+      formData.append('status', stat);
       
       $.ajax({
         type: 'post',

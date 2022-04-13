@@ -522,6 +522,11 @@ function loadkota(){
 
                       }
                   });
+              }else{
+                var table = $('#listbuku').DataTable();
+    
+                      //clear datatable
+                      table.clear().draw();
               }
 
           }

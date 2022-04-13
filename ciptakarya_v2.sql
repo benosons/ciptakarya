@@ -11,7 +11,7 @@
  Target Server Version : 50733
  File Encoding         : 65001
 
- Date: 31/03/2022 23:36:56
+ Date: 13/04/2022 22:17:26
 */
 
 SET NAMES utf8mb4;
@@ -31,7 +31,7 @@ CREATE TABLE `berita`  (
   `caption` varchar(255) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL,
   `tanggal` datetime NULL DEFAULT NULL,
   `bag` varchar(16) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL,
-  `stat` varchar(255) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL,
+  `status` varchar(255) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL,
   `idfile` int(5) NOT NULL,
   `create_date` datetime NULL DEFAULT NULL,
   `create_by` varchar(16) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL,
@@ -58,12 +58,11 @@ CREATE TABLE `data_agenda`  (
   `update_at` datetime NOT NULL,
   `update_by` varchar(50) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 8 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of data_agenda
 -- ----------------------------
-INSERT INTO `data_agenda` VALUES (2, '<p>testing</p>', '2022-04-09', 1, '2022-03-31 20:37:29', '1', '0000-00-00 00:00:00', '1');
 
 -- ----------------------------
 -- Table structure for data_balai
@@ -89,9 +88,6 @@ CREATE TABLE `data_balai`  (
 -- ----------------------------
 -- Records of data_balai
 -- ----------------------------
-INSERT INTO `data_balai` VALUES (1, 1, '-', 1, 1, 1, 1, 1, 1, 0, 1, '2022-03-30 03:15:31', '1');
-INSERT INTO `data_balai` VALUES (2, 3, '-', 1, 1, 1, 1, 1, 1, 0, 1, '2022-03-30 03:17:13', '1');
-INSERT INTO `data_balai` VALUES (3, 3, '-', 1, 1, 1, 1, 1, 1, 1, 1, '2022-03-30 03:20:24', '1');
 
 -- ----------------------------
 -- Table structure for data_banner
@@ -108,12 +104,11 @@ CREATE TABLE `data_banner`  (
   `update_at` datetime NULL DEFAULT NULL,
   `update_by` varchar(50) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 7 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of data_banner
 -- ----------------------------
-INSERT INTO `data_banner` VALUES (4, 'judul', 'halaman', 'test', 0, '2022-03-31 06:43:21', '1', NULL, NULL);
 
 -- ----------------------------
 -- Table structure for data_berita
@@ -127,19 +122,40 @@ CREATE TABLE `data_berita`  (
   `isi` longtext CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL,
   `bagian` int(4) NULL DEFAULT NULL,
   `date` varchar(24) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL,
-  `stat` int(2) NULL DEFAULT NULL,
+  `status` int(2) NULL DEFAULT NULL,
   `idfile` int(5) NOT NULL,
   `create_date` datetime NULL DEFAULT NULL,
   `create_by` varchar(4) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL,
   `update_date` datetime NULL DEFAULT NULL,
   `update_by` varchar(4) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = MyISAM AUTO_INCREMENT = 13 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = MyISAM AUTO_INCREMENT = 14 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of data_berita
 -- ----------------------------
-INSERT INTO `data_berita` VALUES (12, 'TESTed', 'TEST', 'TEST', '<p>TEST</p>', 2, '03/29/2022', 0, 0, '2022-03-29 04:04:20', '1', '2022-03-31 03:52:12', '1');
+
+-- ----------------------------
+-- Table structure for data_buku_profil
+-- ----------------------------
+DROP TABLE IF EXISTS `data_buku_profil`;
+CREATE TABLE `data_buku_profil`  (
+  `id` int(5) NOT NULL,
+  `judul` varchar(255) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
+  `intro` text CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
+  `tahun` varchar(20) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
+  `kategori` varchar(150) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
+  `status` int(5) NOT NULL,
+  `create_date` datetime NOT NULL,
+  `create_by` varchar(50) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
+  `update_date` datetime NOT NULL,
+  `update_by` varchar(50) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of data_buku_profil
+-- ----------------------------
 
 -- ----------------------------
 -- Table structure for data_file
@@ -157,27 +173,11 @@ CREATE TABLE `data_file`  (
   `create_date` datetime NULL DEFAULT NULL,
   `update_date` datetime NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = MyISAM AUTO_INCREMENT = 40 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = MyISAM AUTO_INCREMENT = 50 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of data_file
 -- ----------------------------
-INSERT INTO `data_file` VALUES (25, 11, 'berita', './assets/upload/berita/2022/03/14', '7460340', 'image/jpeg', 'days gone 17 ready.jpg', NULL, '2022-03-14 15:02:57', '2022-03-14 16:05:18');
-INSERT INTO `data_file` VALUES (35, 2, 'poster', './assets/upload/galeri/banner/2022/03/31', '42105', 'image/jpeg', 'profile-card.jpg', NULL, '2022-03-31 06:34:41', '2022-03-31 06:34:41');
-INSERT INTO `data_file` VALUES (9, 7, 'poster', './assets/upload/galeri/poster/2022/02/01', '63974', 'image/jpeg', '1146175_571239072961877_52607445_o.jpg', 'sip lah', '2022-02-01 13:51:17', '2022-02-01 13:51:17');
-INSERT INTO `data_file` VALUES (31, 5, 'profile', './assets/upload/profile/2022/03/30', '55484', 'image/jpeg', 'example1.jpeg', NULL, '2022-03-30 01:43:56', '2022-03-30 01:43:56');
-INSERT INTO `data_file` VALUES (13, 3, 'profile', './assets/upload/profile/2022/02/02', '60712', 'image/jpeg', '1498852_571238729628578_1690165841_o.jpg', NULL, '2022-02-02 15:59:52', '2022-02-02 15:59:52');
-INSERT INTO `data_file` VALUES (34, 1, 'poster', './assets/upload/galeri/banner/2022/03/31', '42105', 'image/jpeg', 'profile-card.jpg', NULL, '2022-03-31 06:30:15', '2022-03-31 06:30:15');
-INSERT INTO `data_file` VALUES (21, 6, 'berita', './assets/upload/berita/2022/03/14', '110946', 'image/jpeg', 'WhatsApp Image 2022-03-02 at 9.44.13 AM.jpeg', '', '2022-03-14 13:22:06', '2022-03-14 13:22:06');
-INSERT INTO `data_file` VALUES (16, 2, 'berita', './assets/upload/berita/2022/03/04', '7460340', 'image/jpeg', 'days gone 17 ready.jpg', 'gbr 2', '2022-03-04 12:43:51', '2022-03-04 12:43:51');
-INSERT INTO `data_file` VALUES (27, 9, 'foto', './assets/upload/galeri/foto/2022/03/14', '7460340', 'image/jpeg', 'days gone 17 ready.jpg', 'testing', '2022-03-14 17:24:45', '2022-03-14 17:24:45');
-INSERT INTO `data_file` VALUES (30, 12, 'berita', './assets/upload/berita/2022/03/29', '101969', 'image/jpeg', 'thumb-v-y-2.jpg', 'TEST', '2022-03-29 04:04:20', '2022-03-29 04:05:44');
-INSERT INTO `data_file` VALUES (29, 4, 'profile', './assets/upload/profile/2022/03/28', '79637', 'image/jpeg', 'thumb-v-y-1.jpg', NULL, '2022-03-28 13:12:08', '2022-03-28 13:12:08');
-INSERT INTO `data_file` VALUES (32, 6, 'profile', './assets/upload/profile/2022/03/30', '55484', 'image/jpeg', 'example1.jpeg', NULL, '2022-03-30 01:48:52', '2022-03-30 01:48:52');
-INSERT INTO `data_file` VALUES (33, 13, 'poster', './assets/upload/galeri/poster/2022/03/31', '36688', 'image/jpeg', '1.jpg', NULL, '2022-03-31 03:12:57', '2022-03-31 03:13:26');
-INSERT INTO `data_file` VALUES (37, 4, 'banner', './assets/upload/galeri/banner/2022/03/31', '83825', 'image/jpeg', 'img_2.jpg', NULL, '2022-03-31 06:43:21', '2022-03-31 07:25:09');
-INSERT INTO `data_file` VALUES (38, 2, 'infografis', './assets/upload/galeri/infografis/2022/03/31', '11293', 'image/png', 'darkBG.png', NULL, '2022-03-31 19:45:38', '2022-03-31 19:45:38');
-INSERT INTO `data_file` VALUES (39, 6, 'text', './assets/upload/file/text/2022/03/31', '107424', 'application/pdf', 'dummy_file.pdf', NULL, '2022-03-31 22:46:59', '2022-03-31 22:46:59');
 
 -- ----------------------------
 -- Table structure for data_foto
@@ -194,12 +194,11 @@ CREATE TABLE `data_foto`  (
   `create_date` datetime NULL DEFAULT NULL,
   `update_date` datetime NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = MyISAM AUTO_INCREMENT = 10 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = MyISAM AUTO_INCREMENT = 12 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of data_foto
 -- ----------------------------
-INSERT INTO `data_foto` VALUES (9, 'test', '1', '2022', 'on', '1', '1', '2022-03-14 17:24:45', '2022-03-14 17:24:45');
 
 -- ----------------------------
 -- Table structure for data_grafis
@@ -215,12 +214,33 @@ CREATE TABLE `data_grafis`  (
   `update_at` datetime NOT NULL,
   `update_by` varchar(50) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of data_grafis
 -- ----------------------------
-INSERT INTO `data_grafis` VALUES (2, 'judulpoi', '2022', 0, '2022-03-31 19:45:38', '1', '0000-00-00 00:00:00', '');
+
+-- ----------------------------
+-- Table structure for data_laporan
+-- ----------------------------
+DROP TABLE IF EXISTS `data_laporan`;
+CREATE TABLE `data_laporan`  (
+  `id` int(5) NOT NULL,
+  `judul` varchar(255) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
+  `intro` text CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
+  `tahun` varchar(50) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
+  `kategori` varchar(150) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
+  `status` int(5) NOT NULL,
+  `create_by` varchar(50) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
+  `create_date` datetime NOT NULL,
+  `update_by` varchar(50) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL,
+  `update_date` datetime NULL DEFAULT NULL,
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of data_laporan
+-- ----------------------------
 
 -- ----------------------------
 -- Table structure for data_poster
@@ -237,12 +257,11 @@ CREATE TABLE `data_poster`  (
   `create_date` datetime NULL DEFAULT NULL,
   `update_date` datetime NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = MyISAM AUTO_INCREMENT = 14 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = MyISAM AUTO_INCREMENT = 16 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of data_poster
 -- ----------------------------
-INSERT INTO `data_poster` VALUES (13, 'judul', '1', '2022', '1', '1', '1', '2022-03-31 03:12:57', '2022-03-31 03:49:57');
 
 -- ----------------------------
 -- Table structure for data_profile
@@ -254,21 +273,17 @@ CREATE TABLE `data_profile`  (
   `visi` longtext CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL,
   `profile` longtext CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL,
   `alamat` text CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL,
-  `stat` int(2) NULL DEFAULT NULL,
+  `status` int(2) NULL DEFAULT NULL,
   `create_date` datetime NULL DEFAULT NULL,
   `create_by` varchar(8) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL,
   `update_date` datetime NULL DEFAULT NULL,
   `update_by` varchar(8) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = MyISAM AUTO_INCREMENT = 7 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = MyISAM AUTO_INCREMENT = 8 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of data_profile
 -- ----------------------------
-INSERT INTO `data_profile` VALUES (3, 'weqweq', 'eqweqwe', 'eqweqwe', 'ewqeqw', NULL, '2022-02-02 15:59:52', '1', '2022-02-02 15:59:52', '1');
-INSERT INTO `data_profile` VALUES (4, 'weqweq', 'eqweqwe', 'eqweqwe', 'ewqeqw', NULL, '2022-03-28 13:12:08', '1', '2022-03-28 13:12:08', '1');
-INSERT INTO `data_profile` VALUES (5, 'test', 'test', 'test', 'test', NULL, '2022-03-30 01:43:56', '1', '2022-03-30 01:43:56', '1');
-INSERT INTO `data_profile` VALUES (6, 'TEST', 'TEST', 'TEST', 'TEST', NULL, '2022-03-30 01:48:52', '1', '2022-03-30 01:48:52', '1');
 
 -- ----------------------------
 -- Table structure for data_text
@@ -287,12 +302,11 @@ CREATE TABLE `data_text`  (
   `update_by` datetime NULL DEFAULT NULL,
   `stat` varchar(255) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 7 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 9 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of data_text
 -- ----------------------------
-INSERT INTO `data_text` VALUES (6, 'judulannn', 'halaman', '-', '03/31/2022 - 04/23/2022', 1, '2022-03-31 22:46:59', '1', '2022-03-31 11:09:37', '0000-00-00 00:00:00', NULL);
 
 -- ----------------------------
 -- Table structure for data_video
@@ -309,14 +323,13 @@ CREATE TABLE `data_video`  (
   `create_by` varchar(255) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL,
   `update_date` datetime NULL DEFAULT NULL,
   `update_by` varchar(255) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL,
-  `stat` varchar(255) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL,
+  `status` varchar(255) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of data_video
 -- ----------------------------
-INSERT INTO `data_video` VALUES (1, 'e32423423', '1', '2022', '0', 'https://www.youtube.com/watch?v=0MkBYD8NIKU', '2022-03-04 14:02:20', '1', '2022-03-04 14:02:20', '1', NULL);
 
 -- ----------------------------
 -- Table structure for kabupaten_kota
@@ -358,6 +371,24 @@ INSERT INTO `kabupaten_kota` VALUES (3276, 32, 'Kota Depok');
 INSERT INTO `kabupaten_kota` VALUES (3277, 32, 'Kota Cimahi');
 INSERT INTO `kabupaten_kota` VALUES (3278, 32, 'Kota Tasikmalaya');
 INSERT INTO `kabupaten_kota` VALUES (3279, 32, 'Kota Banjar');
+
+-- ----------------------------
+-- Table structure for kategori_profile
+-- ----------------------------
+DROP TABLE IF EXISTS `kategori_profile`;
+CREATE TABLE `kategori_profile`  (
+  `id` int(5) NOT NULL,
+  `nama` varchar(150) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
+  `create_by` varchar(50) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
+  `create_date` datetime NOT NULL,
+  `update_by` varchar(50) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL,
+  `update_date` datetime NULL DEFAULT NULL,
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of kategori_profile
+-- ----------------------------
 
 -- ----------------------------
 -- Table structure for kota
@@ -427,9 +458,9 @@ CREATE TABLE `muser`  (
 -- ----------------------------
 -- Records of muser
 -- ----------------------------
-INSERT INTO `muser` VALUES (1, 'admin', '827ccb0eea8a706c4c34a16891f84e7b', NULL, NULL, NULL, NULL, 10, 1, 1, 'admin', NULL, NULL, 'assets/dokumen/gambar/user/default.jpg.', NULL);
+INSERT INTO `muser` VALUES (1, 'admin', '827ccb0eea8a706c4c34a16891f84e7b', NULL, NULL, NULL, NULL, 10, 0, 1, 'admin', NULL, NULL, 'assets/dokumen/gambar/user/default.jpg.', NULL);
 INSERT INTO `muser` VALUES (44, '452780', '1a97768dc9dffc384357957de04045f6', 'admin', NULL, '2022-03-24 15:46:50', NULL, 20, 0, 1, '452780', NULL, NULL, NULL, '452780');
-INSERT INTO `muser` VALUES (41, '420138', 'db72353c6d6ed20192d08b36e11124fb', 'admin', NULL, '2022-03-24 15:46:09', NULL, 20, 0, 1, '420138', NULL, NULL, NULL, '420138');
+INSERT INTO `muser` VALUES (41, '420138', 'db72353c6d6ed20192d08b36e11124fb', 'admin', NULL, '2022-03-24 15:46:09', NULL, 20, 1, 1, '420138', NULL, NULL, NULL, '420138');
 INSERT INTO `muser` VALUES (42, '420139', 'd83cccccc3b1a614f801dfc6df0fe61b', 'admin', NULL, '2022-03-24 15:46:24', NULL, 20, 0, 1, '420139', NULL, NULL, NULL, '420139');
 INSERT INTO `muser` VALUES (43, '452771', '0f458c6043fa93e095ce90d576c4d745', 'admin', NULL, '2022-03-24 15:46:40', NULL, 20, 0, 1, '452771', NULL, NULL, NULL, '452771');
 INSERT INTO `muser` VALUES (45, '466162', '20868a93ff2080784ec7732ed378da99', 'admin', NULL, '2022-03-24 15:48:13', NULL, 20, 0, 1, '466162', NULL, NULL, NULL, '466162');

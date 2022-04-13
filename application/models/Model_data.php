@@ -58,6 +58,18 @@ class Model_data extends CI_Model {
         $this->db->where('id', $id->id);
         $this->db->delete('kategori_profile');
     }
+    public function deletevideo($id)
+    {
+        // $idx = $this->db->escape_str($id);
+        $this->db->where('id', $id->id);
+        $this->db->delete('data_video');
+    }
+    public function deleteagenda($id)
+    {
+        // $idx = $this->db->escape_str($id);
+        $this->db->where('id', $id->id);
+        $this->db->delete('data_agenda');
+    }
 
     public function deleteposter($id)
     {
@@ -114,7 +126,7 @@ class Model_data extends CI_Model {
         $this->db->set('date', $params->date);
         $this->db->set('tag', $params->tag);
         $this->db->set('isi', $params->isi);
-        $this->db->set('stat', $params->stat);
+        $this->db->set('status', $params->stat);
         $this->db->set('update_by', $params->update_by);
         $this->db->set('update_date', $params->update_date);
         $this->db->where('id', $params->id);
@@ -163,7 +175,7 @@ class Model_data extends CI_Model {
         $this->db->set('intro', $params->intro);
         $this->db->set('tahun', $params->tahun);
         $this->db->set('kategori', $params->kategori);
-        $this->db->set('stat', $params->stat);
+        $this->db->set('status', $params->stat);
         $this->db->set('update_by', $params->update_by);
         $this->db->set('update_date', $params->update_date);
         $this->db->where('id', $params->id);
@@ -180,7 +192,7 @@ class Model_data extends CI_Model {
         $this->db->set('intro', $params->intro);
         $this->db->set('tahun', $params->tahun);
         $this->db->set('kategori', $params->kategori);
-        $this->db->set('stat', $params->stat);
+        $this->db->set('status', $params->stat);
         $this->db->set('update_by', $params->update_by);
         $this->db->set('update_date', $params->update_date);
         $this->db->where('id', $params->id);
@@ -273,7 +285,7 @@ class Model_data extends CI_Model {
     {
         $valid = true;
        
-        $this->db->set('stat', $params->stat);
+        $this->db->set('status', $params->stat);
         $this->db->set('update_by', $params->update_by);
         $this->db->set('update_date', $params->update_date);
         $this->db->where('id', $params->id);
@@ -299,7 +311,7 @@ class Model_data extends CI_Model {
     {
         $valid = true;
        
-        $this->db->set('stat', $params->stat);
+        $this->db->set('status', $params->stat);
         $this->db->set('update_by', $params->update_by);
         $this->db->set('update_date', $params->update_date);
         $this->db->where('id', $params->id);
@@ -312,7 +324,7 @@ class Model_data extends CI_Model {
     {
         $valid = true;
        
-        $this->db->set('stat', $params->stat);
+        $this->db->set('status', $params->stat);
         $this->db->set('update_by', $params->update_by);
         $this->db->set('update_date', $params->update_date);
         $this->db->where('id', $params->id);
@@ -357,6 +369,20 @@ class Model_data extends CI_Model {
         $this->db->set('update_date', $params->update_date);
         $this->db->where('id', $params->id);
         $this->db->update('data_poster');
+        
+        return $valid;
+
+    }
+
+    public function updatevideo($params = NULL)
+    {
+        $valid = true;
+       
+        $this->db->set('status', $params->stat);
+        $this->db->set('update_by', $params->update_by);
+        $this->db->set('update_date', $params->update_date);
+        $this->db->where('id', $params->id);
+        $this->db->update('data_video');
         
         return $valid;
 

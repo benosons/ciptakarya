@@ -114,54 +114,67 @@ function loaddata(){
                           aTargets: [1]
                       },
                       {
-                          mRender: function (data, type, row){
-                            var month = ['bulan','Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September','Oktober', 'November', 'Desember'];
-                              var $rowData = '';
-                                  $rowData += `<div class="card">
-                                  <div class="card-body">
-                                  
-                                    <div class="d-flex justify-content-between">
-                                      <p class="text-inf text-sm">
-                                        <i class="far fa-calendar-alt"></i>
-                                      </p>
-                                      <p class="d-flex flex-column">
-                                        <span class="text-muted">Tahun `+row.tahun+`</span>
-                                      </p>
-                                    </div>
-                                    <!-- /.d-flex -->
-                                    <div class="d-flex justify-content-between">
-                                      <p class="text-success text-sm">
-                                        <i class="fas fa-sign-in-alt"></i>
-                                      </p>
-                                      <p class="d-flex flex-column ">
-                                        <span class="text-muted">Tayang</span>
-                                      </p>
-                                    </div>
-                                    <!-- /.d-flex -->
-                                  </div>
-                                </div>`;
+                        mRender: function (data, type, row){
+                          var month = ['bulan','Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September','Oktober', 'November', 'Desember'];
 
-                              return $rowData;
-                          },
-                          aTargets: [3]
-                      },
+                          var stat = row.status;
+                          if(stat == 1){
+                            var st = 'Publish'
+                            var tex = 'text-success';
+                          }else{
+                            var st = 'No Publish'
+                            var tex = 'text-danger';
+                          }
+
+                            var $rowData = '';
+                                $rowData += `<div class="card">
+                                <div class="card-body">
+                                  <!-- /.d-flex -->
+                                  <div class="d-flex justify-content-between">
+                                    <p class="text-inf text-sm">
+                                      <i class="far fa-calendar-alt"></i>
+                                    </p>
+                                    <p class="d-flex flex-column">
+                                      <span class="text-muted">Tahun `+row.tahun+`</span>
+                                    </p>
+                                  </div>
+                                  <!-- /.d-flex -->
+                                  <div class="d-flex justify-content-between">
+                                    <p class="`+tex+` text-sm">
+                                      <i class="fas fa-sign-in-alt"></i>
+                                    </p>
+                                    <p class="d-flex flex-column ">
+                                      <span class="text-muted">`+st+`</span>
+                                    </p>
+                                  </div>
+                                  <!-- /.d-flex -->
+                                </div>
+                              </div>`;
+
+                            return $rowData;
+                        },
+                        aTargets: [3]
+                    },
                       {
                           mRender: function (data, type, row){
                             var id_file = row.files[0].id;
                                   var path = row.files[0].path+'/'+row.files[0].filename;
                                   
-                                    var stat = row.stat;
+                                    var stat = row.status;
                                     var file = ''
                                     for( var key in row.files ) {
                                       file = row.files[key].path+'/'+row.files[key].filename;
                                       idfile = row.files[key].id;
                                     }
-                                    
+                                  var st = ''
+                                  
+                                  if($('#role-user').val() == 10) {
                                     if(stat == 1){
-                                      var st = `<a class="dropdown-item" href="#" onclick="updatepublish(`+row.id+`,0)"><i class="fas fa-sign-out-alt"></i> No Publish</a>`
+                                      st = `<div class="dropdown-divider"></div><a class="dropdown-item" href="#" onclick="updatepublish(`+row.id+`,0)"><i class="fas fa-sign-out-alt"></i> No Publish</a>`
                                     }else{
-                                      var st = `<a class="dropdown-item" href="#" onclick="updatepublish(`+row.id+`,1)"><i class="fas fa-sign-out-alt"></i> Publish</a>`;
+                                      st = `<div class="dropdown-divider"></div><a class="dropdown-item" href="#" onclick="updatepublish(`+row.id+`,1)"><i class="fas fa-sign-out-alt"></i> Publish</a>`;
                                     }
+                                  }
                               var $rowData = '';
                                   $rowData += `
                                   <div class="btn-group">
@@ -170,9 +183,8 @@ function loaddata(){
                                     <span class="sr-only">Toggle Dropdown</span>
                                   </button>
                                   <div class="dropdown-menu" role="menu" x-placement="top-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(68px, -165px, 0px);">
-                                    <a class="dropdown-item" href="#"><i class="far fa-edit"></i> Edit</a>
                                     <a class="dropdown-item" href="#" onclick="deleteData(`+row.id+`, `+id_file+`, '`+path+`')"><i class="far fa-trash-alt"></i> Hapus</a>
-                                    <div class="dropdown-divider"></div>
+                                    
                                     `+st+`
                                   </div>
                                 </div>
@@ -209,6 +221,11 @@ function loaddata(){
 
                   }
               });
+          }else{
+            var table = $('#listfoto').DataTable();
+
+                  //clear datatable
+                  table.clear().draw();
           }
 
       }
@@ -228,7 +245,6 @@ function savedata(st){
   formData.append('judul', judul);
   formData.append('sektor', sektor);
   formData.append('tahun', tahun);
-  formData.append('status', status);
 
   var iscapt = [];
   for (let index = 0; index < $("[name='image_input']").length; index++) {
@@ -247,6 +263,7 @@ function savedata(st){
       default:
           stat = '1'
     }
+    formData.append('status', 0);
 
     if(id){
       var baseurl = 'updateUser';

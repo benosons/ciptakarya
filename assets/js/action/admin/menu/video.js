@@ -143,7 +143,7 @@ function loadkota(){
                             { 'mDataProp': 'judul'},
                             { 'mDataProp': 'judul'},
                             { 'mDataProp': 'id'},
-                            { 'mDataProp': 'stat'},
+                            { 'mDataProp': 'status'},
                             { 'mDataProp': 'id'},
                             // { 'mDataProp': 'role'},
                         ],
@@ -176,21 +176,36 @@ function loadkota(){
                       },
                       {
                         mRender: function (data, type, row){
+                          var stat = row.status;
+                          if(stat == 1){
+                            var st = 'Publish'
+                            var tex = 'text-success';
+                          }else{
+                            var st = 'No Publish'
+                            var tex = 'text-danger';
+                          }
                             var $rowData = '';
-                                $rowData += `<div class="card">
-                                <div class="card-body">
-                                
-                                  <div class="d-flex justify-content-between">
-                                    <p class="text-success text-sm">
-                                      <i class="fas fa-sign-in-alt"></i>
-                                    </p>
-                                    <p class="d-flex flex-column ">
-                                      <span class="text-muted">Tayang</span>
-                                    </p>
-                                  </div>
-                                  
-                                </div>
-                              </div>`;
+                            $rowData += `<div class="card">
+                            <div class="card-body">
+                              <div class="d-flex justify-content-between">
+                                <p class="text-success text-sm">
+                                  <i class="far fa-user"></i>
+                                </p>
+                                <p class="d-flex flex-column">
+                                  <span class="text-muted"> `+row.username+`</span>
+                                </p>
+                              </div>
+                              
+                              <div class="d-flex justify-content-between">
+                                <p class="`+tex+` text-sm">
+                                  <i class="fas fa-sign-in-alt"></i>
+                                </p>
+                                <p class="d-flex flex-column ">
+                                  <span class="text-muted">`+st+`</span>
+                                </p>
+                              </div>
+                            </div>
+                          </div>`;
 
                             return $rowData;
                         },
@@ -198,20 +213,29 @@ function loadkota(){
                     },
                           {
                             mRender: function (data, type, row){
-                                var $rowData = '';
-                                    $rowData += `
-                                    <div class="btn-group">
-                                    <button type="button" class="btn btn-info">Action</button>
-                                    <button type="button" class="btn btn-info dropdown-toggle dropdown-icon" data-toggle="dropdown">
-                                      <span class="sr-only">Toggle Dropdown</span>
-                                    </button>
-                                    <div class="dropdown-menu" role="menu">
-                                      <a class="dropdown-item" href="#"><i class="far fa-edit"></i> Edit</a>
-                                      <a class="dropdown-item" href="#"><i class="far fa-trash-alt"></i> Hapus</a>
-                                      <div class="dropdown-divider"></div>
-                                      <a class="dropdown-item" href="#"><i class="fas fa-sign-out-alt"></i> Tidak Tayang</a>
-                                    </div>
-                                  </div>`;
+                              var stat = row.status;
+                              var st = ''
+                              if($('#role-user').val() == 10){
+                                if(stat == 1){
+                                  st = `<div class="dropdown-divider"></div><a class="dropdown-item" href="#" onclick="updatepublish(`+row.id+`,0)"><i class="fas fa-sign-out-alt"></i> No Publish</a>`
+                                }else{
+                                  st = `<div class="dropdown-divider"></div><a class="dropdown-item" href="#" onclick="updatepublish(`+row.id+`,1)"><i class="fas fa-sign-out-alt"></i> Publish</a>`;
+                                }
+                              }
+                              var $rowData = '';
+                              $rowData += `
+                              <div class="btn-group">
+                              <button type="button" class="btn btn-info">Action</button>
+                              <button type="button" class="btn btn-info dropdown-toggle dropdown-icon" data-toggle="dropdown">
+                                <span class="sr-only">Toggle Dropdown</span>
+                              </button>
+                              <div class="dropdown-menu" role="menu">
+                                <a class="dropdown-item" href="#" onclick="deleteData(`+row.id+`)
+                                "><i class="far fa-trash-alt"></i> Hapus</a>
+                                
+                                `+st+`
+                              </div>
+                            </div>`;
   
                                 return $rowData;
                             },
@@ -244,6 +268,11 @@ function loadkota(){
 
                         }
                     });
+                }else{
+                  var table = $('#listvideo').DataTable();
+      
+                        //clear datatable
+                        table.clear().draw();
                 }
 
             }
@@ -286,6 +315,7 @@ function loadkota(){
         formData.append('info', info);
         formData.append('link', link);
         formData.append('table', 'data_video');
+        formData.append('status', 0);
 
         $.ajax({
           type: 'post',
@@ -342,7 +372,7 @@ function deleteData(id)
   });
 
   swalWithBootstrapButtons.fire({
-    title: 'Anda Yakin, hapus user ini?',
+    title: 'Anda yakin, hapus video ini?',
     text: "",
     icon: 'warning',
     showCancelButton: true,
@@ -354,7 +384,7 @@ function deleteData(id)
     $.ajax({
       type: 'post',
       dataType: 'json',
-      url: 'deleteuser',
+      url: 'deletevideo',
       data : {
               id    : id,
             },
@@ -362,12 +392,12 @@ function deleteData(id)
       {
         Swal.fire({
           title: 'Sukses!',
-          text: 'Hapus User',
+          text: 'Hapus Video',
           icon: 'success',
           showConfirmButton: false,
           timer: 1500
         });
-        loaddatauser();
+        loaddata();
       }
     });
   }
@@ -462,4 +492,33 @@ function cekusername(uname){
 
     function pilihgambar(ini){
       readURL(ini);
+    }
+
+    function updatepublish(id,stat){
+      var formData = new FormData();
+      formData.append('id', id);
+      formData.append('status', stat);
+      
+      $.ajax({
+        type: 'post',
+        url: 'updatevideo',
+        dataType: 'json',
+        cache: false,
+        contentType: false,
+        processData: false,
+        data: formData,
+        async:false,
+          success: function(result){
+            Swal.fire({
+              title: 'Sukses!',
+              text: 'Video telah di publish',
+              icon: 'success',
+              showConfirmButton: false,
+              timer: 1500
+            });
+
+            $('#modal-default').modal('hide');
+            loaddata();
+          }
+        });
     }

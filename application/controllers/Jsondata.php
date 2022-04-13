@@ -224,6 +224,7 @@ class Jsondata extends CI_Controller {
 		header('Content-Type: application/json');
 		echo json_encode(array("status" => TRUE));
 	}
+
 	public function deletetext()
 	{
 
@@ -235,6 +236,7 @@ class Jsondata extends CI_Controller {
 		header('Content-Type: application/json');
 		echo json_encode(array("status" => TRUE));
 	}
+
 	public function deletebuku()
 	{
 
@@ -252,6 +254,7 @@ class Jsondata extends CI_Controller {
 		header('Content-Type: application/json');
 		echo json_encode(array("status" => TRUE));
 	}
+
 	public function deletelaporan()
 	{
 
@@ -288,6 +291,26 @@ class Jsondata extends CI_Controller {
 		$params = (object)$this->input->post();
 		
 		$this->Model_data->deletekategori($params);
+		header('Content-Type: application/json');
+		echo json_encode(array("status" => TRUE));
+	}
+
+	public function deletevideo()
+	{
+
+		$params = (object)$this->input->post();
+		
+		$this->Model_data->deletevideo($params);
+		header('Content-Type: application/json');
+		echo json_encode(array("status" => TRUE));
+	}
+
+	public function deleteagenda()
+	{
+
+		$params = (object)$this->input->post();
+		
+		$this->Model_data->deleteagenda($params);
 		header('Content-Type: application/json');
 		echo json_encode(array("status" => TRUE));
 	}
@@ -717,6 +740,18 @@ class Jsondata extends CI_Controller {
 		$params->update_by	 = $this->session->userdata('id');
 		$params->update_date = date("Y-m-d H:i:s");
 		$data = $this->Model_data->updateposter($params);
+		header('Content-Type: application/json');
+		echo json_encode(array("status" => TRUE));
+
+	}
+
+	public function updatevideo()
+	{
+
+		$params = (object)$this->input->post();
+		$params->update_by	 = $this->session->userdata('id');
+		$params->update_date = date("Y-m-d H:i:s");
+		$data = $this->Model_data->updatevideo($params);
 		header('Content-Type: application/json');
 		echo json_encode(array("status" => TRUE));
 

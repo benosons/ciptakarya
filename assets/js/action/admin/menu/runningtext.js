@@ -264,10 +264,13 @@ function loadkota(){
                           mRender: function (data, type, row){
                             var stat = row.status;
                             var linkurl = '';
-                            if(stat == 1){
-                              var st = `<a class="dropdown-item" href="#" onclick="updatepublish(`+row.id+`,0)"><i class="fas fa-sign-out-alt"></i> No Publish</a>`
-                            }else{
-                              var st = `<a class="dropdown-item" href="#" onclick="updatepublish(`+row.id+`,1)"><i class="fas fa-sign-out-alt"></i> Publish</a>`;
+                            var st = ''
+                            if($('#role-user').val() == 10){
+                              if(stat == 1){
+                                st = `<div class="dropdown-divider"></div><a class="dropdown-item" href="#" onclick="updatepublish(`+row.id+`,0)"><i class="fas fa-sign-out-alt"></i> No Publish</a>`
+                              }else{
+                                st = `<div class="dropdown-divider"></div><a class="dropdown-item" href="#" onclick="updatepublish(`+row.id+`,1)"><i class="fas fa-sign-out-alt"></i> Publish</a>`;
+                              }
                             }
                                 if (row.files) {
                                   var id_file = row.files[0].id;
@@ -291,7 +294,7 @@ function loadkota(){
                                       <a class="dropdown-item" href="javascript:void(0)" onclick="editdong('`+row.id+`','`+row.judul+`','`+row.tipe+`','`+row.isi+`','`+row.date+`','`+row.status+`','`+file+`','`+idfile+`','`+row.files[0].filename+`')"><i class="far fa-edit"></i> Edit</a>
                                       <a class="dropdown-item" href="#" onclick="deleteData(`+row.id+`, `+id_file+`, '`+path+`')
                                       "><i class="far fa-trash-alt"></i> Hapus</a>
-                                      <div class="dropdown-divider"></div>
+                                      
                                       `+st+`
                                     </div>
                                   </div>`;
@@ -309,7 +312,7 @@ function loadkota(){
                                       <a class="dropdown-item" href="javascript:void(0)" onclick="editdong('`+row.id+`','`+row.judul+`','`+row.tipe+`','`+row.isi+`','`+row.date+`','`+row.status+`')"><i class="far fa-edit"></i> Edit</a>
                                       <a class="dropdown-item" href="#" onclick="deleteData(`+row.id+`)
                                       "><i class="far fa-trash-alt"></i> Hapus</a>
-                                      <div class="dropdown-divider"></div>
+                                      
                                       `+st+`
                                     </div>
                                   </div>`;
@@ -346,6 +349,11 @@ function loadkota(){
 
                         }
                     });
+                }else{
+                  var table = $('#listtext').DataTable();
+      
+                        //clear datatable
+                        table.clear().draw();
                 }
 
             }
@@ -397,7 +405,7 @@ function loadkota(){
         formData.append('tipe', tipe);
         formData.append('isi', isi);
         formData.append('date', reservation);
-        formData.append('status',stat);
+        formData.append('status',0);
         // formData.append('table', 'data_text');
 
         $.ajax({

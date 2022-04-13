@@ -160,11 +160,13 @@ function loadkota(){
                             mRender: function (data, type, row){
                               
                                 var stat = row.status;
-                                
-                                if(stat == 1){
-                                  var st = `<a class="dropdown-item" href="#" onclick="updatepublish(`+row.id+`,0)"><i class="fas fa-sign-out-alt"></i> No Publish</a>`
-                                }else{
-                                  var st = `<a class="dropdown-item" href="#" onclick="updatepublish(`+row.id+`,1)"><i class="fas fa-sign-out-alt"></i> Publish</a>`;
+                                var st = ''
+                                if($('#role-user').val() == 0){
+                                  if(stat == 1){
+                                    st = `<div class="dropdown-divider"></div><a class="dropdown-item" href="#" onclick="updatepublish(`+row.id+`,0)"><i class="fas fa-sign-out-alt"></i> No Publish</a>`
+                                  }else{
+                                    st = `<div class="dropdown-divider"></div><a class="dropdown-item" href="#" onclick="updatepublish(`+row.id+`,1)"><i class="fas fa-sign-out-alt"></i> Publish</a>`;
+                                  }
                                 }
   
                                 var $rowData = '';
@@ -178,7 +180,7 @@ function loadkota(){
                                         <a class="dropdown-item" href="javascript:void(0)" onclick="editdong('`+row.id+`','`+row.deskripsi+`','`+row.tanggal+`','`+row.status+`')"><i class="far fa-edit"></i> Edit</a>
                                         <a class="dropdown-item" href="#" onclick="deleteData(`+row.id+`)
                                         "><i class="far fa-trash-alt"></i> Hapus</a>
-                                        <div class="dropdown-divider"></div>
+                                        
                                         `+st+`
                                       </div>
                                     </div>`;
@@ -250,6 +252,11 @@ function loadkota(){
 
                         }
                     });
+                }else{
+                  var table = $('#listberita').DataTable();
+
+                  //clear datatable
+                  table.clear().draw();
                 }
 
             }
@@ -288,7 +295,7 @@ function loadkota(){
         stat = '1'
       }
 
-        formData.append('status', stat);
+        formData.append('status', 0);
 
         if(id){
           formData.append('idfile', $('#idfile').val());
@@ -369,7 +376,7 @@ function loadkota(){
               });
 
               $('#modal-default').modal('hide');
-              loaddatauser();
+              loaddata();
             }
           });
         };
@@ -406,7 +413,7 @@ function deleteData(id)
   });
 
   swalWithBootstrapButtons.fire({
-    title: 'Anda Yakin, hapus user ini?',
+    title: 'Anda yakin, hapus agenda ini?',
     text: "",
     icon: 'warning',
     showCancelButton: true,
@@ -418,7 +425,7 @@ function deleteData(id)
     $.ajax({
       type: 'post',
       dataType: 'json',
-      url: 'deleteuser',
+      url: 'deleteagenda',
       data : {
               id    : id,
             },
@@ -431,7 +438,7 @@ function deleteData(id)
           showConfirmButton: false,
           timer: 1500
         });
-        loaddatauser();
+        loaddata();
       }
     });
   }
