@@ -269,7 +269,7 @@ class Model_data extends CI_Model {
     {
         $valid = true;
        
-        $this->db->set('stat', $params->stat);
+        $this->db->set('status', $params->status);
         $this->db->set('update_by', $params->update_by);
         $this->db->set('update_date', $params->update_date);
         $this->db->where('id', $params->id);

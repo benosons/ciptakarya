@@ -490,7 +490,7 @@ function modaldetail(id,username,role,status,name,foto){
     function updatepublish(id,stat){
       var formData = new FormData();
       formData.append('id', id);
-      formData.append('stat', stat);
+      formData.append('status', stat);
       
       $.ajax({
         type: 'post',
