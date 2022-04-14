@@ -199,7 +199,6 @@ $(function () {
                                           `+st+`
                                         </div>
                                       </div>`;
-
                                     return $rowData;
                                 },
                                 aTargets: [4]
