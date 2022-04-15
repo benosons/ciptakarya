@@ -69,50 +69,39 @@ $(function () {
 });
 
 function loaddata(){
-
-  $.ajax({
-      type: 'post',
-      dataType: 'json',
-      url: 'getdata',
-      data : {
-              param       : 'data_berita',
-              type        : 'berita',
-       },
-      success: function(result){
-        
-        if(result.code == 1){
-              var dt = $('#listberita').DataTable({
-                destroy: true,
-                paging: true,
-                lengthChange: false,
-                searching: true,
-                ordering: true,
-                info: true,
-                autoWidth: false,
-                responsive: false,
-                pageLength: 10,
-                aaData: result.data,
-                  aoColumns: [
-                      { 'mDataProp': 'id'},
-                      { 'mDataProp': 'id'},
-                      { 'mDataProp': 'judul'},
-                      { 'mDataProp': 'bulan'},
-                      { 'mDataProp': 'bagian'},
-                      { 'mDataProp': 'id'},
-                  ],
-                  order: [[0, 'ASC']],
-                  aoColumnDefs:[
-                      {
-                          mRender: function (data, type, row){
-                              var $rowData = '<div class="row">';
-                              var col = 12;
-                              
+  
+  var tabel = $('#listberita').DataTable({
+    "destroy": true,
+    "searching": false,
+    "processing": true,
+    "responsive":true,
+    "serverSide": true,
+    "ordering": true, // Set true agar bisa di sorting
+    "order": [[ 0, 'asc' ]], // Default sortingnya berdasarkan kolom / field ke 0 (paling pertama)
+    "paging"      : true,
+    "pageLength"  : 10,
+    "ajax":
+      {
+        "url": "getdata", // URL file untuk proses select datanya
+        "type": "POST",
+        "data" : {
+                      "param"       : 'data_berita',
+                      "type"        : 'berita',
+               },
+      },
+    "deferRender": true,
+    "lengthMenu"  : [[5, 10, 50,100, -1], [5, 10, 50, 100,"All"]],
+    "columns": [
+        { "data": "id" },
+        { "data": "id", render: function (data, type, row, meta) {
+          var $rowData = '<div class="row">';
+                            var col = 12;
+                            if(typeof row.files != 'undefined'){
                               if (row.files.length == 2) {
                                 col = 6;
                               }else if (row.files.length > 2){
                                 col = 4;
                               }
-                              
                               for( var key in row.files ) {
                                 $rowData += `
                                 <div class="col-sm-`+col+`">
@@ -122,16 +111,43 @@ function loaddata(){
                                 </div>
                                   `;
                               }
+                            }else{
+                              if(row.image != null){
+                                let text = row.image;
+                                var myArray = text.split(",");
+                                row.files = myArray
 
-                              $rowData += '</div>';
+                                
+                             
+                                for( var key in row.files ) {
+                                  var img = $('<img src="'+row.files[key]+'" />');
+
+                                    img.on('load', function(e){
+
+                                    }).on('error', function(e) {
+                                        console.log(row.files[key]);
+                                    });
+                                    
+                                  $rowData += `
+                                  <div class="col-sm-`+col+`">
+                                    <div class="card">
+                                      <img id="" name="" class="img-fluid" src="`+row.files[key]+`" alt="">
+                                    </div>
+                                  </div>
+                                    `;
+                                }
+                              }
+                            }
                               
-                              return $rowData;
-                          },
-                          aTargets: [1]
-                      },
-                      {
-                        mRender: function (data, type, row){
-                          var mydate = new Date(row.create_date);
+                            
+                            $rowData += '</div>';
+                            
+                            return $rowData;
+          }  
+        },
+        { "data": "judul" },
+        { "data": "date" , render: function(data, type, row, meta){
+          var mydate = new Date(row.create_date);
                           var date = ("0" + mydate.getDate()).slice(-2);
                           var month = ("0" + (mydate.getMonth() + 1)).slice(-2);
                           var year = mydate.getFullYear();
@@ -176,96 +192,316 @@ function loaddata(){
                               </div>`;
 
                             return $rowData;
-                        },
-                        aTargets: [3]
-                    },
-                      {
-                          mRender: function (data, type, row){
-                              var bag = ['0','SETDITJEN','TIDUR','BPB','PKP','PPLP','PSPAM','PSP-POP'];
+        }},
+        { "data": "bagian", render: function(data, type, row, meta){
+          var bag = ['0','SETDITJEN','TIDUR','BPB','PKP','PPLP','PSPAM','PSP-POP'];
                               var $rowData = '';
                                   $rowData += bag[row.bagian];
 
                               return $rowData;
-                          },
-                          aTargets: [4]
+        } },
+        { "data": "id",
+            "render": 
+            function( data, type, row, meta ) {
+              
+              if(typeof row.files != 'undefined'){
+                 var id_file = row.files[0].id;
+                 var path = row.files[0].path+'/'+row.files[0].filename;
+                 
+                   var stat = row.status;
+                   var file = ''
+                   for( var key in row.files ) {
+                     file = row.files[key].path+'/'+row.files[key].filename;
+                     idfile = row.files[key].id;
+                     caption = row.files[key].caption;
+                   }
+                 }else{
+                   if(row.image != null){
+                     let text = row.image;
+                     var myArray = text.split(",");
+                     row.files = myArray
+
+                     file = myArray[0];
+                     idfile = 0;
+                     caption = '';
+                   
+                   }else{
+                     file = '';
+                     idfile = 0;
+                     caption = '';
+                   }
+                 }
+
+                 var st = ''
+                 if($('#role-user').val() == 10){
+                   if(stat == 1){
+                     st = `<div class="dropdown-divider"></div><a class="dropdown-item" href="#" onclick="updatepublish(`+row.id+`,0)"><i class="fas fa-sign-out-alt"></i> No Publish</a>`
+                   }else{
+                     st = `<div class="dropdown-divider"></div><a class="dropdown-item" href="#" onclick="updatepublish(`+row.id+`,1)"><i class="fas fa-sign-out-alt"></i> Publish</a>`;
+                   }
+                 }
+              
+                 var $rowData = '';
+                     $rowData += `
+                     <div class="btn-group">
+                     <button type="button" class="btn btn-info">Action</button>
+                     <button type="button" class="btn btn-info dropdown-toggle dropdown-icon" data-toggle="dropdown">
+                       <span class="sr-only">Toggle Dropdown</span>
+                     </button>
+                     <div class="dropdown-menu" role="menu">
+                       <a class="dropdown-item" href="javascript:void(0)" onclick="editdong('`+row.id+`','`+row.judul+`','`+row.tag+`','`+row.isi+`','`+file+`','`+idfile+`','`+row.bagian+`','`+row.date+`','`+caption+`')"><i class="far fa-edit"></i> Edit</a>
+                       <a class="dropdown-item" href="#" onclick="deleteData(`+row.id+`, `+id_file+`, '`+path+`')
+                       "><i class="far fa-trash-alt"></i> Hapus</a>
+                       
+                       `+st+`
+                     </div>
+                   </div>`;
+              
+                 return $rowData;
+            }
+        },
+    ],
+    "fnRowCallback": function(nRow, aData, iDisplayIndex, iDisplayIndexFull){
+                          var index = iDisplayIndexFull + 1;
+                          $('td:eq(0)', nRow).html(' '+index);
+                          return  ;
                       },
-                      {
-                          mRender: function (data, type, row){
-                            var id_file = row.files[0].id;
-                            var path = row.files[0].path+'/'+row.files[0].filename;
-                            
-                              var stat = row.status;
-                              var file = ''
-                              for( var key in row.files ) {
-                                file = row.files[key].path+'/'+row.files[key].filename;
-                                idfile = row.files[key].id;
-                                caption = row.files[key].caption;
-                              }
-                              var st = ''
-                              if($('#role-user').val() == 10){
-                                if(stat == 1){
-                                  st = `<div class="dropdown-divider"></div><a class="dropdown-item" href="#" onclick="updatepublish(`+row.id+`,0)"><i class="fas fa-sign-out-alt"></i> No Publish</a>`
-                                }else{
-                                  st = `<div class="dropdown-divider"></div><a class="dropdown-item" href="#" onclick="updatepublish(`+row.id+`,1)"><i class="fas fa-sign-out-alt"></i> Publish</a>`;
-                                }
-                              }
+});
+  // $.ajax({
+  //     type: 'post',
+  //     dataType: 'json',
+  //     url: 'getdata',
+  //     data : {
+  //             param       : 'data_berita',
+  //             type        : 'berita',
+  //      },
+  //     success: function(result){
+        
+  //       if(result.code == 1){
+  //             var dt = $('#listberita').DataTable({
+                
+  //               destroy: true,
+  //               paging: true,
+  //               lengthChange: false,
+  //               searching: true,
+  //               ordering: true,
+  //               info: true,
+  //               autoWidth: false,
+  //               responsive: false,
+  //               pageLength: 10,
+  //               aaData: result.data,
+  //                 aoColumns: [
+  //                     { 'mDataProp': 'id'},
+  //                     { 'mDataProp': 'id'},
+  //                     { 'mDataProp': 'judul'},
+  //                     { 'mDataProp': 'bulan'},
+  //                     { 'mDataProp': 'bagian'},
+  //                     { 'mDataProp': 'id'},
+  //                 ],
+  //                 order: [[0, 'ASC']],
+  //                 aoColumnDefs:[
+  //                     {
+  //                         mRender: function (data, type, row){
+  //                             var $rowData = '<div class="row">';
+  //                             var col = 12;
+  //                             if(typeof row.files != 'undefined'){
+  //                               if (row.files.length == 2) {
+  //                                 col = 6;
+  //                               }else if (row.files.length > 2){
+  //                                 col = 4;
+  //                               }
 
-                              var $rowData = '';
-                                  $rowData += `
-                                  <div class="btn-group">
-                                  <button type="button" class="btn btn-info">Action</button>
-                                  <button type="button" class="btn btn-info dropdown-toggle dropdown-icon" data-toggle="dropdown">
-                                    <span class="sr-only">Toggle Dropdown</span>
-                                  </button>
-                                  <div class="dropdown-menu" role="menu">
-                                    <a class="dropdown-item" href="javascript:void(0)" onclick="editdong('`+row.id+`','`+row.judul+`','`+row.tag+`','`+row.isi+`','`+file+`','`+idfile+`','`+row.bagian+`','`+row.date+`','`+caption+`')"><i class="far fa-edit"></i> Edit</a>
-                                    <a class="dropdown-item" href="#" onclick="deleteData(`+row.id+`, `+id_file+`, '`+path+`')
-                                    "><i class="far fa-trash-alt"></i> Hapus</a>
+  //                               for( var key in row.files ) {
+  //                                 $rowData += `
+  //                                 <div class="col-sm-`+col+`">
+  //                                   <div class="card">
+  //                                     <img id="" name="" class="img-fluid" src="`+row.files[key].path+'/'+row.files[key].filename+`" alt="">
+  //                                   </div>
+  //                                 </div>
+  //                                   `;
+  //                               }
+
+  //                             }else{
+  //                               if(row.image != null){
+  //                                 let text = row.image;
+  //                                 var myArray = text.split(",");
+  //                                 row.files = myArray
+
+  //                                 for( var key in row.files ) {
+  //                                   $rowData += `
+  //                                   <div class="col-sm-`+col+`">
+  //                                     <div class="card">
+  //                                       <img id="" name="" class="img-fluid" src="`+row.files[key]+`" alt="">
+  //                                     </div>
+  //                                   </div>
+  //                                     `;
+  //                                 }
+  //                               }
+  //                             }
+                                
+                              
+
+  //                             $rowData += '</div>';
+                              
+  //                             return $rowData;
+  //                         },
+  //                         aTargets: [1]
+  //                     },
+  //                     {
+  //                       mRender: function (data, type, row){
+  //                         var mydate = new Date(row.create_date);
+  //                         var date = ("0" + mydate.getDate()).slice(-2);
+  //                         var month = ("0" + (mydate.getMonth() + 1)).slice(-2);
+  //                         var year = mydate.getFullYear();
+  //                         var str = date+'/'+month+'/'+year;
+
+  //                         var stat = row.status;
+  //                         if(stat == 1){
+  //                           var st = 'Publish'
+  //                           var tex = 'text-success';
+  //                         }else{
+  //                           var st = 'No Publish'
+  //                           var tex = 'text-danger';
+  //                         }
+  //                         var $rowData = '';
+  //                               $rowData += `<div class="card">
+  //                               <div class="card-body">
+  //                                 <div class="d-flex justify-content-between">
+  //                                   <p class="text-success text-sm">
+  //                                     <i class="far fa-user"></i>
+  //                                   </p>
+  //                                   <p class="d-flex flex-column">
+  //                                     <span class="text-muted"> `+row.username+`</span>
+  //                                   </p>
+  //                                 </div>
+  //                                 <div class="d-flex justify-content-between">
+  //                                   <p class="text-primary text-sm">
+  //                                     <i class="far fa-calendar-alt"></i>
+  //                                   </p>
+  //                                   <p class="d-flex flex-column">
+  //                                     <span class="text-muted"> `+str+`</span>
+  //                                   </p>
+  //                                 </div>
+  //                                 <div class="d-flex justify-content-between">
+  //                                   <p class="`+tex+` text-sm">
+  //                                     <i class="fas fa-sign-in-alt"></i>
+  //                                   </p>
+  //                                   <p class="d-flex flex-column ">
+  //                                     <span class="text-muted">`+st+`</span>
+  //                                   </p>
+  //                                 </div>
+  //                               </div>
+  //                             </div>`;
+
+  //                           return $rowData;
+  //                       },
+  //                       aTargets: [3]
+  //                   },
+  //                     {
+  //                         mRender: function (data, type, row){
+  //                             var bag = ['0','SETDITJEN','TIDUR','BPB','PKP','PPLP','PSPAM','PSP-POP'];
+  //                             var $rowData = '';
+  //                                 $rowData += bag[row.bagian];
+
+  //                             return $rowData;
+  //                         },
+  //                         aTargets: [4]
+  //                     },
+  //                     {
+  //                         mRender: function (data, type, row){
+  //                           if(typeof row.files != 'undefined'){
+  //                             var id_file = row.files[0].id;
+  //                             var path = row.files[0].path+'/'+row.files[0].filename;
+                              
+  //                               var stat = row.status;
+  //                               var file = ''
+  //                               for( var key in row.files ) {
+  //                                 file = row.files[key].path+'/'+row.files[key].filename;
+  //                                 idfile = row.files[key].id;
+  //                                 caption = row.files[key].caption;
+  //                               }
+  //                             }else{
+  //                               if(row.image != null){
+  //                                 let text = row.image;
+  //                                 var myArray = text.split(",");
+  //                                 row.files = myArray
+
+  //                                 file = myArray[0];
+  //                                 idfile = 0;
+  //                                 caption = '';
+                                
+  //                               }else{
+  //                                 file = '';
+  //                                 idfile = 0;
+  //                                 caption = '';
+  //                               }
+  //                             }
+
+  //                             var st = ''
+  //                             if($('#role-user').val() == 10){
+  //                               if(stat == 1){
+  //                                 st = `<div class="dropdown-divider"></div><a class="dropdown-item" href="#" onclick="updatepublish(`+row.id+`,0)"><i class="fas fa-sign-out-alt"></i> No Publish</a>`
+  //                               }else{
+  //                                 st = `<div class="dropdown-divider"></div><a class="dropdown-item" href="#" onclick="updatepublish(`+row.id+`,1)"><i class="fas fa-sign-out-alt"></i> Publish</a>`;
+  //                               }
+  //                             }
+
+  //                             var $rowData = '';
+  //                                 $rowData += `
+  //                                 <div class="btn-group">
+  //                                 <button type="button" class="btn btn-info">Action</button>
+  //                                 <button type="button" class="btn btn-info dropdown-toggle dropdown-icon" data-toggle="dropdown">
+  //                                   <span class="sr-only">Toggle Dropdown</span>
+  //                                 </button>
+  //                                 <div class="dropdown-menu" role="menu">
+  //                                   <a class="dropdown-item" href="javascript:void(0)" onclick="editdong('`+row.id+`','`+row.judul+`','`+row.tag+`','`+row.isi+`','`+file+`','`+idfile+`','`+row.bagian+`','`+row.date+`','`+caption+`')"><i class="far fa-edit"></i> Edit</a>
+  //                                   <a class="dropdown-item" href="#" onclick="deleteData(`+row.id+`, `+id_file+`, '`+path+`')
+  //                                   "><i class="far fa-trash-alt"></i> Hapus</a>
                                     
-                                    `+st+`
-                                  </div>
-                                </div>`;
+  //                                   `+st+`
+  //                                 </div>
+  //                               </div>`;
 
-                              return $rowData;
-                          },
-                          aTargets: [5]
-                      }
-                  ],
+  //                             return $rowData;
+  //                         },
+  //                         aTargets: [5]
+  //                     }
+  //                 ],
 
-                  fnRowCallback: function(nRow, aData, iDisplayIndex, iDisplayIndexFull){
-                      var index = iDisplayIndexFull + 1;
-                      $('td:eq(0)', nRow).html(' '+index);
-                      return  ;
-                  },
+  //                 fnRowCallback: function(nRow, aData, iDisplayIndex, iDisplayIndexFull){
+  //                     var index = iDisplayIndexFull + 1;
+  //                     $('td:eq(0)', nRow).html(' '+index);
+  //                     return  ;
+  //                 },
 
-                  fnInitComplete: function () {
-                      var that = this;
-                      var td ;
-                      var tr ;
+  //                 fnInitComplete: function () {
+  //                     var that = this;
+  //                     var td ;
+  //                     var tr ;
 
-                      this.$('td').click( function () {
-                          td = this;
-                      });
-                      this.$('tr').click( function () {
-                          tr = this;
-                      });
+  //                     this.$('td').click( function () {
+  //                         td = this;
+  //                     });
+  //                     this.$('tr').click( function () {
+  //                         tr = this;
+  //                     });
 
 
-                      $('#listproj_filter input').bind('keyup', function (e) {
-                          return this.value;
-                      });
+  //                     $('#listproj_filter input').bind('keyup', function (e) {
+  //                         return this.value;
+  //                     });
 
-                  }
-              });
-          }else{
-            var table = $('#listberita').DataTable();
+  //                 }
+  //             });
+  //         }else{
+  //           var table = $('#listberita').DataTable();
 
-                  //clear datatable
-                  table.clear().draw();
-          }
+  //                 //clear datatable
+  //                 table.clear().draw();
+  //         }
 
-      }
-  });
+  //     }
+  // });
 }
 
     function savedata(st){
