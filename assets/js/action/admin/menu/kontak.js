@@ -128,12 +128,12 @@ function loadkota(){
             dataType: 'json',
             url: 'getdata',
             data : {
-                    param      : 'berita',
+                    param      : 'data_kontak',
              },
             success: function(result){
               
-              if(result.code == 1){
-                    var dt = $('#listberita').DataTable({
+              if(result.code == 1 || result.code == 0){
+                    var dt = $('#listkontak').DataTable({
                       destroy: true,
                       paging: true,
                       lengthChange: false,
@@ -146,12 +146,10 @@ function loadkota(){
                       aaData: result.data,
                         aoColumns: [
                             { 'mDataProp': 'id'},
-                            { 'mDataProp': 'img'},
-                            { 'mDataProp': 'username'},
-                            { 'mDataProp': 'role_desc'},
-                            { 'mDataProp': 'status'},
-                            { 'mDataProp': 'islogin'},
+                            { 'mDataProp': 'nama'},
+                            { 'mDataProp': 'email'},
                             { 'mDataProp': 'id'},
+                            { 'mDataProp': 'create_date'},
                             // { 'mDataProp': 'role'},
                         ],
                         order: [[0, 'ASC']],
@@ -165,55 +163,47 @@ function loadkota(){
                                     var $rowData = '';
                                         $rowData += `
                                                   <div class="row">
-                                                    <div class="col-md-4">
-                                                      <button onclick="modaldetail('`+row.id+`','`+row.username+`','`+row.role_desc+`','`+row.status+`','`+row.name+`','`+row.img+`')" type="button" class="btn btn-block btn-success btn-xs"><i class="far fa-eye"></i></button>
-                                                    </div>
-                                                    <div class="col-md-4">
-                                                      <button onclick="edituser('`+row.id+`','`+row.username+`','`+row.password+`','`+row.status+`','`+row.role+`','`+row.name+`','`+row.img+`')" type="button" class="btn btn-block btn-warning btn-xs"><i class="far fa-edit"></i></button>
-                                                    </div>
-                                                    <div class="col-md-4">
-                                                      <button onclick="deleteData(`+row.id+`)" type="button" class="btn btn-block btn-danger btn-xs"><i class="fas fa-trash-alt"></i></button>
-                                                    </div>
                                                   </div>
                                                     `;
-
-                                    return $rowData;
-                                },
-                                aTargets: [6]
-                            },
-                            {
-                                mRender: function (data, type, row){
-                                  var $rowData = '';
-                                  if(row.islogin == 1){
-                                        $rowData +=`<span class="badge badge-success right">Online</span>`;
-                                      }else{
-                                        $rowData +=`<span class="badge badge-default right">Offline</span>`;
-                                      }
-
-                                    return $rowData;
-                                },
-                                aTargets: [5]
-                            },
-                            {
-                                mRender: function (data, type, row){
-                                  var $rowData = '';
-                                  if(row.status == 1){
-                                        $rowData +=`<span class="badge badge-primary right">Aktif</span>`;
-                                      }else{
-                                        $rowData +=`<span class="badge badge-warning right">Non Aktif</span>`;
-                                      }
 
                                     return $rowData;
                                 },
                                 aTargets: [4]
                             },
                             {
-                                mRender: function (data, type, row){
-                                  var $rowData = '<img src="'+row.img+'" style="width: 35px;"></img>';
-                                    return $rowData;
-                                },
-                                aTargets: [1]
-                            }
+                              mRender: function (data, type, row){
+                                var mydate = new Date(row.create_date);
+                                var date = ("0" + mydate.getDate()).slice(-2);
+                                var month = ("0" + (mydate.getMonth() + 1)).slice(-2);
+                                var year = mydate.getFullYear();
+                                var str = date+'/'+month+'/'+year;
+
+                                var $rowData = '';
+                                      $rowData += `<div class="card">
+                                      <div class="card-body">
+                                        <div class="d-flex justify-content-between">
+                                          <p class="text-success text-sm">
+                                            <i class="far fa-user"></i>
+                                          </p>
+                                          <p class="d-flex flex-column">
+                                            <span class="text-muted"> `+row.username+`</span>
+                                          </p>
+                                        </div>
+                                        <div class="d-flex justify-content-between">
+                                          <p class="text-primary text-sm">
+                                            <i class="far fa-calendar-alt"></i>
+                                          </p>
+                                          <p class="d-flex flex-column">
+                                            <span class="text-muted"> `+str+`</span>
+                                          </p>
+                                        </div>
+                                      </div>
+                                    </div>`;
+      
+                                  return $rowData;
+                              },
+                              aTargets: [3]
+                            },
                         ],
 
                         fnRowCallback: function(nRow, aData, iDisplayIndex, iDisplayIndexFull){

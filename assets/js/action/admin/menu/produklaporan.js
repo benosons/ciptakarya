@@ -380,7 +380,7 @@ function loadkota(){
                               var month = ("0" + (mydate.getMonth() + 1)).slice(-2);
                               var year = mydate.getFullYear();
                               var str = date+'/'+month+'/'+year;
-                              var stat = row.stat;
+                              var stat = row.status;
                               if(stat == 1){
                                 var st = 'Publish'
                                 var tex = 'text-success';
@@ -419,7 +419,7 @@ function loadkota(){
                             var id_file = row.files[0].id;
                             var path = row.files[0].path+'/'+row.files[0].filename;
                             
-                              var stat = row.stat;
+                              var stat = row.status;
                               if(stat == 1){
                                 var st = `<a class="dropdown-item" href="#" onclick="updatepublish(`+row.id+`,0)"><i class="fas fa-sign-out-alt"></i> No Publish</a>`
                               }else{

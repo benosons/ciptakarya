@@ -421,12 +421,10 @@ function loadkota(){
                             
                               var stat = row.status;
                               var stat = ''
-                              if($('#role-user').val() == 10){
-                                if(stat == 1){
-                                  st = `<div class="dropdown-divider"></div><a class="dropdown-item" href="#" onclick="updatepublish(`+row.id+`,0)"><i class="fas fa-sign-out-alt"></i> No Publish</a>`
-                                }else{
-                                  st = `<div class="dropdown-divider"></div><a class="dropdown-item" href="#" onclick="updatepublish(`+row.id+`,1)"><i class="fas fa-sign-out-alt"></i> Publish</a>`;
-                                }
+                              if(stat == 1){
+                                st = `<div class="dropdown-divider"></div><a class="dropdown-item" href="#" onclick="updatepublish(`+row.id+`,0)"><i class="fas fa-sign-out-alt"></i> No Publish</a>`
+                              }else{
+                                st = `<div class="dropdown-divider"></div><a class="dropdown-item" href="#" onclick="updatepublish(`+row.id+`,1)"><i class="fas fa-sign-out-alt"></i> Publish</a>`;
                               }
                               var file = ''
                               for( var key in row.files ) {

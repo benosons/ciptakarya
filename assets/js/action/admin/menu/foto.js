@@ -56,6 +56,10 @@ $(function () {
     $('label[for="foto-user"]').text('Pilih Foto');
   });
 
+  $("[name='image_input']").on('change',function() {
+    readURL(this);
+  });
+
   $('#save-foto').on('click', function(){
     
     savedata(st);
@@ -168,13 +172,12 @@ function loaddata(){
                                     }
                                   var st = ''
                                   
-                                  if($('#role-user').val() == 10) {
+                                  
                                     if(stat == 1){
                                       st = `<div class="dropdown-divider"></div><a class="dropdown-item" href="#" onclick="updatepublish(`+row.id+`,0)"><i class="fas fa-sign-out-alt"></i> No Publish</a>`
                                     }else{
                                       st = `<div class="dropdown-divider"></div><a class="dropdown-item" href="#" onclick="updatepublish(`+row.id+`,1)"><i class="fas fa-sign-out-alt"></i> Publish</a>`;
                                     }
-                                  }
                               var $rowData = '';
                                   $rowData += `
                                   <div class="btn-group">
@@ -418,6 +421,34 @@ function cekusername(uname){
         }
       });
     };
+    function updatepublish(id,stat){
+      var formData = new FormData();
+      formData.append('id', id);
+      formData.append('stat', stat);
+      
+      $.ajax({
+        type: 'post',
+        url: 'updatefoto',
+        dataType: 'json',
+        cache: false,
+        contentType: false,
+        processData: false,
+        data: formData,
+        async:false,
+          success: function(result){
+            Swal.fire({
+              title: 'Sukses!',
+              text: 'Status telah di ganti',
+              icon: 'success',
+              showConfirmButton: false,
+              timer: 1500
+            });
+
+            $('#modal-default').modal('hide');
+            loaddata();
+          }
+        });
+    }
 
 
     function addgambar(){

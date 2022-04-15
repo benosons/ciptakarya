@@ -194,13 +194,13 @@ function loadkota(){
                                     }
 
                                     var st = ''
-                                    if($('#role-user').val() == 10){
+                                    // if($('#role-user').val() == 10){
                                       if(stat == 1){
                                         st = `<div class="dropdown-divider"></div><a class="dropdown-item" href="#" onclick="updatepublish(`+row.id+`,0)"><i class="fas fa-sign-out-alt"></i> No Publish</a>`
                                       }else{
                                         st = `<div class="dropdown-divider"></div><a class="dropdown-item" href="#" onclick="updatepublish(`+row.id+`,1)"><i class="fas fa-sign-out-alt"></i> Publish</a>`;
                                       }
-                                    }
+                                    // }
       
                                     var $rowData = '';
                                         $rowData += `
@@ -224,7 +224,7 @@ function loadkota(){
                             },
                             {
                                 mRender: function (data, type, row){
-                                  var mydate = new Date(row.create_at);
+                                  var mydate = new Date(row.create_date);
                                   var date = ("0" + mydate.getDate()).slice(-2);
                                   var month = ("0" + (mydate.getMonth() + 1)).slice(-2);
                                   var year = mydate.getFullYear();

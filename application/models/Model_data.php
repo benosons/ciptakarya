@@ -143,7 +143,7 @@ class Model_data extends CI_Model {
         $this->db->set('tahun', $params->tahun);
         $this->db->set('status', $params->status);
         $this->db->set('update_by', $params->update_by);
-        $this->db->set('update_at', $params->update_at);
+        $this->db->set('update_date', $params->update_at);
         $this->db->where('id', $params->id);
         $this->db->update('data_grafis');
         
@@ -210,7 +210,7 @@ class Model_data extends CI_Model {
         $this->db->set('keterangan', $params->keterangan);
         $this->db->set('status', $params->status);
         $this->db->set('update_by', $params->update_by);
-        $this->db->set('update_at', $params->update_at);
+        $this->db->set('update_date', $params->update_date);
         $this->db->where('id', $params->id);
         $this->db->update('data_banner');
         
@@ -225,7 +225,7 @@ class Model_data extends CI_Model {
         $this->db->set('tanggal', $params->tanggal);
         $this->db->set('status', $params->status);
         $this->db->set('update_by', $params->update_by);
-        $this->db->set('update_at', $params->update_at);
+        $this->db->set('update_data', $params->update_at);
         $this->db->where('id', $params->id);
         $this->db->update('data_agenda');
         
@@ -274,9 +274,22 @@ class Model_data extends CI_Model {
        
         $this->db->set('status', $params->status);
         $this->db->set('update_by', $params->update_by);
-        $this->db->set('update_at', $params->update_date);
+        $this->db->set('update_date', $params->update_date);
         $this->db->where('id', $params->id);
         $this->db->update('data_agenda');
+        
+        return $valid;
+
+    }
+    public function updatefoto($params = NULL)
+    {
+        $valid = true;
+       
+        $this->db->set('status', $params->stat);
+        $this->db->set('update_by', $params->update_by);
+        $this->db->set('update_date', $params->update_date);
+        $this->db->where('id', $params->id);
+        $this->db->update('data_foto');
         
         return $valid;
 
@@ -285,7 +298,7 @@ class Model_data extends CI_Model {
     {
         $valid = true;
        
-        $this->db->set('status', $params->stat);
+        $this->db->set('status', $params->status);
         $this->db->set('update_by', $params->update_by);
         $this->db->set('update_date', $params->update_date);
         $this->db->where('id', $params->id);
@@ -300,7 +313,7 @@ class Model_data extends CI_Model {
        
         $this->db->set('status', $params->status);
         $this->db->set('update_by', $params->update_by);
-        $this->db->set('update_at', $params->update_date);
+        $this->db->set('update_date', $params->update_date);
         $this->db->where('id', $params->id);
         $this->db->update('data_grafis');
         
@@ -339,7 +352,7 @@ class Model_data extends CI_Model {
        
         $this->db->set('status', $params->status);
         $this->db->set('update_by', $params->update_by);
-        $this->db->set('update_at', $params->update_date);
+        $this->db->set('update_date', $params->update_date);
         $this->db->where('id', $params->id);
         $this->db->update('data_banner');
         
@@ -378,7 +391,7 @@ class Model_data extends CI_Model {
     {
         $valid = true;
        
-        $this->db->set('status', $params->stat);
+        $this->db->set('status', $params->status);
         $this->db->set('update_by', $params->update_by);
         $this->db->set('update_date', $params->update_date);
         $this->db->where('id', $params->id);
