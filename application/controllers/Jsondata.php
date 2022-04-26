@@ -48,6 +48,11 @@ class Jsondata extends CI_Controller {
 			"id" => $this->id
 		);
 
+		$this->output->set_header('Last-Modified: ' . gmdate("D, d M Y H:i:s") . ' GMT');
+		$this->output->set_header('Cache-Control: no-store, no-cache, must-revalidate, post-check=0, pre-check=0');
+		$this->output->set_header('Pragma: no-cache');
+		$this->output->set_header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");
+
 	}
 
 
@@ -85,7 +90,7 @@ class Jsondata extends CI_Controller {
 				$param =  $post->param;
 				$type =  $post->type;
 				
-				$result = $this->Model_data->getdata($param);
+				$result = $this->Model_data->getdata($param, $this->session->userdata('id'),  $this->session->userdata('role'));
 				foreach ($result as $key => $value) {
 					$files = $this->Model_data->getfile($value->id, $type);
 					if(!empty($files)){
@@ -110,7 +115,7 @@ class Jsondata extends CI_Controller {
 						$response = [
 						    'status'   => 'gagal',
 						    'code'     => '0',
-						    'data'     => 'tidak ada data',
+						    'data'     => $result,
 						];
 					}
 
@@ -224,6 +229,7 @@ class Jsondata extends CI_Controller {
 		header('Content-Type: application/json');
 		echo json_encode(array("status" => TRUE));
 	}
+
 	public function deletetext()
 	{
 
@@ -235,6 +241,7 @@ class Jsondata extends CI_Controller {
 		header('Content-Type: application/json');
 		echo json_encode(array("status" => TRUE));
 	}
+
 	public function deletebuku()
 	{
 
@@ -252,6 +259,7 @@ class Jsondata extends CI_Controller {
 		header('Content-Type: application/json');
 		echo json_encode(array("status" => TRUE));
 	}
+
 	public function deletelaporan()
 	{
 
@@ -292,12 +300,32 @@ class Jsondata extends CI_Controller {
 		echo json_encode(array("status" => TRUE));
 	}
 
+	public function deletevideo()
+	{
+
+		$params = (object)$this->input->post();
+		
+		$this->Model_data->deletevideo($params);
+		header('Content-Type: application/json');
+		echo json_encode(array("status" => TRUE));
+	}
+
+	public function deleteagenda()
+	{
+
+		$params = (object)$this->input->post();
+		
+		$this->Model_data->deleteagenda($params);
+		header('Content-Type: application/json');
+		echo json_encode(array("status" => TRUE));
+	}
+
 	public function updatedatatext()
 	{
 
 		$params = (object)$this->input->post();
-		$params->updated_by	 = $this->session->userdata('id');
-		$params->updated_at = date("Y-m-d H:i:s");
+		$params->update_by	 = $this->session->userdata('id');
+		$params->update_at = date("Y-m-d H:i:s");
 		$data = $this->Model_data->updatedatatext($params);
 
 		if(!empty($_FILES)){
@@ -466,8 +494,8 @@ class Jsondata extends CI_Controller {
 	{
 
 		$params = (object)$this->input->post();
-		$params->updated_by	 = $this->session->userdata('id');
-		$params->updated_at = date("Y-m-d H:i:s");
+		$params->update_by	 = $this->session->userdata('id');
+		$params->update_date = date("Y-m-d H:i:s");
 		$data = $this->Model_data->updatedatabanner($params);
 
 		if(!empty($_FILES)){
@@ -515,8 +543,8 @@ class Jsondata extends CI_Controller {
 	{
 
 		$params = (object)$this->input->post();
-		$params->updated_by	 = $this->session->userdata('id');
-		$params->updated_at = date("Y-m-d H:i:s");
+		$params->update_by	 = $this->session->userdata('id');
+		$params->update_date = date("Y-m-d H:i:s");
 		$data = $this->Model_data->updatedatagrafis($params);
 
 		if(!empty($_FILES)){
@@ -684,9 +712,9 @@ class Jsondata extends CI_Controller {
 				$row['deskripsi'] = (!empty($proses->deskripsi) ? $proses->deskripsi : "NULL");
 				$row['foto'] = (!empty($proses->foto) ? $proses->foto : "assets/dokumen/gambar/user/default.jpg");
 				$row['status'] = (!empty($proses->status) ? $proses->status : "NULL");
-				$row['created_by'] = (!empty($proses->created_by) ? $proses->created_by : "NULL");
-				$row['created_date'] = (!empty($proses->created_date) ? $proses->created_date : "NULL");
-				$row['updated_date'] = (!empty($proses->updated_date) ? $proses->updated_date : "NULL");
+				$row['create_by'] = (!empty($proses->create_by) ? $proses->create_by : "NULL");
+				$row['create_date'] = (!empty($proses->create_date) ? $proses->create_date : "NULL");
+				$row['update_date'] = (!empty($proses->update_date) ? $proses->update_date : "NULL");
 
 				$data[] = $row;
 			}
@@ -698,6 +726,17 @@ class Jsondata extends CI_Controller {
 
 	}
 
+	public function updatefoto()
+	{
+
+		$params = (object)$this->input->post();
+		$params->update_by	 = $this->session->userdata('id');
+		$params->update_date = date("Y-m-d H:i:s");
+		$data = $this->Model_data->updatefoto($params);
+		header('Content-Type: application/json');
+		echo json_encode(array("status" => TRUE));
+
+	}
 	public function updateberita()
 	{
 
@@ -722,6 +761,18 @@ class Jsondata extends CI_Controller {
 
 	}
 
+	public function updatevideo()
+	{
+
+		$params = (object)$this->input->post();
+		$params->update_by	 = $this->session->userdata('id');
+		$params->update_date = date("Y-m-d H:i:s");
+		$data = $this->Model_data->updatevideo($params);
+		header('Content-Type: application/json');
+		echo json_encode(array("status" => TRUE));
+
+	}
+
 	public function listdatabanneruser()
 	{
 
@@ -741,9 +792,9 @@ class Jsondata extends CI_Controller {
 				$row['deskripsi'] = (!empty($proses->deskripsi) ? $proses->deskripsi : "NULL");
 				$row['foto'] = (!empty($proses->foto) ? $proses->foto : "assets/dokumen/gambar/user/default.jpg");
 				$row['status'] = (!empty($proses->status) ? $proses->status : "NULL");
-				$row['created_by'] = (!empty($proses->created_by) ? $proses->created_by : "NULL");
-				$row['created_date'] = (!empty($proses->created_date) ? $proses->created_date : "NULL");
-				$row['updated_date'] = (!empty($proses->updated_date) ? $proses->updated_date : "NULL");
+				$row['create_by'] = (!empty($proses->create_by) ? $proses->create_by : "NULL");
+				$row['create_date'] = (!empty($proses->create_date) ? $proses->create_date : "NULL");
+				$row['update_date'] = (!empty($proses->update_date) ? $proses->update_date : "NULL");
 
 				$data[] = $row;
 			}
@@ -833,8 +884,8 @@ class Jsondata extends CI_Controller {
 		// 	file_put_contents($filepath,$data);
 		// 	$params->foto = $filepath;
 		// }
-		$params->updated_by = $this->session->userdata('id');
-		$params->updated_date = date('d-m-Y H:i:s');
+		$params->update_by = $this->session->userdata('id');
+		$params->update_date = date('Y-m-d H:i:s');
 
 		$data = $this->Model_data->updategrafis($params);
 		header('Content-Type: application/json');
@@ -852,8 +903,8 @@ class Jsondata extends CI_Controller {
 		// 	file_put_contents($filepath,$data);
 		// 	$params->foto = $filepath;
 		// }\
-		$params->updated_by = $this->session->userdata('id');
-		$params->updated_date = date('d-m-Y H:i:s');
+		$params->update_by = $this->session->userdata('id');
+		$params->update_date = date('Y-m-d H:i:s');
 
 		$data = $this->Model_data->updateagenda($params);
 		header('Content-Type: application/json');
@@ -871,8 +922,8 @@ class Jsondata extends CI_Controller {
 		// 	file_put_contents($filepath,$data);
 		// 	$params->foto = $filepath;
 		// }
-		$params->updated_by = $this->session->userdata('id');
-		$params->updated_date = date('d-m-Y H:i:s');
+		$params->update_by = $this->session->userdata('id');
+		$params->update_date = date('Y-m-d H:i:s');
 
 		$data = $this->Model_data->updatetext($params);
 		header('Content-Type: application/json');
@@ -890,8 +941,8 @@ class Jsondata extends CI_Controller {
 		// 	file_put_contents($filepath,$data);
 		// 	$params->foto = $filepath;
 		// }
-		$params->updated_by = $this->session->userdata('id');
-		$params->updated_date = date('d-m-Y H:i:s');
+		$params->update_by = $this->session->userdata('id');
+		$params->update_date = date('Y-m-d H:i:s');
 
 		$data = $this->Model_data->updatebanner($params);
 		header('Content-Type: application/json');
@@ -910,7 +961,7 @@ class Jsondata extends CI_Controller {
 		// 	$params->foto = $filepath;
 		// }
 		$params->update_by = $this->session->userdata('id');
-		$params->update_date = date('d-m-Y H:i:s');
+		$params->update_date = date('Y-m-d H:i:s');
 
 		$data = $this->Model_data->updatebuku($params);
 		header('Content-Type: application/json');
@@ -929,7 +980,7 @@ class Jsondata extends CI_Controller {
 		// 	$params->foto = $filepath;
 		// }
 		$params->update_by = $this->session->userdata('id');
-		$params->update_date = date('d-m-Y H:i:s');
+		$params->update_date = date('Y-m-d H:i:s');
 
 		$data = $this->Model_data->updatelaporan($params);
 		header('Content-Type: application/json');
@@ -1127,8 +1178,8 @@ class Jsondata extends CI_Controller {
 			$params = (object)$this->input->post();
 			$id = $params->id;
 
-			$params->created_by	 = $this->session->userdata('id');
-			$params->created_at = date("Y-m-d H:i:s");
+			$params->create_by	 = $this->session->userdata('id');
+			$params->create_date = date("Y-m-d H:i:s");
 			
 			$id = $this->Model_data->createdata('data_agenda', $params);
 
@@ -1154,8 +1205,8 @@ class Jsondata extends CI_Controller {
 		{
 
 			$params = (object)$this->input->post();
-			$params->created_by	 = $this->session->userdata('id');
-			$params->created_at = date("Y-m-d H:i:s");
+			$params->update_by	 = $this->session->userdata('id');
+			$params->update_date = date("Y-m-d H:i:s");
 			
 			$result = $this->Model_data->updatedataagenda($params);
 
@@ -1178,8 +1229,8 @@ class Jsondata extends CI_Controller {
 			$params = (object)$this->input->post();
 			$id = $params->id;
 
-			$params->created_by	 = $this->session->userdata('id');
-			$params->created_at = date("Y-m-d H:i:s");
+			$params->create_by	 = $this->session->userdata('id');
+			$params->create_date = date("Y-m-d H:i:s");
 			
 			$id = $this->Model_data->createdata('data_balai', $params);
 
@@ -1348,10 +1399,10 @@ class Jsondata extends CI_Controller {
 			$params = (object)$this->input->post();
 			$id = $params->id;
 
-			$params->created_by	 = $this->session->userdata('id');
-			$params->updated_by	 = $this->session->userdata('id');
-			$params->created_at = date("Y-m-d H:i:s");
-			$params->updated_at = date("Y-m-d H:i:s");
+			$params->create_by	 = $this->session->userdata('id');
+			$params->update_by	 = $this->session->userdata('id');
+			$params->create_date = date("Y-m-d H:i:s");
+			$params->update_date = date("Y-m-d H:i:s");
 			
 			$id = $this->Model_data->createdata('data_banner', $params);
 			
@@ -1488,10 +1539,10 @@ class Jsondata extends CI_Controller {
 			$params = (object)$this->input->post();
 			$id = $params->id;
 
-			$params->created_by	 = $this->session->userdata('id');
-			$params->updated_by	 = $this->session->userdata('id');
-			$params->created_at = date("Y-m-d H:i:s");
-			$params->updated_at = date("Y-m-d H:i:s");
+			$params->create_by	 = $this->session->userdata('id');
+			$params->update_by	 = $this->session->userdata('id');
+			$params->create_date = date("Y-m-d H:i:s");
+			$params->update_date = date("Y-m-d H:i:s");
 			
 			$id = $this->Model_data->createdata('data_grafis', $params);
 			
