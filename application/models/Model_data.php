@@ -10,6 +10,16 @@ class Model_data extends CI_Model {
         parent::__construct();
     }
 
+    public function getalldata($param,$where=NULL)
+    {
+        if ($where != NULL) {
+            $this->db->where($where);
+        }
+        $query = $this->db->get($param)->result();
+        // $query = $this->db->query("select * from $param order_by id asc")->result();
+        return $query;
+    }
+
     public function getdata($param, $userid, $role)
     {
         $where = '';
