@@ -16,6 +16,7 @@ class Model_data extends CI_Model {
         if($role != 10){
             $where = " where create_by = '$userid'";
         }
+        
         $query = $this->db->query("select * from $param $where order by id desc LIMIT ".$length." OFFSET ".$start)->result();
         return $query;
     }

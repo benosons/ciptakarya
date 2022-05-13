@@ -647,7 +647,7 @@ function cekusername(uname){
           success: function(result){
             Swal.fire({
               title: 'Sukses!',
-              text: 'Banner telah di publish',
+              text: 'Status berhasil diganti !',
               icon: 'success',
               showConfirmButton: false,
               timer: 1500

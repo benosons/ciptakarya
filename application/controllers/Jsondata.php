@@ -1205,8 +1205,8 @@ class Jsondata extends CI_Controller {
 		{
 
 			$params = (object)$this->input->post();
-			$params->create_by	 = $this->session->userdata('id');
-			$params->create_date = date("Y-m-d H:i:s");
+			$params->update_by	 = $this->session->userdata('id');
+			$params->update_date = date("Y-m-d H:i:s");
 			
 			$result = $this->Model_data->updatedataagenda($params);
 
@@ -1230,7 +1230,7 @@ class Jsondata extends CI_Controller {
 			$id = $params->id;
 
 			$params->create_by	 = $this->session->userdata('id');
-			$params->create_at = date("Y-m-d H:i:s");
+			$params->create_date = date("Y-m-d H:i:s");
 			
 			$id = $this->Model_data->createdata('data_balai', $params);
 
