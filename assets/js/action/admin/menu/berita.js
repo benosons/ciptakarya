@@ -309,7 +309,7 @@ function loaddata(){
           default:
               stat = '1'
         }
-        formData.append('status', 0);
+        formData.append('status', stat);
 
         if(id){
           var baseurl = 'updatedataberita';

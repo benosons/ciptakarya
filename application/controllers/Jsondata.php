@@ -1080,17 +1080,18 @@ class Jsondata extends CI_Controller {
 							];
 							$this->Model_data->createdata('data_file', $data_file);
 						}
+							
+					}
 				}
-			}
 
-			$response = [
-				'status'   => 'sukses',
-				'code'     => '0',
-				'data' 	   => 'terkirim'
-		];
-		header('Content-Type: application/json');
-		echo json_encode($response);
-		exit;
+				$response = [
+					'status'   => 'sukses',
+					'code'     => '0',
+					'data' 	   => 'terkirim'
+			];
+			header('Content-Type: application/json');
+			echo json_encode($response);
+			exit;
 
 		}
 		catch (\Exception $e)

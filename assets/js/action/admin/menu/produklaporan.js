@@ -32,7 +32,7 @@ $(function () {
     });
   });
 
-  $('#listberita').DataTable();
+  $('#listbuku').DataTable();
   
   $('#modal-default').on('show.bs.modal', function(){
   })
@@ -267,271 +267,464 @@ function loadkota(){
           }
       });
   }
-    function loaddata(){
 
-      $.ajax({
-          type: 'post',
-          dataType: 'json',
-          url: 'getdata',
-          data : {
-                  param      : 'data_laporan',
-                  type       : 'laporan'
-           },
-          success: function(result){
-            
-            if(result.code == 1){
-                  var dt = $('#listbuku').DataTable({
-                    destroy: true,
-                    paging: true,
-                    lengthChange: false,
-                    searching: true,
-                    ordering: true,
-                    info: true,
-                    autoWidth: false,
-                    responsive: false,
-                    pageLength: 10,
-                    aaData: result.data,
-                      aoColumns: [
-                          { 'mDataProp': 'id'},
-                          { 'mDataProp': 'judul'},
-                          { 'mDataProp': 'intro'},
-                          { 'mDataProp': 'kategori'},
-                          { 'mDataProp': 'kategori'},
-                          { 'mDataProp': 'id'},
-                          { 'mDataProp': 'id'},
-                          // { 'mDataProp': 'role'},
-                      ],
-                      order: [[0, 'ASC']],
-                      aoColumnDefs:[
-                        // {
-                        //   targets: [7],
-                        //   visible: false
-                        // },
-                          {
-                              mRender: function (data, type, row){
-                                var $rowData = '';
-                                
-                                $rowData += `<p class="d-flex flex-column">
-                                <span class="text-muted">`+row.kategori+`</span>
-                                </p>`;
-
-                                  return $rowData;
-                              },
-                              aTargets: [3]
-                          },
-                          {
-                              mRender: function (data, type, row){
-                                var id_file = row.files[0].id;
-                                var path = row.files[0].path+'/'+row.files[0].filename;
-                                
-                                var stat = row.status;
-                                var file = '';
-                                var $rowData = '<div class="card"><div class="card-body">';
-                                for( var key in row.files ) {
-                                  file = row.files[key].path+'/'+row.files[key].filename;
-                                  idfile = row.files[key].id;
-                                  caption = row.files[key].caption;
-                                  if (key == 0) {
-                                    
-                                    $rowData += `<div class="d-flex justify-content-start">
-                                    <p class="text-dark text-sm mr-2">
-                                    <i class="fa fa-book"></i>
-                                    </p>
-                                    <p class="d-flex flex-column">
-                                    <a href="`+file+`" class="link-secondary">Baca Online</a>
-                                    </p>
-                                    </div>`;
-                                  }else if(key == 1){
-                                    $rowData += `<div class="d-flex justify-content-start">
-                                    <p class="text-dark text-sm mr-2">
-                                    <i class="fa fa-file-pdf"></i>
-                                    </p>
-                                    <p class="d-flex flex-column">
-                                    <a href="`+file+`" class="link-primary">Download</a>
-                                    </p>
-                                    </div>`;
-
-                                  }
-                                }
-                                // if(stat == 1){
-                                //   var st = 'Publish'
-                                //   var tex = 'text-success';
-                                // }else{
-                                //   var st = 'No Publish'
-                                //   var tex = 'text-danger';
-                                // }
-                                $rowData += `<div class="d-flex justify-content-start">
-                                <p class="text-dark text-sm mr-2">
-                                <i class="far fa-calendar-alt"></i>
-                                </p>
-                                <p class="d-flex flex-column">
-                                <span class="text-muted">`+row.tahun+`</span>
-                                </p>
-                                </div>`;;
-
-                                  return $rowData;
-                              },
-                              aTargets: [4]
-                          },
-                          {
-                            mRender: function (data, type, row){
-                              var mydate = new Date(row.create_date);
-                              var date = ("0" + mydate.getDate()).slice(-2);
-                              var month = ("0" + (mydate.getMonth() + 1)).slice(-2);
-                              var year = mydate.getFullYear();
-                              var str = date+'/'+month+'/'+year;
-                              var stat = row.status;
-                              if(stat == 1){
-                                var st = 'Publish'
-                                var tex = 'text-success';
-                              }else{
-                                var st = 'No Publish'
-                                var tex = 'text-danger';
-                              }
-                              var $rowData = '';
-                              $rowData += `<div class="card">
-                              <div class="card-body">
-                                <div class="d-flex justify-content-between">
-                                  <p class="text-primary text-sm">
-                                    <i class="far fa-calendar-alt"></i>
-                                  </p>
-                                  <p class="d-flex flex-column">
-                                    <span class="text-muted"> `+str+`</span>
-                                  </p>
-                                </div>
-                                <div class="d-flex justify-content-between">
-                                  <p class="`+tex+` text-sm">
-                                    <i class="fas fa-sign-in-alt"></i>
-                                  </p>
-                                  <p class="d-flex flex-column ">
-                                    <span class="text-muted">`+st+`</span>
-                                  </p>
-                                </div>
-                                </div>
-                              </div>`;
-
-                                return $rowData;
-                            },
-                            aTargets: [5]
-                        },
-                        {
-                          mRender: function (data, type, row){
-                            var id_file = row.files[0].id;
-                            var path = row.files[0].path+'/'+row.files[0].filename;
-                            
-                              var stat = row.status;
-                              if(stat == 1){
-                                var st = `<a class="dropdown-item" href="#" onclick="updatepublish(`+row.id+`,0)"><i class="fas fa-sign-out-alt"></i> No Publish</a>`
-                              }else{
-                                var st = `<a class="dropdown-item" href="#" onclick="updatepublish(`+row.id+`,1)"><i class="fas fa-sign-out-alt"></i> Publish</a>`;
-                              }
-                              var file = ''
-                              for( var key in row.files ) {
-                                if (key == 0) {
-                                  file1 = row.files[key].path+'/'+row.files[key].filename;
-                                  idfile1 = row.files[key].id;
-                                  filename1 = row.files[key].filename;
-                                }else if(key == 1){
-                                  file2 = row.files[key].path+'/'+row.files[key].filename;
-                                  idfile2 = row.files[key].id;
-                                  filename2 = row.files[key].filename;
-                                }
-                              }
-                              
-
-                              var $rowData = '';
-                              $rowData += `
-                              <div class="btn-group">
-                              <button type="button" class="btn btn-info">Action</button>
-                              <button type="button" class="btn btn-info dropdown-toggle dropdown-icon" data-toggle="dropdown">
-                                <span class="sr-only">Toggle Dropdown</span>
-                              </button>
-                              <div class="dropdown-menu" role="menu">
-                                  <a class="dropdown-item" href="javascript:void(0)" onclick="editdong('`+row.id+`','`+row.judul+`','`+row.intro+`','`+row.tahun+`','`+row.kategori+`','`+row.stat+`','`+file1+`','`+file2+`','`+idfile1+`','`+idfile2+`', '`+filename1+`', '`+filename2+`')"><i class="far fa-edit"></i> Edit</a>
-                                  <a class="dropdown-item" href="#" onclick="deleteData(`+row.id+`, `+idfile1+`, '`+file1+`',`+idfile2+`, '`+file2+`')"><i class="far fa-trash-alt"></i> Hapus</a>
-                                  <div class="dropdown-divider"></div>
-                                  `+st+`
-                                </div>
-                              </div>`;
-
-                              return $rowData;
-                          },
-                          aTargets: [6]
-                      },
-                        //   {
-                        //     mRender: function (data, type, row){
-                        //         var $rowData = '';
-                        //         var col = 12;
-                                
-                        //         // if (row.files.length == 2) {
-                        //         //   col = 6;
-                        //         // }else if (row.files.length > 2){
-                        //         //   col = 4;
-                        //         // }
-                                
-                        //         for( var key in row.files ) {
-                        //           $rowData += `
-                        //           <img id="" name="" class="img-fluid" src="`+row.files[key].path+'/'+row.files[key].filename+`" alt="">
-                        //             `;
-                        //         }
   
-                        //         $rowData += '</div>';
-                                
-                        //         return $rowData;
-                        //     },
-                        //     aTargets: [1]
-                        // },
-                        //   {
-                        //     mRender: function (data, type, row){
-                        //         var $rowData = '';
-                        //         if (row.tipe == 'link') {
-                        //           $rowData += '<p>Link Eksternal</p>';
-                        //           $rowData += '<p><i class="fa fa-globe"></i> <a target="_blank" href="'+row.keterangan+'" class="link-primary">klik disini</a></p>';
-                        //         }else{
-                        //           $rowData = row.keterangan;
-                        //         }
-                                
-                        //         return $rowData;
-                        //     },
-                        //     aTargets: [3]
-                        // },
-                      ],
+    function loaddata(){
+      var tabel = $('#listbuku').DataTable({
+          "destroy": true,
+          "searching": false,
+          "processing": true,
+          "responsive":true,
+          "serverSide": true,
+          "ordering": true, // Set true agar bisa di sorting
+          "order": [[ 0, 'asc' ]], // Default sortingnya berdasarkan kolom / field ke 0 (paling pertama)
+          "paging"      : true,
+          "pageLength"  : 10,
+          "ajax":
+            {
+              "url": "getdata", // URL file untuk proses select datanya
+              "type": "POST",
+              "data" : {
+                            "param"       : 'data_laporan',
+                            "type"        : 'laporan',
+                    },
+            },
+          "deferRender": true,
+          "lengthMenu"  : [[5, 10, 50,100, -1], [5, 10, 50, 100,"All"]],
+          "columns": [
+              { "data": "id" },
+              { "data": "judul" },
+              { "data": "intro" },
+              { "data": "kategori" },
+              { "data": "kategori" , "render": function(data, type, row, meta){
+                  var id_file = row.files[0].id;
+                  var path = row.files[0].path+'/'+row.files[0].filename;
+                  
+                  var stat = row.status;
+                  var file = '';
+                  var $rowData = '<div class="card"><div class="card-body">';
+                  for( var key in row.files ) {
+                    file = row.files[key].path+'/'+row.files[key].filename;
+                    idfile = row.files[key].id;
+                    caption = row.files[key].caption;
+                    if (key == 0) {
+                      
+                      $rowData += `<div class="d-flex justify-content-start">
+                      <p class="text-dark text-sm mr-2">
+                      <i class="fa fa-book"></i>
+                      </p>
+                      <p class="d-flex flex-column">
+                      <a href="`+file+`" class="link-secondary">Baca Online</a>
+                      </p>
+                      </div>`;
+                    }else if(key == 1){
+                      $rowData += `<div class="d-flex justify-content-start">
+                      <p class="text-dark text-sm mr-2">
+                      <i class="fa fa-file-pdf"></i>
+                      </p>
+                      <p class="d-flex flex-column">
+                      <a href="`+file+`" class="link-primary">Download</a>
+                      </p>
+                      </div>`;
 
-                      fnRowCallback: function(nRow, aData, iDisplayIndex, iDisplayIndexFull){
-                          var index = iDisplayIndexFull + 1;
-                          $('td:eq(0)', nRow).html(' '+index);
-                          return  ;
-                      },
+                    }
+                  }
+                  // if(stat == 1){
+                  //   var st = 'Publish'
+                  //   var tex = 'text-success';
+                  // }else{
+                  //   var st = 'No Publish'
+                  //   var tex = 'text-danger';
+                  // }
+                  $rowData += `<div class="d-flex justify-content-start">
+                  <p class="text-dark text-sm mr-2">
+                  <i class="far fa-calendar-alt"></i>
+                  </p>
+                  <p class="d-flex flex-column">
+                  <span class="text-muted">`+row.tahun+`</span>
+                  </p>
+                  </div>`;;
 
-                      fnInitComplete: function () {
-                          var that = this;
-                          var td ;
-                          var tr ;
-
-                          this.$('td').click( function () {
-                              td = this;
-                          });
-                          this.$('tr').click( function () {
-                              tr = this;
-                          });
-
-
-                          $('#listproj_filter input').bind('keyup', function (e) {
-                              return this.value;
-                          });
-
+                    return $rowData;
+              }},
+              { "data": "id" , "render": function(data, type, row, meta){
+                var mydate = new Date(row.create_date);
+                                var date = ("0" + mydate.getDate()).slice(-2);
+                                var month = ("0" + (mydate.getMonth() + 1)).slice(-2);
+                                var year = mydate.getFullYear();
+                                var str = date+'/'+month+'/'+year;
+      
+                                var stat = row.status;
+                                if(stat == 1){
+                                  var st = 'Publish'
+                                  var tex = 'text-success';
+                                }else{
+                                  var st = 'No Publish'
+                                  var tex = 'text-danger';
+                                }
+                                var $rowData = '';
+                                      $rowData += `<div class="card">
+                                      <div class="card-body">
+                                        <div class="d-flex justify-content-between">
+                                          <p class="text-success text-sm">
+                                            <i class="far fa-user"></i>
+                                          </p>
+                                          <p class="d-flex flex-column">
+                                            <span class="text-muted"> `+row.username+`</span>
+                                          </p>
+                                        </div>
+                                        <div class="d-flex justify-content-between">
+                                          <p class="text-primary text-sm">
+                                            <i class="far fa-calendar-alt"></i>
+                                          </p>
+                                          <p class="d-flex flex-column">
+                                            <span class="text-muted"> `+str+`</span>
+                                          </p>
+                                        </div>
+                                        <div class="d-flex justify-content-between">
+                                          <p class="`+tex+` text-sm">
+                                            <i class="fas fa-sign-in-alt"></i>
+                                          </p>
+                                          <p class="d-flex flex-column ">
+                                            <span class="text-muted">`+st+`</span>
+                                          </p>
+                                        </div>
+                                      </div>
+                                    </div>`;
+      
+                                  return $rowData;
+              }},
+              { "data": "id",
+                  "render": 
+                  function( data, type, row, meta ) {
+                    
+                    if(typeof row.files != 'undefined'){
+                      var id_file = row.files[0].id;
+                      var path = row.files[0].path+'/'+row.files[0].filename;
+                      
+                        var stat = row.status;
+                        var file = ''
+                        for( var key in row.files ) {
+                          file = row.files[key].path+'/'+row.files[key].filename;
+                          idfile = row.files[key].id;
+                          caption = row.files[key].caption;
+                        }
+                      }else{
+                        if(row.image != null){
+                          let text = row.image;
+                          var myArray = text.split(",");
+                          row.files = myArray
+      
+                          file = myArray[0];
+                          idfile = 0;
+                          caption = '';
+                        
+                        }else{
+                          file = '';
+                          idfile = 0;
+                          caption = '';
+                        }
                       }
-                  });
-              }else{
-                var table = $('#listbuku').DataTable();
-    
-                      //clear datatable
-                      table.clear().draw();
-              }
-
-          }
+      
+                      var st = ''
+                      if($('#role-user').val() == 10){
+                        if(stat == 1){
+                          st = `<div class="dropdown-divider"></div><a class="dropdown-item" href="#" onclick="updatepublish(`+row.id+`,0)"><i class="fas fa-sign-out-alt"></i> No Publish</a>`
+                        }else{
+                          st = `<div class="dropdown-divider"></div><a class="dropdown-item" href="#" onclick="updatepublish(`+row.id+`,1)"><i class="fas fa-sign-out-alt"></i> Publish</a>`;
+                        }
+                      }
+                    
+                      var $rowData = '';
+                          $rowData += `
+                          <div class="btn-group">
+                          <button type="button" class="btn btn-info">Action</button>
+                          <button type="button" class="btn btn-info dropdown-toggle dropdown-icon" data-toggle="dropdown">
+                            <span class="sr-only">Toggle Dropdown</span>
+                          </button>
+                          <div class="dropdown-menu" role="menu">
+                            <a class="dropdown-item" href="javascript:void(0)" onclick="editdong('`+row.id+`','`+row.judul+`','`+row.tag+`','`+row.isi+`','`+file+`','`+idfile+`','`+row.bagian+`','`+row.date+`','`+caption+`')"><i class="far fa-edit"></i> Edit</a>
+                            <a class="dropdown-item" href="#" onclick="deleteData(`+row.id+`, `+id_file+`, '`+path+`')
+                            "><i class="far fa-trash-alt"></i> Hapus</a>
+                            
+                            `+st+`
+                          </div>
+                        </div>`;
+                    
+                      return $rowData;
+                  }
+              },
+          ],
+          "fnRowCallback": function(nRow, aData, iDisplayIndex, iDisplayIndexFull){
+                                var index = iDisplayIndexFull + 1;
+                                $('td:eq(0)', nRow).html(' '+index);
+                                return  ;
+                            },
       });
-  }
+    }
+
+//   $.ajax({
+//     type: 'post',
+//     dataType: 'json',
+//     url: 'getdata',
+//     data : {
+//             param      : 'data_laporan',
+//             type       : 'laporan'
+//      },
+//     success: function(result){
+      
+//       if(result.code == 1){
+//             var dt = $('#listbuku').DataTable({
+//               destroy: true,
+//               paging: true,
+//               lengthChange: false,
+//               searching: true,
+//               ordering: true,
+//               info: true,
+//               autoWidth: false,
+//               responsive: false,
+//               pageLength: 10,
+//               aaData: result.data,
+//                 aoColumns: [
+//                     { 'mDataProp': 'id'},
+//                     { 'mDataProp': 'judul'},
+//                     { 'mDataProp': 'intro'},
+//                     { 'mDataProp': 'kategori'},
+//                     { 'mDataProp': 'kategori'},
+//                     { 'mDataProp': 'id'},
+//                     { 'mDataProp': 'id'},
+//                     // { 'mDataProp': 'role'},
+//                 ],
+//                 order: [[0, 'ASC']],
+//                 aoColumnDefs:[
+//                   // {
+//                   //   targets: [7],
+//                   //   visible: false
+//                   // },
+//                     {
+//                         mRender: function (data, type, row){
+//                           var $rowData = '';
+                          
+//                           $rowData += `<p class="d-flex flex-column">
+//                           <span class="text-muted">`+row.kategori+`</span>
+//                           </p>`;
+
+//                             return $rowData;
+//                         },
+//                         aTargets: [3]
+//                     },
+//                     {
+//                         mRender: function (data, type, row){
+//                           var id_file = row.files[0].id;
+//                           var path = row.files[0].path+'/'+row.files[0].filename;
+                          
+//                           var stat = row.status;
+//                           var file = '';
+//                           var $rowData = '<div class="card"><div class="card-body">';
+//                           for( var key in row.files ) {
+//                             file = row.files[key].path+'/'+row.files[key].filename;
+//                             idfile = row.files[key].id;
+//                             caption = row.files[key].caption;
+//                             if (key == 0) {
+                              
+//                               $rowData += `<div class="d-flex justify-content-start">
+//                               <p class="text-dark text-sm mr-2">
+//                               <i class="fa fa-book"></i>
+//                               </p>
+//                               <p class="d-flex flex-column">
+//                               <a href="`+file+`" class="link-secondary">Baca Online</a>
+//                               </p>
+//                               </div>`;
+//                             }else if(key == 1){
+//                               $rowData += `<div class="d-flex justify-content-start">
+//                               <p class="text-dark text-sm mr-2">
+//                               <i class="fa fa-file-pdf"></i>
+//                               </p>
+//                               <p class="d-flex flex-column">
+//                               <a href="`+file+`" class="link-primary">Download</a>
+//                               </p>
+//                               </div>`;
+
+//                             }
+//                           }
+//                           // if(stat == 1){
+//                           //   var st = 'Publish'
+//                           //   var tex = 'text-success';
+//                           // }else{
+//                           //   var st = 'No Publish'
+//                           //   var tex = 'text-danger';
+//                           // }
+//                           $rowData += `<div class="d-flex justify-content-start">
+//                           <p class="text-dark text-sm mr-2">
+//                           <i class="far fa-calendar-alt"></i>
+//                           </p>
+//                           <p class="d-flex flex-column">
+//                           <span class="text-muted">`+row.tahun+`</span>
+//                           </p>
+//                           </div>`;;
+
+//                             return $rowData;
+//                         },
+//                         aTargets: [4]
+//                     },
+//                     {
+//                       mRender: function (data, type, row){
+//                         var mydate = new Date(row.create_date);
+//                         var date = ("0" + mydate.getDate()).slice(-2);
+//                         var month = ("0" + (mydate.getMonth() + 1)).slice(-2);
+//                         var year = mydate.getFullYear();
+//                         var str = date+'/'+month+'/'+year;
+//                         var stat = row.status;
+//                         if(stat == 1){
+//                           var st = 'Publish'
+//                           var tex = 'text-success';
+//                         }else{
+//                           var st = 'No Publish'
+//                           var tex = 'text-danger';
+//                         }
+//                         var $rowData = '';
+//                         $rowData += `<div class="card">
+//                         <div class="card-body">
+//                           <div class="d-flex justify-content-between">
+//                             <p class="text-primary text-sm">
+//                               <i class="far fa-calendar-alt"></i>
+//                             </p>
+//                             <p class="d-flex flex-column">
+//                               <span class="text-muted"> `+str+`</span>
+//                             </p>
+//                           </div>
+//                           <div class="d-flex justify-content-between">
+//                             <p class="`+tex+` text-sm">
+//                               <i class="fas fa-sign-in-alt"></i>
+//                             </p>
+//                             <p class="d-flex flex-column ">
+//                               <span class="text-muted">`+st+`</span>
+//                             </p>
+//                           </div>
+//                           </div>
+//                         </div>`;
+
+//                           return $rowData;
+//                       },
+//                       aTargets: [5]
+//                   },
+//                   {
+//                     mRender: function (data, type, row){
+//                       var id_file = row.files[0].id;
+//                       var path = row.files[0].path+'/'+row.files[0].filename;
+                      
+//                         var stat = row.status;
+//                         if(stat == 1){
+//                           var st = `<a class="dropdown-item" href="#" onclick="updatepublish(`+row.id+`,0)"><i class="fas fa-sign-out-alt"></i> No Publish</a>`
+//                         }else{
+//                           var st = `<a class="dropdown-item" href="#" onclick="updatepublish(`+row.id+`,1)"><i class="fas fa-sign-out-alt"></i> Publish</a>`;
+//                         }
+//                         var file = ''
+//                         for( var key in row.files ) {
+//                           if (key == 0) {
+//                             file1 = row.files[key].path+'/'+row.files[key].filename;
+//                             idfile1 = row.files[key].id;
+//                             filename1 = row.files[key].filename;
+//                           }else if(key == 1){
+//                             file2 = row.files[key].path+'/'+row.files[key].filename;
+//                             idfile2 = row.files[key].id;
+//                             filename2 = row.files[key].filename;
+//                           }
+//                         }
+                        
+
+//                         var $rowData = '';
+//                         $rowData += `
+//                         <div class="btn-group">
+//                         <button type="button" class="btn btn-info">Action</button>
+//                         <button type="button" class="btn btn-info dropdown-toggle dropdown-icon" data-toggle="dropdown">
+//                           <span class="sr-only">Toggle Dropdown</span>
+//                         </button>
+//                         <div class="dropdown-menu" role="menu">
+//                             <a class="dropdown-item" href="javascript:void(0)" onclick="editdong('`+row.id+`','`+row.judul+`','`+row.intro+`','`+row.tahun+`','`+row.kategori+`','`+row.stat+`','`+file1+`','`+file2+`','`+idfile1+`','`+idfile2+`', '`+filename1+`', '`+filename2+`')"><i class="far fa-edit"></i> Edit</a>
+//                             <a class="dropdown-item" href="#" onclick="deleteData(`+row.id+`, `+idfile1+`, '`+file1+`',`+idfile2+`, '`+file2+`')"><i class="far fa-trash-alt"></i> Hapus</a>
+//                             <div class="dropdown-divider"></div>
+//                             `+st+`
+//                           </div>
+//                         </div>`;
+
+//                         return $rowData;
+//                     },
+//                     aTargets: [6]
+//                 },
+//                   //   {
+//                   //     mRender: function (data, type, row){
+//                   //         var $rowData = '';
+//                   //         var col = 12;
+                          
+//                   //         // if (row.files.length == 2) {
+//                   //         //   col = 6;
+//                   //         // }else if (row.files.length > 2){
+//                   //         //   col = 4;
+//                   //         // }
+                          
+//                   //         for( var key in row.files ) {
+//                   //           $rowData += `
+//                   //           <img id="" name="" class="img-fluid" src="`+row.files[key].path+'/'+row.files[key].filename+`" alt="">
+//                   //             `;
+//                   //         }
+
+//                   //         $rowData += '</div>';
+                          
+//                   //         return $rowData;
+//                   //     },
+//                   //     aTargets: [1]
+//                   // },
+//                   //   {
+//                   //     mRender: function (data, type, row){
+//                   //         var $rowData = '';
+//                   //         if (row.tipe == 'link') {
+//                   //           $rowData += '<p>Link Eksternal</p>';
+//                   //           $rowData += '<p><i class="fa fa-globe"></i> <a target="_blank" href="'+row.keterangan+'" class="link-primary">klik disini</a></p>';
+//                   //         }else{
+//                   //           $rowData = row.keterangan;
+//                   //         }
+                          
+//                   //         return $rowData;
+//                   //     },
+//                   //     aTargets: [3]
+//                   // },
+//                 ],
+
+//                 fnRowCallback: function(nRow, aData, iDisplayIndex, iDisplayIndexFull){
+//                     var index = iDisplayIndexFull + 1;
+//                     $('td:eq(0)', nRow).html(' '+index);
+//                     return  ;
+//                 },
+
+//                 fnInitComplete: function () {
+//                     var that = this;
+//                     var td ;
+//                     var tr ;
+
+//                     this.$('td').click( function () {
+//                         td = this;
+//                     });
+//                     this.$('tr').click( function () {
+//                         tr = this;
+//                     });
+
+
+//                     $('#listproj_filter input').bind('keyup', function (e) {
+//                         return this.value;
+//                     });
+
+//                 }
+//             });
+//         }else{
+//           var table = $('#listbuku').DataTable();
+
+//                 //clear datatable
+//                 table.clear().draw();
+//         }
+
+//     }
+// });
 
     function savedata(st){
       var img = window.img;
