@@ -119,8 +119,8 @@ function loadkategori()
     success:function(result){
       var html= '';
       var tab='';
-      for(var i=0; i<result.length; i++){
-        html += '<option value="'+result[i].nama+'">'+result[i].nama+'</option>';
+      for(var i=0; i<result.data.length; i++){
+        html += '<option value="'+result.data[i].nama+'">'+result.data[i].nama+'</option>';
       }
       $('#pilih_kategori').html(html);
     }
@@ -147,18 +147,65 @@ function loadkota(){
     };
 
     function loadkat(){
+    //   var tabel = $('#listbuku').DataTable({
+    //     "destroy": true,
+    //     "searching": false,
+    //     "processing": true,
+    //     "responsive":true,
+    //     "serverSide": true,
+    //     "ordering": true, // Set true agar bisa di sorting
+    //     "order": [[ 0, 'asc' ]], // Default sortingnya berdasarkan kolom / field ke 0 (paling pertama)
+    //     "paging"      : true,
+    //     "pageLength"  : 10,
+    //     "ajax":
+    //       {
+    //         "url": "getdata", // URL file untuk proses select datanya
+    //         "type": "POST",
+    //         "data" : {
+    //                       "param"       : 'kategori_laporan',
+    //                       "type"        : 'laporan',
+    //               },
+    //       },
+    //     "deferRender": true,
+    //     "lengthMenu"  : [[5, 10, 50,100, -1], [5, 10, 50, 100,"All"]],
+    //     "columns": [
+    //         { "data": "id" },
+    //         { "data": "nama" },
+    //         { "data": "id",
+    //             "render": 
+    //             function( data, type, row, meta ) {
+    //               var $rowData = '';
+    //               $rowData += `
+    //               <div class="btn-group">
+    //               <button type="button" class="btn btn-info">Action</button>
+    //               <button type="button" class="btn btn-info dropdown-toggle dropdown-icon" data-toggle="dropdown">
+    //                 <span class="sr-only">Toggle Dropdown</span>
+    //               </button>
+    //               <div class="dropdown-menu" role="menu">
+    //                   <a class="dropdown-item" href="javascript:void(0)" onclick="editkat('`+row.id+`','`+row.nama+`')"><i class="far fa-edit"></i> Edit</a>
+    //                   <a class="dropdown-item" href="#" onclick="deletekat(`+row.id+`)"><i class="far fa-trash-alt"></i> Hapus</a>
+    //                 </div>
+    //               </div>`;
 
+    //               return $rowData;
+    //             }
+    //         },
+    //     ],
+    //     "fnRowCallback": function(nRow, aData, iDisplayIndex, iDisplayIndexFull){
+    //                           var index = iDisplayIndexFull + 1;
+    //                           $('td:eq(0)', nRow).html(' '+index);
+    //                           return  ;
+    //                       },
+    // });
       $.ajax({
           type: 'post',
           dataType: 'json',
-          url: 'getdata',
+          url: 'kategorilaporan',
           data : {
                   param      : 'kategori_laporan',
                   type       : 'laporan'
            },
           success: function(result){
-            
-            if(result.code == 1){
                   var dt = $('#listkategori').DataTable({
                     destroy: true,
                     paging: true,
@@ -170,15 +217,15 @@ function loadkota(){
                     responsive: false,
                     pageLength: 10,
                     aaData: result.data,
-                      aoColumns: [
-                          { 'mDataProp': 'id'},
-                          { 'mDataProp': 'nama'},
-                          { 'mDataProp': 'id'},
-                          // { 'mDataProp': 'role'},
-                      ],
-                      order: [[0, 'ASC']],
-                      aoColumnDefs:[
-                        {
+                    aoColumns: [
+                        { 'mDataProp': 'id'},
+                        { 'mDataProp': 'nama'},
+                        { 'mDataProp': 'id'},
+                        // { 'mDataProp': 'role'},
+                    ],
+                    order: [[0, 'ASC']],
+                    aoColumnDefs:[
+                      {
                           mRender: function (data, type, row){
 
                               var $rowData = '';
@@ -198,75 +245,35 @@ function loadkota(){
                           },
                           aTargets: [2]
                       },
-                        //   {
-                        //     mRender: function (data, type, row){
-                        //         var $rowData = '';
-                        //         var col = 12;
-                                
-                        //         // if (row.files.length == 2) {
-                        //         //   col = 6;
-                        //         // }else if (row.files.length > 2){
-                        //         //   col = 4;
-                        //         // }
-                                
-                        //         for( var key in row.files ) {
-                        //           $rowData += `
-                        //           <img id="" name="" class="img-fluid" src="`+row.files[key].path+'/'+row.files[key].filename+`" alt="">
-                        //             `;
-                        //         }
-  
-                        //         $rowData += '</div>';
-                                
-                        //         return $rowData;
-                        //     },
-                        //     aTargets: [1]
-                        // },
-                        //   {
-                        //     mRender: function (data, type, row){
-                        //         var $rowData = '';
-                        //         if (row.tipe == 'link') {
-                        //           $rowData += '<p>Link Eksternal</p>';
-                        //           $rowData += '<p><i class="fa fa-globe"></i> <a target="_blank" href="'+row.keterangan+'" class="link-primary">klik disini</a></p>';
-                        //         }else{
-                        //           $rowData = row.keterangan;
-                        //         }
-                                
-                        //         return $rowData;
-                        //     },
-                        //     aTargets: [3]
-                        // },
-                      ],
+                    ],
 
-                      fnRowCallback: function(nRow, aData, iDisplayIndex, iDisplayIndexFull){
-                          var index = iDisplayIndexFull + 1;
-                          $('td:eq(0)', nRow).html(' '+index);
-                          return  ;
-                      },
+                    fnRowCallback: function(nRow, aData, iDisplayIndex, iDisplayIndexFull){
+                        var index = iDisplayIndexFull + 1;
+                        $('td:eq(0)', nRow).html(' '+index);
+                        return  ;
+                    },
 
-                      fnInitComplete: function () {
-                          var that = this;
-                          var td ;
-                          var tr ;
+                    fnInitComplete: function () {
+                      var that = this;
+                      var td ;
+                      var tr ;
 
-                          this.$('td').click( function () {
-                              td = this;
-                          });
-                          this.$('tr').click( function () {
-                              tr = this;
-                          });
+                      this.$('td').click( function () {
+                          td = this;
+                      });
+                      this.$('tr').click( function () {
+                          tr = this;
+                      });
 
 
-                          $('#listproj_filter input').bind('keyup', function (e) {
-                              return this.value;
-                          });
-
-                      }
-                  });
-              }
-
+                      $('#listproj_filter input').bind('keyup', function (e) {
+                          return this.value;
+                      });
+                    }
+                });
           }
       });
-  }
+    }
 
   
     function loaddata(){

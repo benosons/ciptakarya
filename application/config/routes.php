@@ -68,6 +68,7 @@ $route['getdata'] = 'jsondata/getdata';
 $route['getkategoriprofil'] = 'jsondata/getkategoriprofil';
 $route['getkategoriprofils'] = 'jsondata/getkategoriprofils';
 $route['getkategorilaporan'] = 'jsondata/getkategorilaporan';
+$route['kategorilaporan'] = 'jsondata/kategorilaporan';
 $route['getkategorilaporans'] = 'jsondata/getkategorilaporans';
 $route['getdatausers'] = 'jsondata/getdatausers';
 $route['^(savedataberita|savedataprofile|savedataposter|savedatafoto|savedatabalai|savedatabanner|savedatagrafis|savedataagenda|savedatatext|savedatabuku|savedatalaporan)(/:any)?$'] = "jsondata/$0";

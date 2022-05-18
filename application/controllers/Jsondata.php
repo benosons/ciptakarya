@@ -1892,7 +1892,22 @@ class Jsondata extends CI_Controller {
 	public function getkategorilaporan()
 	{
 		$result = $this->Model_data->getkategori('kategori_laporan');
-		echo json_encode($result);
+		$output = array(
+			'code ' => 1,
+			'data' => $result
+		);
+		header('Content-Type: application/json');
+		echo json_encode($output);
+	}
+	public function kategorilaporan()
+	{
+		$result = $this->Model_data->getkategori('kategori_laporan');
+		$output = array(
+			'code ' => 1,
+			'data' => $result
+		);
+		header('Content-Type: application/json');
+		echo json_encode($output);
 	}
 
 	// public function getkategoriprofils()
