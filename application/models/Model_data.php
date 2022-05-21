@@ -24,6 +24,12 @@ class Model_data extends CI_Model {
         return $query;
     }
 
+    public function getcountdata($param)
+    {
+        $query = $this->db->get($param)->num_rows();
+        return $query;
+    }
+
     public function getdata($param, $userid, $role, $length, $start)
     {
         $where = '';

@@ -69,11 +69,13 @@ class Berita extends CI_Controller {
             $offset = $_GET['offset'];
             $limit = $_GET['limit'];
             $berita = $this->Model_data->getalldata('data_berita',NULL,$limit,$offset);
+            $totalRows = $this->Model_data->getcountdata('data_berita');
             if (!empty($berita)) {
                 $result = array(
                     'status' => 200,
                     'message' => 'Data Berhasil ditemukan !',
-                    'data' => $berita
+                    'data' => $berita,
+                    'totalRows' => $totalRows
                 );
                 echo json_encode($result);
             }else{
