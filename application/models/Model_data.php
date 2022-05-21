@@ -35,6 +35,20 @@ class Model_data extends CI_Model {
         return $query;
     }
 
+    public function getpulau()
+    {
+
+        $query = $this->db->query("select num, pulau from satker where pulau is not null group by num, pulau")->result();
+        return $query;
+    }
+
+    public function getsatker($pulau)
+    {
+
+        $query = $this->db->query("select id, kode_satker, role, nama_satker, kode_fe from satker where pulau = '$pulau' ORDER BY kode_fe")->result();
+        return $query;
+    }
+
     public function getkategori($param)
     {
         $query = $this->db->query("select * from $param order by id asc")->result();

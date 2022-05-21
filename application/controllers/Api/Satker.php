@@ -59,12 +59,22 @@ class Satker extends CI_Controller {
                 echo json_encode($result);
             }
         }else{
-            $berita = $this->Model_data->getalldata('satker');
-            if (!empty($berita)) {
+            
+            $alldata = [];
+            $pulau = $this->Model_data->getpulau();
+
+            foreach ($pulau as $key => $value) {
+                $satker = $this->Model_data->getsatker($value->pulau);
+                $value->satker = $satker;
+
+                array_push($alldata, $value);
+            }
+            
+            if (!empty($alldata)) {
                 $result = array(
                     'status' => 200,
                     'message' => 'Data Berhasil ditemukan !',
-                    'data' => $berita
+                    'data' => $alldata
                 );
                 echo json_encode($result);
             }else{
