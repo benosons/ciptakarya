@@ -66,7 +66,9 @@ class Berita extends CI_Controller {
                 echo json_encode($result);
             }
         }else{
-            $berita = $this->Model_data->getalldata('data_berita');
+            $offset = $_GET['offset'];
+            $limit = $_GET['limit'];
+            $berita = $this->Model_data->getalldata('data_berita',NULL,$limit,$offset);
             if (!empty($berita)) {
                 $result = array(
                     'status' => 200,
