@@ -21,6 +21,13 @@ class Berita extends CI_Controller {
 
 	public function __construct()
 	{
+        header('Access-Control-Allow-Origin: *');
+        header("Access-Control-Allow-Headers: X-API-KEY, Origin, X-Requested-With, Content-Type, Accept, Access-Control-Request-Method");
+        header("Access-Control-Allow-Methods: GET, POST, OPTIONS, PUT, DELETE");
+        $method = $_SERVER['REQUEST_METHOD'];
+        if($method == "OPTIONS") {
+            die();
+        }
 		parent::__construct();
 		// $this->load->model('Model_auth');
 		$this->load->model('Model_data');
@@ -59,7 +66,9 @@ class Berita extends CI_Controller {
                 echo json_encode($result);
             }
         }else{
-            $berita = $this->Model_data->getalldata('data_berita');
+            $offset = $_GET['offset'];
+            $limit = $_GET['limit'];
+            $berita = $this->Model_data->getalldata('data_berita',NULL,$limit,$offset);
             if (!empty($berita)) {
                 $result = array(
                     'status' => 200,

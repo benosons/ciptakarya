@@ -10,12 +10,16 @@ class Model_data extends CI_Model {
         parent::__construct();
     }
 
-    public function getalldata($param,$where=NULL)
+    public function getalldata($param,$where=NULL,$limit=NULL,$offset=NULL)
     {
         if ($where != NULL) {
             $this->db->where($where);
         }
-        $query = $this->db->get($param)->result();
+        if ($limit != NULL && $offset != NULL) {
+            $query = $this->db->get($param,$limit,$offset)->result();
+        }else{
+            $query = $this->db->get($param)->result();
+        }
         // $query = $this->db->query("select * from $param order_by id asc")->result();
         return $query;
     }
