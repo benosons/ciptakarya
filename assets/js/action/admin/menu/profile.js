@@ -125,6 +125,7 @@ function loaddata(){
       data : {
               param       : 'data_profile',
               type        : 'profile',
+              datatable        : '1',
        },
       success: function(result){
         

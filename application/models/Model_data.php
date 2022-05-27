@@ -30,14 +30,18 @@ class Model_data extends CI_Model {
         return $query;
     }
 
-    public function getdata($param, $userid, $role, $length, $start)
+    public function getdata($param, $userid, $role, $length, $start, $datable = null)
     {
         $where = '';
         if($role != 10){
             $where = " where create_by = '$userid'";
         }
         
-        $query = $this->db->query("select * from $param $where order by id desc LIMIT ".$length." OFFSET ".$start)->result();
+        if($datable == '1'){
+            $query = $this->db->query("select * from $param $where ")->result();
+        }else{
+            $query = $this->db->query("select * from $param $where order by id desc LIMIT ".$length." OFFSET ".$start)->result();
+        }
         return $query;
     }
 
