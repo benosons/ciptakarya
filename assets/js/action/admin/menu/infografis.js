@@ -121,47 +121,86 @@ function loadkota(){
     };
 
     function loaddata(){
+      var tabel = $('#listgrafis').DataTable({
+        "destroy": true,
+        "searching": false,
+        "processing": true,
+        "responsive":true,
+        "serverSide": true,
+        "ordering": true, // Set true agar bisa di sorting
+        "order": [[ 0, 'asc' ]], // Default sortingnya berdasarkan kolom / field ke 0 (paling pertama)
+        "paging"      : true,
+        "pageLength"  : 10,
+        "ajax":
+          {
+            "url": "getdata", // URL file untuk proses select datanya
+            "type": "POST",
+            "data" : {
+                          "param"       : 'data_grafis',
+                          "type"        : 'infografis',
+                   },
+          },
+        "deferRender": true,
+        "lengthMenu"  : [[5, 10, 50,100, -1], [5, 10, 50, 100,"All"]],
+        "columns":[
+          { 'data': 'id'},
+          { 'data': 'judul'},
 
-        $.ajax({
-            type: 'post',
-            dataType: 'json',
-            url: 'getdata',
-            data : {
-                    param      : 'data_grafis',
-                    type      : 'infografis',
-             },
-            success: function(result){
-              
-              if(result.code == 1){
-                    var dt = $('#listgrafis').DataTable({
-                      destroy: true,
-                      paging: true,
-                      lengthChange: false,
-                      searching: true,
-                      ordering: true,
-                      info: true,
-                      autoWidth: false,
-                      responsive: false,
-                      pageLength: 10,
-                      aaData: result.data,
-                        aoColumns: [
-                          { 'mDataProp': 'id'},
-                          { 'mDataProp': 'id'},
-                          { 'mDataProp': 'judul'},
-                          { 'mDataProp': 'status'},
-                          { 'mDataProp': 'id'},
-                            // { 'mDataProp': 'role'},
-                        ],
-                        order: [[0, 'ASC']],
-                        aoColumnDefs:[
-                          // {
-                          //   targets: [7],
-                          //   visible: false
-                          // },
-                          {'width':'30%','targets':1},
-                          {
-                              mRender: function (data, type, row){
-                                var id_file = row.files[0].id;
+          { 'data': 'id', render: function (data, type, row, meta){
+            var $rowData = '';
+                              var col = 12;
+                              
+                              // if (row.files.length == 2) {
+                              //   col = 6;
+                              // }else if (row.files.length > 2){
+                              //   col = 4;
+                              // }
+                              
+                              for( var key in row.files ) {
+                                $rowData += `
+                                <img id="" name="" class="img-fluid" src="`+row.files[key].path+'/'+row.files[key].filename+`" alt="">
+                                  `;
+                              }
+
+                              $rowData += '</div>';
+                              
+                              return $rowData;
+          }},
+          { 'data': 'status', render: function (data, type, row, meta) {
+            var stat = row.status;
+                              if(stat == 1){
+                                var st = 'Publish'
+                                var tex = 'text-success';
+                              }else{
+                                var st = 'No Publish'
+                                var tex = 'text-danger';
+                              }
+                              var $rowData = '';
+                              $rowData += `<div class="card">
+                              <div class="card-body">
+                                <div class="d-flex justify-content-between">
+                                  <p class="text-primary text-sm">
+                                    <i class="far fa-calendar-alt"></i>
+                                  </p>
+                                  <p class="d-flex flex-column">
+                                    <span class="text-muted"> `+row.tahun+`</span>
+                                  </p>
+                                </div>
+                                <div class="d-flex justify-content-between">
+                                  <p class="`+tex+` text-sm">
+                                    <i class="fas fa-sign-in-alt"></i>
+                                  </p>
+                                  <p class="d-flex flex-column ">
+                                    <span class="text-muted">`+st+`</span>
+                                  </p>
+                                </div>
+                                </div>
+                              </div>`;
+
+                                return $rowData;
+          }},
+          { 'data': 'id', render: function(data, type, row, meta){
+            var id_file = row.files[0].id;
                                 var path = row.files[0].path+'/'+row.files[0].filename;
                                 
                                   var stat = row.status;
@@ -195,99 +234,14 @@ function loadkota(){
                                     </div>`;
     
                                   return $rowData;
-                              },
-                              aTargets: [4]
+          }},
+        ],
+        "fnRowCallback": function(nRow, aData, iDisplayIndex, iDisplayIndexFull){
+                              var index = iDisplayIndexFull + 1;
+                              $('td:eq(0)', nRow).html(' '+index);
+                              return  ;
                           },
-                          {
-                            mRender: function (data, type, row){
-                              var stat = row.status;
-                              if(stat == 1){
-                                var st = 'Publish'
-                                var tex = 'text-success';
-                              }else{
-                                var st = 'No Publish'
-                                var tex = 'text-danger';
-                              }
-                              var $rowData = '';
-                              $rowData += `<div class="card">
-                              <div class="card-body">
-                                <div class="d-flex justify-content-between">
-                                  <p class="text-primary text-sm">
-                                    <i class="far fa-calendar-alt"></i>
-                                  </p>
-                                  <p class="d-flex flex-column">
-                                    <span class="text-muted"> `+row.tahun+`</span>
-                                  </p>
-                                </div>
-                                <div class="d-flex justify-content-between">
-                                  <p class="`+tex+` text-sm">
-                                    <i class="fas fa-sign-in-alt"></i>
-                                  </p>
-                                  <p class="d-flex flex-column ">
-                                    <span class="text-muted">`+st+`</span>
-                                  </p>
-                                </div>
-                                </div>
-                              </div>`;
-
-                                return $rowData;
-                            },
-                            aTargets: [3]
-                        },
-                        {
-                          mRender: function (data, type, row){
-                              var $rowData = '';
-                              var col = 12;
-                              
-                              // if (row.files.length == 2) {
-                              //   col = 6;
-                              // }else if (row.files.length > 2){
-                              //   col = 4;
-                              // }
-                              
-                              for( var key in row.files ) {
-                                $rowData += `
-                                <img id="" name="" class="img-fluid" src="`+row.files[key].path+'/'+row.files[key].filename+`" alt="">
-                                  `;
-                              }
-
-                              $rowData += '</div>';
-                              
-                              return $rowData;
-                          },
-                          aTargets: [1]
-                      },
-                        ],
-
-                        fnRowCallback: function(nRow, aData, iDisplayIndex, iDisplayIndexFull){
-                            var index = iDisplayIndexFull + 1;
-                            $('td:eq(0)', nRow).html(' '+index);
-                            return  ;
-                        },
-
-                        fnInitComplete: function () {
-                            var that = this;
-                            var td ;
-                            var tr ;
-
-                            this.$('td').click( function () {
-                                td = this;
-                            });
-                            this.$('tr').click( function () {
-                                tr = this;
-                            });
-
-
-                            $('#listproj_filter input').bind('keyup', function (e) {
-                                return this.value;
-                            });
-
-                        }
-                    });
-                }
-
-            }
-        });
+      });
     }
 
     function savedata(st){

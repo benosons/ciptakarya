@@ -266,7 +266,7 @@ function loaddata(){
                           $('td:eq(0)', nRow).html(' '+index);
                           return  ;
                       },
-});
+  });
 }
 
     function savedata(st){

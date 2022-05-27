@@ -1572,7 +1572,7 @@ class Jsondata extends CI_Controller {
 
 						$data_file = [
 								'id_parent' => $id,
-								'type' => 'grafis',
+								'type' => 'infografis',
 								'path' => $path,
 								'size' => $size,
 								'extension' => $type,
