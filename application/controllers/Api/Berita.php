@@ -68,7 +68,14 @@ class Berita extends CI_Controller {
         }else{
             $offset = $_GET['offset'];
             $limit = $_GET['limit'];
-            $berita = $this->Model_data->getalldata('data_berita',NULL,$limit,$offset);
+            $satker = $_GET['satker'];
+            $where = array();
+            if ($satker) {
+                $where['create_by'] = $satker;
+                $berita = $this->Model_data->getalldata('data_berita',$where,$limit,$offset);
+            }else{
+                $berita = $this->Model_data->getalldata('data_berita',NULL,$limit,$offset);
+            }
             $totalRows = $this->Model_data->getcountdata('data_berita');
             if (!empty($berita)) {
                 $result = array(

@@ -66,12 +66,23 @@ class Galeri extends CI_Controller {
                 echo json_encode($result);
             }
         }else{
-            $galeri = $this->Model_data->getalldata('data_foto');
+            $offset = $_GET['offset'];
+            $limit = $_GET['limit'];
+            $satker = $_GET['satker'];
+            $where = array();
+            if ($satker) {
+                $where['create_by'] = $satker;
+                $galeri = $this->Model_data->getalldata('data_foto',$where,$limit,$offset);
+            }else{
+                $galeri = $this->Model_data->getalldata('data_foto',NULL,$limit,$offset);
+            }
+            $totalRows = $this->Model_data->getcountdata('data_foto');
             if (!empty($galeri)) {
                 $result = array(
                     'status' => 200,
                     'message' => 'Data Berhasil ditemukan !',
-                    'data' => $galeri
+                    'data' => $galeri,
+                    'totalRows' => $totalRows
                 );
                 echo json_encode($result);
             }else{

@@ -66,12 +66,23 @@ class Produklaporan extends CI_Controller {
                 echo json_encode($result);
             }
         }else{
-            $laporan = $this->Model_data->getalldata('data_laporan');
+            $offset = $_GET['offset'];
+            $limit = $_GET['limit'];
+            $satker = $_GET['satker'];
+            $where = array();
+            if ($satker) {
+                $where['create_by'] = $satker;
+                $laporan = $this->Model_data->getalldata('data_laporan',$where,$limit,$offset);
+            }else{
+                $laporan = $this->Model_data->getalldata('data_laporan',NULL,$limit,$offset);
+            }
+            $totalRows = $this->Model_data->getcountdata('data_laporan');
             if (!empty($laporan)) {
                 $result = array(
                     'status' => 200,
                     'message' => 'Data Berhasil ditemukan !',
-                    'data' => $laporan
+                    'data' => $laporan,
+                    'totalRows' => $totalRows
                 );
                 echo json_encode($result);
             }else{
