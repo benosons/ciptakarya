@@ -68,10 +68,10 @@ class Banner extends CI_Controller {
         }else{
             $offset = $_GET['offset'];
             $limit = $_GET['limit'];
-            $satker = $_GET['satker'];
+            $type = $_GET['type'];
             $where = array();
-            if ($satker) {
-                $where['create_by'] = $satker;
+            if ($type) {
+                $where['create_by'] = $type;
                 $banner = $this->Model_data->getalldata('data_banner',$where,$limit,$offset);
             }else{
                 $banner = $this->Model_data->getalldata('data_banner',NULL,$limit,$offset);
