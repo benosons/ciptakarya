@@ -134,6 +134,7 @@ function loadkota(){
             data : {
                     param      : 'data_text',
                     type      : 'text',
+                    // datatable : 1
              },
             success: function(result){
               

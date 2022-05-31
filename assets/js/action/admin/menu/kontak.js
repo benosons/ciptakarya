@@ -129,6 +129,7 @@ function loadkota(){
             url: 'getdata',
             data : {
                     param      : 'data_kontak',
+                    datatable  : 1
              },
             success: function(result){
               

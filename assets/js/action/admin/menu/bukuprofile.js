@@ -154,7 +154,8 @@ function loadkota(){
           url: 'getdata',
           data : {
                   param      : 'kategori_profile',
-                  type       : 'buku'
+                  type       : 'buku',
+                  // datatable  : 1
            },
           success: function(result){
             

@@ -148,7 +148,8 @@ function loadkota(){
             url: 'getdata',
             data : {
                     param      : 'data_banner',
-                    type       : 'banner'
+                    type       : 'banner',
+                    // datatable  : 1
              },
             success: function(result){
               

@@ -37,7 +37,7 @@ class Model_data extends CI_Model {
             $where = " where create_by = '$userid'";
         }
         
-        if($datable == '1'){
+        if($datable == null){
             $query = $this->db->query("select * from $param $where ")->result();
         }else{
             $query = $this->db->query("select * from $param $where order by id desc LIMIT ".$length." OFFSET ".$start)->result();

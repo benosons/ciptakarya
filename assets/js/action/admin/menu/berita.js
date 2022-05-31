@@ -87,6 +87,7 @@ function loaddata(){
         "data" : {
                       "param"       : 'data_berita',
                       "type"        : 'berita',
+                      "datatable"   : 1
                },
       },
     "deferRender": true,

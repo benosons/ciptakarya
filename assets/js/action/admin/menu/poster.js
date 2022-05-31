@@ -77,6 +77,7 @@ $(function () {
             data : {
                     param       : 'data_poster',
                     type        : 'poster',
+                    // datatable   : 1
              },
             success: function(result){
               

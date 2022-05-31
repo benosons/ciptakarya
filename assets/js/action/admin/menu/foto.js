@@ -78,6 +78,7 @@ function loaddata(){
       data : {
               param       : 'data_foto',
               type        : 'foto',
+              // datatable   : 1
        },
       success: function(result){
         

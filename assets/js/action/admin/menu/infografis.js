@@ -138,6 +138,7 @@ function loadkota(){
             "data" : {
                           "param"       : 'data_grafis',
                           "type"        : 'infografis',
+                          "datatable"   : 1
                    },
           },
         "deferRender": true,

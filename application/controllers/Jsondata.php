@@ -110,7 +110,8 @@ class Jsondata extends CI_Controller {
 						$response = [
 							'status'   => 'sukses',
 							'code'     => '1',
-							'data' 		 => $result
+							'data' 		 => $result,
+							'dt' => $datatable
 						];
 					}else{
 						$response = [

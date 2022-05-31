@@ -294,6 +294,7 @@ function loadkota(){
               "data" : {
                             "param"       : 'data_laporan',
                             "type"        : 'laporan',
+                            "datatable"   : 1
                     },
             },
           "deferRender": true,
