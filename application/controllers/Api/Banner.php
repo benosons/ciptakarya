@@ -51,6 +51,7 @@ class Banner extends CI_Controller {
         $id = $_GET['id'];
         if ($id) {
             $banner = $this->Model_data->getalldata('data_banner',['id'=>$id]);
+            
             if (!empty($banner)) {
                 $result = array(
                     'status' => 200,
@@ -69,12 +70,20 @@ class Banner extends CI_Controller {
             $offset = $_GET['offset'];
             $limit = $_GET['limit'];
             $type = $_GET['type'];
+            $param = $_GET['param'];
             $where = array();
             if ($type) {
                 $where['create_by'] = $type;
                 $banner = $this->Model_data->getalldata('data_banner',$where,$limit,$offset);
             }else{
                 $banner = $this->Model_data->getalldata('data_banner',NULL,$limit,$offset);
+            }
+            foreach ($banner as $key => $value) {
+                $files = $this->Model_data->getfile($value->id, $param);
+                
+                if(!empty($files)){
+                    $banner[$key]->files = $files;
+                }
             }
             $totalRows = $this->Model_data->getcountdata('data_banner');
             if (!empty($banner)) {
