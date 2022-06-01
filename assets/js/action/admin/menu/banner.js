@@ -231,6 +231,15 @@ function loadkota(){
                                   var year = mydate.getFullYear();
                                   var str = date+'/'+month+'/'+year;
                                   var stat = row.status;
+                                  var param = row.param;
+                                  var tip = [
+                                    '-',
+                                    'Home',
+                                    'Tentang',
+                                    'Produk',
+                                    'Galeri'
+                                  ]
+                                  
                                   if(stat == 1){
                                     var st = 'Publish'
                                     var tex = 'text-success';
@@ -255,6 +264,14 @@ function loadkota(){
                                       </p>
                                       <p class="d-flex flex-column ">
                                         <span class="text-muted">`+st+`</span>
+                                      </p>
+                                    </div>
+                                    <div class="d-flex justify-content-between">
+                                      <p class="text-sm">
+                                        Tipe
+                                      </p>
+                                      <p class="d-flex flex-column ">
+                                        <span class="text-muted">`+tip[param]+`</span>
                                       </p>
                                     </div>
                                     </div>
@@ -344,6 +361,7 @@ function loadkota(){
       var id = $('#id').val();
       var judul = $('#judul').val();
       var tipe = $('#tipe').val();
+      var param = $('#param-type').val();
       if (tipe == "link") {
         var keterangan = $('#link-teks').val();
       }else if(tipe == "halaman"){
@@ -356,6 +374,7 @@ function loadkota(){
       formData.append('judul', judul);
       formData.append('tipe', tipe);
       formData.append('keterangan',keterangan);
+      formData.append('param',param);
       
       var iscapt = [];
       for (let index = 0; index < $("[name='image_input']").length; index++) {

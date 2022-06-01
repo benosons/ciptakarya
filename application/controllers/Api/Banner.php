@@ -74,12 +74,13 @@ class Banner extends CI_Controller {
             $where = array();
             if ($type) {
                 $where['create_by'] = $type;
+                $where['param'] = $param;
                 $banner = $this->Model_data->getalldata('data_banner',$where,$limit,$offset);
             }else{
                 $banner = $this->Model_data->getalldata('data_banner',NULL,$limit,$offset);
             }
             foreach ($banner as $key => $value) {
-                $files = $this->Model_data->getfile($value->id, $param);
+                $files = $this->Model_data->getfile($value->id, 'banner');
                 
                 if(!empty($files)){
                     $banner[$key]->files = $files;
