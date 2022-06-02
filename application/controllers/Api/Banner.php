@@ -49,6 +49,7 @@ class Banner extends CI_Controller {
     public function get()
     {
         $id = $_GET['id'];
+        
         if ($id) {
             $banner = $this->Model_data->getalldata('data_banner',['id'=>$id]);
             
@@ -81,9 +82,13 @@ class Banner extends CI_Controller {
             }
             foreach ($banner as $key => $value) {
                 $files = $this->Model_data->getfile($value->id, 'banner');
-                
-                if(!empty($files)){
-                    $banner[$key]->files = $files;
+                $fl = [];
+                foreach ($files as $key => $value) {
+                    $path = $_SERVER['SERVER_NAME'].'/'.$value->path.'/'.$value->filename;
+                    array_push($fl, $path);
+                }
+                if(!empty($fl)){
+                    $banner[$key]->files = $fl;
                 }
             }
             $totalRows = $this->Model_data->getcountdata('data_banner');
