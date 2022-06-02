@@ -84,7 +84,7 @@ class Banner extends CI_Controller {
                 $files = $this->Model_data->getfile($value->id, 'banner');
                 $fl = [];
                 foreach ($files as $key => $value) {
-                    $path = $_SERVER['HTTP_HOST'].'/ciptakarya/.'.$value->path.'/'.$value->filename;
+                    $path = $_SERVER['HTTP_HOST'].'/ciptakarya/'.$value->path.'/'.$value->filename;
                     array_push($fl, $path);
                 }
                 if(!empty($fl)){
