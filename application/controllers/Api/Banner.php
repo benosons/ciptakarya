@@ -88,7 +88,7 @@ class Banner extends CI_Controller {
                     array_push($fl, $path);
                 }
                 if(!empty($fl)){
-                    $banner[$key]->files = $fl;
+                    $banner[$key]->files = $fl[0];
                 }
             }
             $totalRows = $this->Model_data->getcountdata('data_banner');
