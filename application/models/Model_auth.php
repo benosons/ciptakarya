@@ -13,7 +13,9 @@ class Model_auth extends CI_Model {
         $check = $this->db->get_where("muser", array("username" => $username,"password" => $password));
 
             if ($check->num_rows() > 0) {
-            $data = $check->row();
+                $data = $check->row();
+                $fulname = $this->db->get_where("satker", array("kode_satker" => $data->username));
+                
                 $session = array(
                     'id'          => $data->id,
                     'username'    => $data->username,
@@ -21,11 +23,11 @@ class Model_auth extends CI_Model {
                     'password'    => $data->password,
                     'satker'      => $data->satker,
                     'role'        => $data->role,
-                    'name'        => $data->name,
+                    'name'        => $fulname->row()->nama_satker ? $fulname->row()->nama_satker : 'admin',
                     'foto'        => ($data->foto ? $data->foto : 'assets/dokumen/gambar/user/default.jpg'),
                     'notelp'      => $data->no_telp,
                     'email'       => $data->email,
-                    'userLogged'  => TRUE
+                    'userLogged'  => TRUE,
                 );
 
                 $valid = TRUE;
