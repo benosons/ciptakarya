@@ -91,7 +91,7 @@ class Jsondata extends CI_Controller {
 				$type =  $post->type;
 				$datatable =  $post->datatable;
 				
-				$result = $this->Model_data->getdata($param, $this->session->userdata('id'),  $this->session->userdata('role'), $post->length, $post->start, $datatable);
+				$result = $this->Model_data->getdata($param, $this->session->userdata('id'),  $this->session->userdata('role'), $post->length, $post->start, $datatable, $this->session->userdata('username'));
 				foreach ($result as $key => $value) {
 					$files = $this->Model_data->getfile($value->id, $type);
 					if(!empty($files)){
@@ -297,7 +297,7 @@ class Jsondata extends CI_Controller {
 
 		$params = (object)$this->input->post();
 		
-		$this->Model_data->deletekategori($params);
+		$this->Model_data->deletekategori($params->id, $params->table);
 		header('Content-Type: application/json');
 		echo json_encode(array("status" => TRUE));
 	}

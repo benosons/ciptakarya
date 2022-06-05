@@ -195,11 +195,40 @@ function loaddata(){
                             return $rowData;
         }},
         { "data": "bagian", render: function(data, type, row, meta){
-          var bag = ['0','SETDITJEN','TIDUR','BPB','PKP','PPLP','PSPAM','PSP-POP'];
-                              var $rowData = '';
-                                  $rowData += bag[row.bagian];
+          // var bag = ['0','SETDITJEN','TIDUR','BPB','PKP','PPLP','PSPAM','PSP-POP'];
+            var $rowData = '';
 
-                              return $rowData;
+            switch (row.bagian) {
+              case '420138':
+                $rowData += 'DIREKTORAT BINA TEKNIK PERMUKIMAN DAN PERUMAHAN'
+                break;
+              case '420139':
+                $rowData += 'DIREKTORAT KEPATUHAN INTERN'
+                break;
+              case '452771':
+                $rowData += 'DIREKTORAT PENGEMBANGAN KAWASAN PERMUKIMAN'
+                break;
+              case '452780':
+                $rowData += 'DIREKTORAT BINA PENATAAN BANGUNAN'
+                break;
+              case '466162':
+                $rowData += 'DIREKTORAT KETERPADUAN INFRASTRUKTUR PERMUKIMAN'
+                break;
+              case '466178':
+                $rowData += 'DIREKTORAT AIR MINUM'
+                break;
+              case '466190':
+                $rowData += 'DIREKTORAT SANITASI'
+                break;
+              case '622213':
+                $rowData += 'SEKRETARIAT DIREKTORAT JENDERAL CIPTA KARYA'
+                break;
+              case '631097':
+                $rowData += 'PUSAT PENGEMBANGAN SARANA PRASARANA PENDIDIKAN, OLAHRAGA DAN PASAR'
+                break;
+            }
+
+              return $rowData;
         } },
         { "data": "id",
             "render": 
@@ -241,6 +270,9 @@ function loaddata(){
                      st = `<div class="dropdown-divider"></div><a class="dropdown-item" href="#" onclick="updatepublish(`+row.id+`,1)"><i class="fas fa-sign-out-alt"></i> Publish</a>`;
                    }
                  }
+
+                 var isinya = row.isi.replace(/</g, '~');
+                 var isinya_1 = isinya.replace(/"/g, '`');
               
                  var $rowData = '';
                      $rowData += `
@@ -250,7 +282,7 @@ function loaddata(){
                        <span class="sr-only">Toggle Dropdown</span>
                      </button>
                      <div class="dropdown-menu" role="menu">
-                       <a class="dropdown-item" href="javascript:void(0)" onclick="editdong('`+row.id+`','`+row.judul+`','`+row.tag+`','`+row.isi+`','`+file+`','`+idfile+`','`+row.bagian+`','`+row.date+`','`+caption+`')"><i class="far fa-edit"></i> Edit</a>
+                       <a class="dropdown-item" href="javascript:void(0)" onclick="editdong('`+row.id+`','`+row.judul+`','`+row.tag+`','`+isinya_1+`','`+file+`','`+idfile+`','`+row.bagian+`','`+row.date+`','`+caption+`')"><i class="far fa-edit"></i> Edit</a>
                        <a class="dropdown-item" href="#" onclick="deleteData(`+row.id+`, `+id_file+`, '`+path+`')
                        "><i class="far fa-trash-alt"></i> Hapus</a>
                        
@@ -490,7 +522,11 @@ function modaldetail(id,username,role,status,name,foto){
       $("#tag").val(tag);
       $("#bagian").val(bagian).change();
       $("#date").val(date);
-      $('#isi').summernote('code', isi);
+
+      var isinya = isi.replace(/~/g, '<');
+      var isinya_1 = isinya.replace(/`/g, '"');
+
+      $('#isi').summernote('code', isinya_1);
       $('#blah_1').attr('src', path);
       $('#caption_1').val(caption);
     

@@ -30,11 +30,16 @@ class Model_data extends CI_Model {
         return $query;
     }
 
-    public function getdata($param, $userid, $role, $length, $start, $datable = null)
+    public function getdata($param, $userid, $role, $length, $start, $datable = null, $username)
     {
         $where = '';
         if($role != 10){
+            
             $where = " where create_by = '$userid'";
+
+            if($param == 'data_berita'){
+                $where .= " or bagian = '$username'";
+            }
         }
         
         if($datable == null){
@@ -91,11 +96,11 @@ class Model_data extends CI_Model {
         $this->db->where('id', $id->id);
         $this->db->delete('data_berita');
     }
-    public function deletekategori($id)
+    public function deletekategori($id, $table)
     {
         // $idx = $this->db->escape_str($id);
-        $this->db->where('id', $id->id);
-        $this->db->delete('kategori_profile');
+        $this->db->where('id', $id);
+        $this->db->delete($table);
     }
     public function deletevideo($id)
     {

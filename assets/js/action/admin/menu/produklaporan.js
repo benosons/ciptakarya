@@ -322,7 +322,7 @@ function loadkota(){
                       <i class="fa fa-book"></i>
                       </p>
                       <p class="d-flex flex-column">
-                      <a href="`+file+`" class="link-secondary">Baca Online</a>
+                      <a href="`+file+`" target="_blank" class="link-secondary">Baca Online</a>
                       </p>
                       </div>`;
                     }else if(key == 1){
@@ -331,7 +331,7 @@ function loadkota(){
                       <i class="fa fa-file-pdf"></i>
                       </p>
                       <p class="d-flex flex-column">
-                      <a href="`+file+`" class="link-primary">Download</a>
+                      <a href="`+file+`" target="_blank" class="link-primary">Download</a>
                       </p>
                       </div>`;
 
@@ -765,7 +765,7 @@ function loadkota(){
         stat = '1'
       }
 
-        formData.append('stat', stat);
+        formData.append('status', stat);
 
         if(id){
           formData.append('idfile1', $('#idfile1').val());
@@ -1159,7 +1159,8 @@ function deletekat(id){
       dataType: 'json',
       url: 'deletekategori',
       data : {
-              id    : id
+              id    : id,
+              table : 'kategori_laporan'
             },
       success: function(data)
       {
