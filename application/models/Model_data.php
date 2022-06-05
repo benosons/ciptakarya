@@ -37,7 +37,7 @@ class Model_data extends CI_Model {
             
             $where = " where create_by = '$userid'";
 
-            if($param == 'data_berita'){
+            if($role == '20'){
                 $where .= " or bagian = '$username'";
             }
         }
