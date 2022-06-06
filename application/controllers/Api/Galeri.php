@@ -49,10 +49,18 @@ class Galeri extends CI_Controller {
     public function get()
     {
         $id = $_GET['id'];
+        $type = $_GET['type'];
         if ($id) {
-            $galeri = $this->Model_data->getalldata('data_foto',['id'=>$id]);
+            if($type == 'foto'){
+                $table = 'data_foto';
+            }else if($type == 'video'){
+                $table = 'data_video';
+            }else if($type == 'poster'){
+                $table = 'data_poster';
+            }
+            $galeri = $this->Model_data->getalldata($table,['id'=>$id]);
             foreach($galeri as $key => $value){
-                $files = $this->Model_data->getfile($value->id, 'foto');
+                $files = $this->Model_data->getfile($value->id, $type);
                 if(!empty($files)){
                     $galeri[$key]->files = $files;
                 }
@@ -71,19 +79,26 @@ class Galeri extends CI_Controller {
                 );
                 echo json_encode($result);
             }
-        }else{
+        }else if($type){
             $offset = $_GET['offset'];
             $limit = $_GET['limit'];
             $satker = $_GET['satker'];
             $where = array();
+            if($type == 'foto'){
+                $table = 'data_foto';
+            }else if($type == 'video'){
+                $table = 'data_video';
+            }else if($type == 'poster'){
+                $table = 'data_poster';
+            }
             if ($satker) {
                 $where['create_by'] = $satker;
-                $galeri = $this->Model_data->getalldata('data_foto',$where,$limit,$offset);
+                $galeri = $this->Model_data->getalldata($table,$where,$limit,$offset);
             }else{
-                $galeri = $this->Model_data->getalldata('data_foto',NULL,$limit,$offset);
+                $galeri = $this->Model_data->getalldata($table,NULL,$limit,$offset);
             }
             foreach($galeri as $key => $value){
-                $files = $this->Model_data->getfile($value->id, 'foto');
+                $files = $this->Model_data->getfile($value->id, $type);
                 if(!empty($files)){
                     $galeri[$key]->files = $files;
                 }
@@ -104,7 +119,12 @@ class Galeri extends CI_Controller {
                 );
                 echo json_encode($result);
             }
-
+        }else{
+            $result = array(
+                'status' => 500,
+                'message' => 'Data tidak ditemukan !'
+            );
+            echo json_encode($result);
         }
     }
 
