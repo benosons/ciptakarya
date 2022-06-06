@@ -94,8 +94,17 @@ class Produklaporan extends CI_Controller {
             }
             foreach($laporan as $key => $value){
                 $files = $this->Model_data->getfile($value->id, 'laporan');
-                if(!empty($files)){
-                    $laporan[$key]->files = $files;
+                $fl = [];
+                if(isset($value->kategori)){
+                    $kat = $this->Model_data->getwhere("*", "kategori_laporan", "id = '$value->kategori'");
+                    $laporan[$key]->kategori_name = $kat[0]->nama;
+                }
+                foreach ($files as $key => $value) {
+                    $path = $_SERVER['HTTP_HOST'].'/ciptakarya/'.$value->path.'/'.$value->filename;
+                    array_push($fl, $path);
+                }
+                if(!empty($fl)){
+                    $laporan[$key]->files = $fl[0];
                 }
             }
             $totalRows = $this->Model_data->getcountdata('data_laporan');

@@ -104,6 +104,10 @@ class Jsondata extends CI_Controller {
 						$user = $this->Model_data->getwhere("*", "muser", "id = '$value->create_by'");
 						$result[$key]->username = $user[0]->name;
 					}
+					if(isset($value->kategori)){
+						$user = $this->Model_data->getwhere("*", "kategori_laporan", "id = '$value->kategori'");
+						$result[$key]->kategori_name = $user[0]->nama;
+					}
 					
 				}
 					if($result){

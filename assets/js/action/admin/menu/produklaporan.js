@@ -303,7 +303,7 @@ $(function () {
 				{ "data": "id" },
 				{ "data": "judul" },
 				{ "data": "intro" },
-				{ "data": "kategori" },
+				{ "data": "kategori_name" },
 				{ "data": "kategori" , "render": function(data, type, row, meta){
 					var id_file = row.files[0].id;
 					var path = row.files[0].path+'/'+row.files[0].filename;
