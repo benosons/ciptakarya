@@ -277,6 +277,21 @@ class Views extends CI_Controller {
 			redirect("logout");
 		}
 	}
+
+	public function icon()
+	{
+		if ( $this->logged)
+		{
+			if( $this->role == '10' || $this->role == '20' || $this->role == '30'){
+				$this->content['script'] = $this->data['base_url'].'assets/js/action/admin/menu/icon.js';
+				$this->twig->display('admin/menu/icon.html', $this->content);
+			}else{
+				redirect("/");
+			}
+		}else{
+			redirect("logout");
+		}
+	}
 	
 	public function listusers()
 	{

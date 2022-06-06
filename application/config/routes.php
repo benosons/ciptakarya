@@ -57,7 +57,7 @@ $route['^(login)(/:any)?$'] = "views/$0";
 $route['^(dashboard)(/:any)?$'] = "views/$0";
 $route['^(berita)(/:any)?$'] = "views/$0";
 $route['^(poster|foto|video)(/:any)?$'] = "views/$0";
-$route['^(profile|infobalai|kontak|banner|runningtext|bukuprofile|infografis|agenda|produklaporan)(/:any)?$'] = "views/$0";
+$route['^(profile|infobalai|kontak|banner|runningtext|bukuprofile|infografis|agenda|produklaporan|icon)(/:any)?$'] = "views/$0";
 $route['users'] = 'views/listusers';
 
 $route['^(logout)(/:any)?$'] = "auth/$0";
@@ -71,14 +71,14 @@ $route['getkategorilaporan'] = 'jsondata/getkategorilaporan';
 $route['kategorilaporan'] = 'jsondata/kategorilaporan';
 $route['getkategorilaporans'] = 'jsondata/getkategorilaporans';
 $route['getdatausers'] = 'jsondata/getdatausers';
-$route['^(savedataberita|savedataprofile|savedataposter|savedatafoto|savedatabalai|savedatabanner|savedatagrafis|savedataagenda|savedatatext|savedatabuku|savedatalaporan)(/:any)?$'] = "jsondata/$0";
+$route['^(savedataberita|savedataprofile|savedataposter|savedatafoto|savedatabalai|savedatabanner|savedatagrafis|savedataagenda|savedatatext|savedatabuku|savedatalaporan|savedataicon)(/:any)?$'] = "jsondata/$0";
 $route['^(saveglobal|updateglobal)(/:any)?$'] = "jsondata/$0";
 $route['^(deleteberita)(/:any)?$'] = 'jsondata/$0';
-$route['^(updateberita|updatebanner|updategrafis|updateagenda|updatetext|updatebuku|updatelaporan|updatevideo|updatefoto)(/:any)?$'] = 'jsondata/$0';
-$route['^(updatedataberita|updatedatabanner|updatedatagrafis|updatedataagenda|updatedatatext|updatedatabuku|updatedatalaporan)(/:any)?$'] = 'jsondata/$0';
+$route['^(updateberita|updatebanner|updategrafis|updateagenda|updatetext|updatebuku|updatelaporan|updatevideo|updatefoto|updateicon)(/:any)?$'] = 'jsondata/$0';
+$route['^(updatedataberita|updatedatabanner|updatedatagrafis|updatedataagenda|updatedatatext|updatedatabuku|updatedatalaporan|updatedataicon)(/:any)?$'] = 'jsondata/$0';
 $route['^(updatedataposter)(/:any)?$'] = 'jsondata/$0';
 $route['^(updateposter)(/:any)?$'] = 'jsondata/$0';
-$route['^(deletefoto|deleteposter|deletebanner|deletetext|deletebuku|deletekategori|deletelaporan|deletekategorilaporan|deletevideo|deleteagenda)(/:any)?$'] = 'jsondata/$0';
+$route['^(deletefoto|deleteposter|deletebanner|deletetext|deletebuku|deletekategori|deletelaporan|deletekategorilaporan|deletevideo|deleteagenda|deleteicon)(/:any)?$'] = 'jsondata/$0';
 
 $route['^(saveUser)(/:any)?$'] = 'sys/$0';
 $route['^(updateUser)(/:any)?$'] = 'sys/$0';

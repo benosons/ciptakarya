@@ -152,6 +152,12 @@ class Model_data extends CI_Model {
         $this->db->where('id', $id->id);
         $this->db->delete('data_foto');
     }
+    public function deleteicon($id)
+    {
+        // $idx = $this->db->escape_str($id);
+        $this->db->where('id', $id->id);
+        $this->db->delete('data_icon');
+    }
 
     public function deletefile($id)
     {
@@ -257,6 +263,20 @@ class Model_data extends CI_Model {
         $this->db->set('update_date', $params->update_date);
         $this->db->where('id', $params->id);
         $this->db->update('data_banner');
+        
+        return $valid;
+
+    }
+    public function updatedataicon($params = NULL)
+    {
+        $valid = true;
+       
+        $this->db->set('nama', $params->nama);
+        $this->db->set('status', $params->status);
+        $this->db->set('update_by', $params->update_by);
+        $this->db->set('update_date', $params->update_date);
+        $this->db->where('id', $params->id);
+        $this->db->update('data_icon');
         
         return $valid;
 
@@ -399,6 +419,19 @@ class Model_data extends CI_Model {
         $this->db->set('update_date', $params->update_date);
         $this->db->where('id', $params->id);
         $this->db->update('data_banner');
+        
+        return $valid;
+
+    }
+    public function updateicon($params = NULL)
+    {
+        $valid = true;
+       
+        $this->db->set('status', $params->status);
+        $this->db->set('update_by', $params->update_by);
+        $this->db->set('update_date', $params->update_date);
+        $this->db->where('id', $params->id);
+        $this->db->update('data_icon');
         
         return $valid;
 
