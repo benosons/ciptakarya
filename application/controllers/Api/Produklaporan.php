@@ -69,9 +69,17 @@ class Produklaporan extends CI_Controller {
             $offset = $_GET['offset'];
             $limit = $_GET['limit'];
             $satker = $_GET['satker'];
+            $kategori = $_GET['kategori'];
             $where = array();
             if ($satker) {
                 $where['create_by'] = $satker;
+            }
+
+            if($kategori){
+                $where['kategori'] = $kategori;
+            }
+            
+            if (!empty($where)) {
                 $laporan = $this->Model_data->getalldata('data_laporan',$where,$limit,$offset);
             }else{
                 $laporan = $this->Model_data->getalldata('data_laporan',NULL,$limit,$offset);
@@ -92,7 +100,47 @@ class Produklaporan extends CI_Controller {
                 );
                 echo json_encode($result);
             }
-
+        }
+    }
+    public function getkategori()
+    {
+        $id = $_GET['id'];
+        if ($id) {
+            $kategori = $this->Model_data->getalldata('kategori_laporan',['id'=>$id]);
+            if (!empty($kategori)) {
+                $result = array(
+                    'status' => 200,
+                    'message' => 'Data Berhasil ditemukan !',
+                    'data' => $kategori
+                );
+                echo json_encode($result);
+            }else{
+                $result = array(
+                    'status' => 500,
+                    'message' => 'Data tidak ditemukan !'
+                );
+                echo json_encode($result);
+            }
+        }else{
+            $offset = $_GET['offset'];
+            $limit = $_GET['limit'];
+            $kategori = $this->Model_data->getalldata('kategori_laporan',NULL,$limit,$offset);
+            $totalRows = $this->Model_data->getcountdata('kategori_laporan');
+            if (!empty($kategori)) {
+                $result = array(
+                    'status' => 200,
+                    'message' => 'Data Berhasil ditemukan !',
+                    'data' => $kategori,
+                    'totalRows' => $totalRows
+                );
+                echo json_encode($result);
+            }else{
+                $result = array(
+                    'status' => 500,
+                    'message' => 'Data tidak ditemukan !'
+                );
+                echo json_encode($result);
+            }
         }
     }
 

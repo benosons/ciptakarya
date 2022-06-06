@@ -292,6 +292,18 @@ class Jsondata extends CI_Controller {
 		echo json_encode(array("status" => TRUE));
 	}
 
+	public function deleteicon()
+	{
+
+		$params = (object)$this->input->post();
+		
+		$this->Model_data->deleteicon($params);
+		$this->Model_data->deletefile($params);
+		unlink($params->path);
+		header('Content-Type: application/json');
+		echo json_encode(array("status" => TRUE));
+	}
+
 	public function deletekategori()
 	{
 
@@ -400,7 +412,7 @@ class Jsondata extends CI_Controller {
 				
 				move_uploaded_file($file, $path.'/'.$name);
 
-				if (i == 0) {
+				if ($i == 0) {
 					$data_file = [
 						'id' => $params->idfile2,
 						'type' => 'buku',
@@ -411,7 +423,7 @@ class Jsondata extends CI_Controller {
 						'create_date' => date("Y-m-d H:i:s"),
 						'update_date' => date("Y-m-d H:i:s")
 					];
-				}else if(i == 1){
+				}else if($i == 1){
 					$data_file = [
 						'id' => $params->idfile2,
 						'type' => 'buku',
@@ -461,7 +473,7 @@ class Jsondata extends CI_Controller {
 				
 				move_uploaded_file($file, $path.'/'.$name);
 
-				if (i == 0) {
+				if ($i == 0) {
 					$data_file = [
 						'id' => $params->idfile2,
 						'type' => 'laporan',
@@ -472,7 +484,7 @@ class Jsondata extends CI_Controller {
 						'create_date' => date("Y-m-d H:i:s"),
 						'update_date' => date("Y-m-d H:i:s")
 					];
-				}else if(i == 1){
+				}else if($i == 1){
 					$data_file = [
 						'id' => $params->idfile2,
 						'type' => 'laporan',
@@ -534,6 +546,54 @@ class Jsondata extends CI_Controller {
 					];
 					$this->Model_data->updatefile($data_file);
 				}
+		}
+
+		header('Content-Type: application/json');
+		echo json_encode(array("status" => TRUE));
+
+	}
+	public function updatedataicon()
+	{
+
+		$params = (object)$this->input->post();
+		$params->update_by	 = $this->session->userdata('id');
+		$params->update_date = date("Y-m-d H:i:s");
+		$data = $this->Model_data->updatedataicon($params);
+
+		if(!empty($_FILES)){
+			$files = $_FILES['files'];
+			$count = count($_FILES['files']['name']);
+			$public		= FCPATH.'public';
+			$tipe		= './assets/upload/icon';
+			$date 		= date('Y/m/d');
+		
+			for ($i=0; $i < $count; $i++) { 
+
+				$name = $files['name'][$i];
+				$file = $files['tmp_name'][$i];
+				$type = $files['type'][$i];
+				$size = $files['size'][$i];
+				
+				$path = $tipe.'/'.$date;
+				if (!is_dir($path)) {
+					mkdir($path, 0777, TRUE);
+				}
+
+				
+				move_uploaded_file($file, $path.'/'.$name);
+
+				$data_file = [
+					'id' => $params->idfile,
+					'type' => 'icon',
+					'path' => $path,
+					'size' => $size,
+					'extension' => $type,
+					'filename' => $name,
+					'create_date' => date("Y-m-d H:i:s"),
+					'update_date' => date("Y-m-d H:i:s")
+				];
+				$this->Model_data->updatefile($data_file);
+			}
 		}
 
 		header('Content-Type: application/json');
@@ -947,6 +1007,25 @@ class Jsondata extends CI_Controller {
 		$params->update_date = date('Y-m-d H:i:s');
 
 		$data = $this->Model_data->updatebanner($params);
+		header('Content-Type: application/json');
+		echo json_encode(array("status" => TRUE));
+
+	}
+	public function updateicon()
+	{
+		$params = (object)$this->input->post();
+		// remove the part that we don't need from the provided image and decode it
+		// if($params->img){
+		// 	$data = base64_decode(preg_replace('#^data:image/\w+;base64,#i', '', $params->img));
+		// 	$filepath = "assets/dokumen/gambar/banner/".$params->username.".jpg"; // or image.jpg
+		// 	chmod($filepath,0777);
+		// 	file_put_contents($filepath,$data);
+		// 	$params->foto = $filepath;
+		// }
+		$params->update_by = $this->session->userdata('id');
+		$params->update_date = date('Y-m-d H:i:s');
+
+		$data = $this->Model_data->updateicon($params);
 		header('Content-Type: application/json');
 		echo json_encode(array("status" => TRUE));
 
@@ -1716,6 +1795,77 @@ class Jsondata extends CI_Controller {
 						$data_file = [
 								'id_parent' => $id,
 								'type' => 'foto',
+								'path' => $path,
+								'size' => $size,
+								'extension' => $type,
+								'filename' => $name,
+								'caption' => $caption,
+								'create_date' => date("Y-m-d H:i:s"),
+								'update_date' => date("Y-m-d H:i:s")
+							];
+							$this->Model_data->createdata('data_file', $data_file);
+						}
+				}
+			}
+
+			$response = [
+				'status'   => 'sukses',
+				'code'     => '0',
+				'data' 	   => 'terkirim'
+		];
+		header('Content-Type: application/json');
+		echo json_encode($response);
+		exit;
+
+		}
+		catch (\Exception $e)
+		{
+			die($e->getMessage());
+		}
+		
+
+	}
+
+	public function savedataicon(){
+		try
+		{
+
+			$params = (object)$this->input->post();
+			$id = $params->id;
+
+			$params->create_by	 = $this->session->userdata('id');
+			// $params->update_by	 = $this->session->userdata('id');
+			$params->create_date = date("Y-m-d H:i:s");
+			// $params->update_date = date("Y-m-d H:i:s");
+			
+			$id = $this->Model_data->createdata('data_icon', $params);
+			
+			if($id){
+				if(!empty($_FILES)){
+					$files = $_FILES['files'];
+					$count = count($_FILES['files']['name']);
+					$public		= FCPATH.'public';
+					$tipe		= './assets/upload/icon';
+					$date 		= date('Y/m/d');
+				
+					for ($i=0; $i < $count; $i++) { 
+
+						$name = $files['name'][$i];
+						$file = $files['tmp_name'][$i];
+						$type = $files['type'][$i];
+						$size = $files['size'][$i];
+						$size = $files['size'][$i];
+						$caption = $params->caption[$i];
+
+						$path = $tipe.'/'.$date;
+						if (!is_dir($path)) {
+							mkdir($path, 0777, TRUE);
+						}
+						move_uploaded_file($file, $path.'/'.$name);
+
+						$data_file = [
+								'id_parent' => $id,
+								'type' => 'icon',
 								'path' => $path,
 								'size' => $size,
 								'extension' => $type,
