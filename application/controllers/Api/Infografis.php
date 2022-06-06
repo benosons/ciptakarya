@@ -51,6 +51,12 @@ class Infografis extends CI_Controller {
         $id = $_GET['id'];
         if ($id) {
             $grafis = $this->Model_data->getalldata('data_grafis',['id'=>$id]);
+            foreach($grafis as $key => $value){
+                $files = $this->Model_data->getfile($value->id, 'infografis');
+                if(!empty($files)){
+                    $grafis[$key]->files = $files;
+                }
+            }
             if (!empty($grafis)) {
                 $result = array(
                     'status' => 200,
@@ -75,6 +81,12 @@ class Infografis extends CI_Controller {
                 $grafis = $this->Model_data->getalldata('data_grafis',$where,$limit,$offset);
             }else{
                 $grafis = $this->Model_data->getalldata('data_grafis',NULL,$limit,$offset);
+            }
+            foreach($grafis as $key => $value){
+                $files = $this->Model_data->getfile($value->id, 'infografis');
+                if(!empty($files)){
+                    $grafis[$key]->files = $files;
+                }
             }
             $totalRows = $this->Model_data->getcountdata('data_grafis');
             if (!empty($grafis)) {

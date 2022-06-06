@@ -51,6 +51,12 @@ class Produklaporan extends CI_Controller {
         $id = $_GET['id'];
         if ($id) {
             $laporan = $this->Model_data->getalldata('data_laporan',['id'=>$id]);
+            foreach($laporan as $key => $value){
+                $files = $this->Model_data->getfile($value->id, 'laporan');
+                if(!empty($files)){
+                    $laporan[$key]->files = $files;
+                }
+            }
             if (!empty($laporan)) {
                 $result = array(
                     'status' => 200,
@@ -83,6 +89,12 @@ class Produklaporan extends CI_Controller {
                 $laporan = $this->Model_data->getalldata('data_laporan',$where,$limit,$offset);
             }else{
                 $laporan = $this->Model_data->getalldata('data_laporan',NULL,$limit,$offset);
+            }
+            foreach($laporan as $key => $value){
+                $files = $this->Model_data->getfile($value->id, 'laporan');
+                if(!empty($files)){
+                    $laporan[$key]->files = $files;
+                }
             }
             $totalRows = $this->Model_data->getcountdata('data_laporan');
             if (!empty($laporan)) {
