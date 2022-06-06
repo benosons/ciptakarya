@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Berita extends CI_Controller {
+class Icon extends CI_Controller {
 
 	/**
 	 * Index Page for this controller.
@@ -50,18 +50,18 @@ class Berita extends CI_Controller {
     {
         $id = $_GET['id'];
         if ($id) {
-            $berita = $this->Model_data->getalldata('data_berita',['id'=>$id]);
-            foreach($berita as $key => $value){
-                $files = $this->Model_data->getfile($value->id, 'berita');
+            $icon = $this->Model_data->getalldata('data_icon',['id'=>$id]);
+            foreach($icon as $key => $value){
+                $files = $this->Model_data->getfile($value->id, 'icon');
                 if(!empty($files)){
-                    $berita[$key]->files = $files;
+                    $icon[$key]->files = $files;
                 }
             }
-            if (!empty($berita)) {
+            if (!empty($icon)) {
                 $result = array(
                     'status' => 200,
                     'message' => 'Data Berhasil ditemukan !',
-                    'data' => $berita
+                    'data' => $icon
                 );
                 echo json_encode($result);
             }else{
@@ -74,26 +74,26 @@ class Berita extends CI_Controller {
         }else{
             $offset = $_GET['offset'];
             $limit = $_GET['limit'];
-            $satker = $_GET['satker'];
+            $type = $_GET['type'];
             $where = array();
-            if ($satker) {
-                $where['create_by'] = $satker;
-                $berita = $this->Model_data->getalldata('data_berita',$where,$limit,$offset);
+            if ($type) {
+                $where['create_by'] = $type;
+                $icon = $this->Model_data->getalldata('data_icon',$where,$limit,$offset);
             }else{
-                $berita = $this->Model_data->getalldata('data_berita',NULL,$limit,$offset);
+                $icon = $this->Model_data->getalldata('data_icon',NULL,$limit,$offset);
             }
-            foreach($berita as $key => $value){
-                $files = $this->Model_data->getfile($value->id, 'berita');
+            foreach($icon as $key => $value){
+                $files = $this->Model_data->getfile($value->id, 'icon');
                 if(!empty($files)){
-                    $berita[$key]->files = $files;
+                    $icon[$key]->files = $files;
                 }
             }
-            $totalRows = $this->Model_data->getcountdata('data_berita');
-            if (!empty($berita)) {
+            $totalRows = $this->Model_data->getcountdata('data_icon');
+            if (!empty($icon)) {
                 $result = array(
                     'status' => 200,
                     'message' => 'Data Berhasil ditemukan !',
-                    'data' => $berita,
+                    'data' => $icon,
                     'totalRows' => $totalRows
                 );
                 echo json_encode($result);
@@ -104,8 +104,6 @@ class Berita extends CI_Controller {
                 );
                 echo json_encode($result);
             }
-
         }
     }
-
 }

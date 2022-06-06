@@ -52,7 +52,12 @@ class Banner extends CI_Controller {
         
         if ($id) {
             $banner = $this->Model_data->getalldata('data_banner',['id'=>$id]);
-            
+            foreach($banner as $key => $value){
+                $files = $this->Model_data->getfile($value->id, 'laporan');
+                if(!empty($files)){
+                    $banner[$key]->files = $files;
+                }
+            }
             if (!empty($banner)) {
                 $result = array(
                     'status' => 200,

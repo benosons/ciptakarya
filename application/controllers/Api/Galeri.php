@@ -51,6 +51,12 @@ class Galeri extends CI_Controller {
         $id = $_GET['id'];
         if ($id) {
             $galeri = $this->Model_data->getalldata('data_foto',['id'=>$id]);
+            foreach($galeri as $key => $value){
+                $files = $this->Model_data->getfile($value->id, 'foto');
+                if(!empty($files)){
+                    $galeri[$key]->files = $files;
+                }
+            }
             if (!empty($galeri)) {
                 $result = array(
                     'status' => 200,
@@ -75,6 +81,12 @@ class Galeri extends CI_Controller {
                 $galeri = $this->Model_data->getalldata('data_foto',$where,$limit,$offset);
             }else{
                 $galeri = $this->Model_data->getalldata('data_foto',NULL,$limit,$offset);
+            }
+            foreach($galeri as $key => $value){
+                $files = $this->Model_data->getfile($value->id, 'foto');
+                if(!empty($files)){
+                    $galeri[$key]->files = $files;
+                }
             }
             $totalRows = $this->Model_data->getcountdata('data_foto');
             if (!empty($galeri)) {
