@@ -120,7 +120,7 @@ $(function () {
 		var html= '';
 		var tab='';
 		for(var i=0; i<result.data.length; i++){
-		  html += '<option value="'+result.data[i].nama+'">'+result.data[i].nama+'</option>';
+		  html += '<option value="'+result.data[i].id+'">'+result.data[i].nama+'</option>';
 		}
 		$('#pilih_kategori').html(html);
 	  }

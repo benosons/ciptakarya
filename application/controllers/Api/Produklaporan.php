@@ -72,6 +72,8 @@ class Produklaporan extends CI_Controller {
                 echo json_encode($result);
             }
         }else{
+
+            
             $offset = $_GET['offset'];
             $limit = $_GET['limit'];
             $satker = $_GET['satker'];
