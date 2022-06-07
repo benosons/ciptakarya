@@ -53,8 +53,13 @@ class Icon extends CI_Controller {
             $icon = $this->Model_data->getalldata('data_icon',['id'=>$id]);
             foreach($icon as $key => $value){
                 $files = $this->Model_data->getfile($value->id, 'icon');
-                if(!empty($files)){
-                    $icon[$key]->files = $files;
+                $fl = [];
+                foreach ($files as $key => $value) {
+                    $path = $_SERVER['HTTP_HOST'].'/ciptakarya/'.$value->path.'/'.$value->filename;
+                    array_push($fl, $path);
+                }
+                if(!empty($fl)){
+                    $icon[$key]->files = $fl[0];
                 }
             }
             if (!empty($icon)) {
