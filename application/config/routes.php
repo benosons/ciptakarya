@@ -1,5 +1,5 @@
 <?php
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') or exit('No direct script access allowed');
 
 /*
 | -------------------------------------------------------------------------
@@ -49,15 +49,15 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 | Examples:	my-controller/index	-> my_controller/index
 |		my-controller/my-method	-> my_controller/my_method
 */
-$route['default_controller'] = 'views';+
-$route['404_override'] = 'views/login';
+$route['default_controller'] = 'views';
++$route['404_override'] = 'views/login';
 $route['translate_uri_dashes'] = FALSE;
 
 $route['^(login)(/:any)?$'] = "views/$0";
 $route['^(dashboard)(/:any)?$'] = "views/$0";
 $route['^(berita)(/:any)?$'] = "views/$0";
 $route['^(poster|foto|video)(/:any)?$'] = "views/$0";
-$route['^(profile|infobalai|kontak|banner|runningtext|bukuprofile|infografis|agenda|produklaporan|icon)(/:any)?$'] = "views/$0";
+$route['^(profile|infobalai|kontak|banner|runningtext|bukuprofile|infografis|agenda|produklaporan|icon|buletin)(/:any)?$'] = "views/$0";
 $route['users'] = 'views/listusers';
 
 $route['^(logout)(/:any)?$'] = "auth/$0";
@@ -71,7 +71,7 @@ $route['getkategorilaporan'] = 'jsondata/getkategorilaporan';
 $route['kategorilaporan'] = 'jsondata/kategorilaporan';
 $route['getkategorilaporans'] = 'jsondata/getkategorilaporans';
 $route['getdatausers'] = 'jsondata/getdatausers';
-$route['^(savedataberita|savedataprofile|savedataposter|savedatafoto|savedatabalai|savedatabanner|savedatagrafis|savedataagenda|savedatatext|savedatabuku|savedatalaporan|savedataicon)(/:any)?$'] = "jsondata/$0";
+$route['^(savedataberita|savedataprofile|savedataposter|savedatafoto|savedatabalai|savedatabanner|savedatagrafis|savedataagenda|savedatatext|savedatabuku|savedatalaporan|savedataicon|savedatabuletin)(/:any)?$'] = "jsondata/$0";
 $route['^(saveglobal|updateglobal)(/:any)?$'] = "jsondata/$0";
 $route['^(deleteberita)(/:any)?$'] = 'jsondata/$0';
 $route['^(updateberita|updatebanner|updategrafis|updateagenda|updatetext|updatebuku|updatelaporan|updatevideo|updatefoto|updateicon)(/:any)?$'] = 'jsondata/$0';
@@ -84,4 +84,3 @@ $route['^(saveUser)(/:any)?$'] = 'sys/$0';
 $route['^(updateUser)(/:any)?$'] = 'sys/$0';
 $route['^(deleteuser)(/:any)?$'] = 'sys/$0';
 $route['^(loadsatker)(/:any)?$'] = 'sys/$0';
-
