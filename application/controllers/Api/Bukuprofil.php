@@ -130,7 +130,7 @@ class Bukuprofil extends CI_Controller
     {
         $id = $_GET['id'];
         if ($id) {
-            $kategori = $this->Model_data->getalldata('kategori_laporan', ['id' => $id]);
+            $kategori = $this->Model_data->getalldata('kategori_profile', ['id' => $id]);
             if (!empty($kategori)) {
                 $result = array(
                     'status' => 200,
@@ -148,8 +148,8 @@ class Bukuprofil extends CI_Controller
         } else {
             $offset = $_GET['offset'];
             $limit = $_GET['limit'];
-            $kategori = $this->Model_data->getalldata('kategori_laporan', NULL, $limit, $offset);
-            $totalRows = $this->Model_data->getcountdata('kategori_laporan');
+            $kategori = $this->Model_data->getalldata('kategori_profile', NULL, $limit, $offset);
+            $totalRows = $this->Model_data->getcountdata('kategori_profile');
             if (!empty($kategori)) {
                 $result = array(
                     'status' => 200,
